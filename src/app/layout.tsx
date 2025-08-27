@@ -7,6 +7,7 @@ import { WishlistProvider } from '@/lib/wishlistStore';
 import { AddressProvider } from '@/lib/addressStore';
 import { OrdersProvider } from '@/lib/ordersStore';
 import OfferPopup from '@/components/OfferPopup';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'ShopWave — Mobile‑first E‑Commerce',
@@ -38,8 +39,11 @@ export default function RootLayout({
           <AddressProvider>
             <WishlistProvider>
               <CartProvider>
-                <TopBar />
-                <main className="container py-4 pb-24 md:pb-8">{children}</main>
+                <div className="flex flex-col min-h-screen">
+                  <TopBar />
+                  <main className="container py-4 pb-24 md:pb-8 flex-grow">{children}</main>
+                  <Footer />
+                </div>
                 <BottomNav />
                 <OfferPopup />
               </CartProvider>
