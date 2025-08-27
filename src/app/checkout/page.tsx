@@ -1,6 +1,6 @@
 
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCart } from '@/lib/cartStore'
 import { useAddressBook } from '@/lib/addressStore'
 import AddressForm from '@/components/AddressForm'
@@ -27,6 +27,12 @@ export default function Checkout(){
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
   const [paymentMethod, setPaymentMethod] = useState('COD')
 
+  useEffect(() => {
+    if (items.length === 0) {
+      router.replace('/');
+    }
+  }, [items, router]);
+
   const onPlace = () => {
     const addr = addresses.find(a => a.default) || addresses[0]
     if (!addr) {
@@ -45,8 +51,7 @@ export default function Checkout(){
     setEditingAddress(undefined);
   }
   
-  if (items.length === 0 && typeof window !== 'undefined') {
-    router.replace('/');
+  if (items.length === 0) {
     return null;
   }
 
