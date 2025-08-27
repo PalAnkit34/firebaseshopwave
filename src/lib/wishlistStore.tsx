@@ -1,14 +1,30 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
-import { safeGet, safeSet } from './storage'
+import create from 'zustand'
+import { persist } from 'zustand/middleware'
 
-const WishCtx = createContext<{ ids: string[]; toggle: (id: string) => void; has: (id: string) => boolean }>({ ids: [], toggle: () => {}, has: () => false })
-
-export const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
-  const [ids, setIds] = useState<string[]>(safeGet<string[]>('wishlist', []))
-  useEffect(() => { safeSet('wishlist', ids) }, [ids])
-  const toggle = (id: string) => setIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
-  const has = (id: string) => ids.includes(id)
-  return <WishCtx.Provider value={{ ids, toggle, has }}>{children}</WishCtx.Provider>
+type WishlistState = {
+  ids: string[]
+  toggle: (id: string) => void
+  has: (id: string) => boolean
 }
-export const useWishlist = () => useContext(WishCtx)
+
+export const useWishlist = create<WishlistState>()(
+  persist(
+    (set, get) => ({
+      ids: [],
+      toggle: (id: string) => {
+        set((state) => {
+          const exists = state.ids.includes(id)
+          if (exists) {
+            return { ids: state.ids.filter((x) => x !== id) }
+          }
+          return { ids: [...state.ids, id] }
+        })
+      },
+      has: (id: string) => {
+        return get().ids.includes(id)
+      },
+    }),
+    { name: 'wishlist-storage' }
+  )
+)

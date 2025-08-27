@@ -1,3 +1,4 @@
+
 import './globals.css';
 import type { Metadata } from 'next';
 import TopBar from '@/components/TopBar';
@@ -8,7 +9,6 @@ import { AddressProvider } from '@/lib/addressStore';
 import { OrdersProvider } from '@/lib/ordersStore';
 import OfferPopup from '@/components/OfferPopup';
 import Footer from '@/components/Footer';
-import { usePathname } from 'next/navigation';
 
 
 export const metadata: Metadata = {
@@ -16,26 +16,6 @@ export const metadata: Metadata = {
   description:
     'Flipkart/Amazon‑like frontend with search, filters, wishlist, checkout.',
 };
-
-const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <OrdersProvider>
-      <AddressProvider>
-        <WishlistProvider>
-          <CartProvider>
-            <div className="flex flex-col min-h-screen">
-              <TopBar />
-              <main className="container py-4 pb-24 md:pb-8 flex-grow">{children}</main>
-              <Footer />
-            </div>
-            <BottomNav />
-            <OfferPopup />
-          </CartProvider>
-        </WishlistProvider>
-      </AddressProvider>
-    </OrdersProvider>
-  )
-}
 
 export default function RootLayout({
   children,
@@ -57,7 +37,21 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased bg-background">
-        {children}
+        <OrdersProvider>
+          <AddressProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <div className="flex flex-col min-h-screen">
+                  <TopBar />
+                  <main className="container py-4 pb-24 md:pb-8 flex-grow">{children}</main>
+                  <Footer />
+                </div>
+                <BottomNav />
+                <OfferPopup />
+              </CartProvider>
+            </WishlistProvider>
+          </AddressProvider>
+        </OrdersProvider>
       </body>
     </html>
   );
