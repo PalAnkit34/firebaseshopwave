@@ -1,8 +1,6 @@
 import Fuse from 'fuse.js'
 import type { Product } from './types'
 
-// This file is now for client-side filtering of data fetched from the backend.
-
 export const liveSearch = (q: string, products: Product[]) => {
   if (!q.trim()) return []
   const fuse = new Fuse(products, { keys: ['name','brand','category','tags'], includeScore: true, threshold: 0.4 })
@@ -24,6 +22,7 @@ export const filterProducts = (products: Product[], opts: { q?: string; category
     case 'priceAsc': list.sort((a,b) => (a.price.discounted ?? a.price.original) - (b.price.discounted ?? b.price.original)); break
     case 'priceDesc': list.sort((a,b) => (b.price.discounted ?? b.price.original) - (a.price.discounted ?? a.price.original)); break
     case 'popular': list.sort((a,b) => (b.ratings?.count ?? 0) - (a.ratings?.count ?? 0)); break
+    // case 'new': list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); break;
     default: break
   }
   return list

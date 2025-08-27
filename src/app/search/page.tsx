@@ -1,34 +1,15 @@
 'use client'
-import { useMemo, Suspense, useState, useEffect } from 'react'
+import { useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { PRODUCTS } from '@/lib/sampleData'
 import { filterProducts } from '@/lib/search'
 import Filters from '@/components/Filters'
 import SortBar from '@/components/SortBar'
 import ProductCard from '@/components/ProductCard'
 import CategoryPills from '@/components/CategoryPills'
-import api from '@/lib/api'
-import type { Product } from '@/lib/types'
 
 function SearchContent() {
   const sp = useSearchParams()
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get('/products');
-        setAllProducts(res.data.data);
-      } catch (error) {
-        console.error("Failed to fetch products", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
-  
   const opts = {
     q: sp.get('query') || undefined,
     category: sp.get('category') || undefined,
@@ -39,13 +20,9 @@ function SearchContent() {
     sort: (sp.get('sort') as any) || undefined,
   }
   
-  const list = useMemo(() => filterProducts(allProducts, opts), [sp, allProducts])
+  const list = useMemo(() => filterProducts(PRODUCTS, opts), [sp])
   
-  const suggestions = (cat:string, exceptId:string) => allProducts.filter(p => p.category===cat && p.id!==exceptId).slice(0,6).map(p=>({ slug:p.slug, image:p.image, name:p.name, price:p.price.discounted ?? p.price.original }))
-
-  if (loading) {
-    return <div>Loading products...</div>;
-  }
+  const suggestions = (cat:string, exceptId:string) => PRODUCTS.filter(p => p.category===cat && p.id!==exceptId).slice(0,6).map(p=>({ slug:p.slug, image:p.image, name:p.name, price:p.price.discounted ?? p.price.original }))
 
   return (
     <>
@@ -67,7 +44,7 @@ function SearchContent() {
           {list.length > 0 ? (
             <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {list.map(p => (
-                <ProductCard key={p._id} p={p} suggest={suggestions(p.category, p.id)} />
+                <ProductCard key={p.id} p={p} suggest={suggestions(p.category, p.id)} />
               ))}
             </div>
           ) : (

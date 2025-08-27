@@ -1,37 +1,11 @@
 'use client'
 import { useOrders } from '@/lib/ordersStore'
+import { PRODUCTS } from '@/lib/sampleData'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useAuth } from '@/lib/authStore'
-import { useEffect, useState } from 'react'
-import api from '@/lib/api'
 
 export default function OrdersPage(){
-  const { orders } = useOrders() // This is still client-side for now
-  const { user } = useAuth()
-  const [allProducts, setAllProducts] = useState<any[]>([]);
-
-   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await api.get('/products');
-        setAllProducts(res.data.data);
-      } catch (error) {
-        console.error("Failed to fetch products", error);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  if (!user) {
-    return (
-        <div className="rounded-2xl border bg-white p-8 text-center">
-          <h2 className="text-lg font-medium text-gray-700">Please log in to see your orders.</h2>
-          <Link href="/account" className="mt-4 inline-block rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Login</Link>
-        </div>
-    )
-  }
-
+  const { orders } = useOrders()
   return (
     <div>
       <h1 className="mb-4 text-xl font-semibold">Your Orders</h1>
@@ -54,7 +28,7 @@ export default function OrdersPage(){
 
             <div className="space-y-2 mb-3">
               {o.items.map(item => {
-                 const product = allProducts.find(p => p.id === item.productId);
+                 const product = PRODUCTS.find(p => p.id === item.productId);
                  return (
                   <div key={item.productId} className="flex items-center gap-3 text-sm">
                     <div className="relative h-12 w-12 shrink-0">

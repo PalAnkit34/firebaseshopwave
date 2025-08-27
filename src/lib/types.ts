@@ -2,10 +2,8 @@ export type Money = { original: number; discounted?: number; currency?: string }
 export type Rating = { average: number; count: number }
 export type Variant = { color?: string; size?: string; price?: number; quantity?: number; sku?: string }
 
-// This now includes a backend _id
 export type Product = {
-  _id?: string; // from MongoDB
-  id: string // legacy id, can be deprecated
+  id: string
   slug: string
   name: string
   brand: string
@@ -54,9 +52,8 @@ export type Order = {
 }
 
 export type User = {
-  _id: string;
+  id: string;
   fullName: string;
   email: string;
   role: 'user' | 'admin';
-  createdAt: string;
 }

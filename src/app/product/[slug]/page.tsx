@@ -1,6 +1,7 @@
 'use client'
-import { useMemo, useState, Suspense, useEffect } from 'react'
+import { useMemo, useState, Suspense } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { PRODUCTS } from '@/lib/sampleData'
 import Gallery from '@/components/Gallery'
 import PriceTag from '@/components/PriceTag'
 import RatingStars from '@/components/RatingStars'
@@ -9,41 +10,13 @@ import { useCart } from '@/lib/cartStore'
 import WishlistButton from '@/components/WishlistButton'
 import ProductSuggestionsRow from '@/components/ProductSuggestionsRow'
 import { ChevronLeft } from 'lucide-react'
-import api from '@/lib/api'
-import type { Product } from '@/lib/types'
 
 function ProductDetailContent() {
   const router = useRouter()
-  const { slug } = useParams<{ slug:string }>()
-  const [p, setProduct] = useState<Product | null>(null);
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  
+  const { slug } = useParams()
+  const p = useMemo(() => PRODUCTS.find(p => p.slug === slug), [slug])
   const [qty, setQty] = useState(1)
   const { add } = useCart()
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        const [productRes, allProductsRes] = await Promise.all([
-          api.get(`/products/slug/${slug}`),
-          api.get('/products')
-        ]);
-        setProduct(productRes.data.data);
-        setAllProducts(allProductsRes.data.data);
-      } catch (error) {
-        console.error("Failed to fetch product details", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProduct();
-  }, [slug]);
-
-  if (loading) {
-    return <div>Loading product...</div>
-  }
 
   if (!p) {
     return <div>Product not found</div>
@@ -51,7 +24,7 @@ function ProductDetailContent() {
 
   const price = p.price.discounted ?? p.price.original
   const images = [p.image, ...(p.extraImages||[])]
-  const related = allProducts.filter(x => x.category===p.category && x.id!==p.id).slice(0,8).map(x=>({ slug:x.slug, image:x.image, name:x.name, price:x.price.discounted ?? x.price.original }))
+  const related = PRODUCTS.filter(x => x.category===p.category && x.id!==p.id).slice(0,8).map(x=>({ slug:x.slug, image:x.image, name:x.name, price:x.price.discounted ?? x.price.original }))
 
   const handleBuyNow = () => {
     add({ id:p.id, qty, price, name:p.name, image:p.image });

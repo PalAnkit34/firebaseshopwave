@@ -1,16 +1,15 @@
 'use client'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useAuth } from '@/lib/authStore'
-import { useRouter } from 'next/navigation'
 
 export default function AccountPage() {
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
-  const { login, register, isLoading, error } = useAuth()
-  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
 
   const formVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -19,15 +18,26 @@ export default function AccountPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    let success = false;
+    setIsLoading(true);
+    setError(null);
+    setSuccess(null);
+    // Mock API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
     if (isLogin) {
-      success = await login(email, password);
+        if (email === 'user@example.com' && password === 'password') {
+            setSuccess('Login successful! Redirecting...');
+        } else {
+            setError('Invalid credentials. (Hint: use user@example.com)');
+        }
     } else {
-      success = await register(fullName, email, password);
+        if (fullName && email && password) {
+            setSuccess('Registration successful! You can now log in.');
+            setIsLogin(true);
+        } else {
+            setError('Please fill all fields.');
+        }
     }
-    if (success) {
-      router.push('/');
-    }
+    setIsLoading(false);
   };
 
   return (
@@ -42,8 +52,10 @@ export default function AccountPage() {
           transition={{ duration: 0.3 }}
         >
           <h1 className="mb-4 text-center text-2xl font-semibold">{isLogin ? 'Welcome Back' : 'Create Your Account'}</h1>
+          <p className="text-center text-sm text-gray-500 mb-4">This is a mock authentication screen. No real accounts are created.</p>
           <form onSubmit={handleSubmit} className="card space-y-4 p-6">
             {error && <div className="rounded-md bg-red-100 p-3 text-sm text-red-700">{error}</div>}
+            {success && <div className="rounded-md bg-green-100 p-3 text-sm text-green-700">{success}</div>}
             {!isLogin && (
               <input 
                 className="w-full rounded-lg border px-3 py-2 text-sm" 
@@ -85,7 +97,8 @@ export default function AccountPage() {
               type="button" 
               onClick={() => {
                 setIsLogin(!isLogin);
-                useAuth.setState({ error: null }); // Clear error on switch
+                setError(null);
+                setSuccess(null);
               }} 
               className="w-full rounded-xl border py-2 text-sm font-semibold transition-colors hover:bg-gray-50"
             >

@@ -4,30 +4,15 @@ import { liveSearch } from '@/lib/search'
 import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
 import SearchSuggestions from './SearchSuggestions'
-import api from '@/lib/api'
-import type { Product } from '@/lib/types'
-
+import { PRODUCTS } from '@/lib/sampleData'
 
 export default function SearchBar(){
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(false)
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const router = useRouter()
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await api.get('/products');
-        setAllProducts(res.data.data);
-      } catch (error) {
-        console.error("Failed to fetch products for search", error);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  const items = useMemo(() => liveSearch(q, allProducts).map(p => ({ id: p.id, slug:p.slug, name: p.name, image: p.image, price: p.price.discounted ?? p.price.original })), [q, allProducts])
+  const items = useMemo(() => liveSearch(q, PRODUCTS).map(p => ({ id: p.id, slug:p.slug, name: p.name, image: p.image, price: p.price.discounted ?? p.price.original })), [q])
 
   useEffect(() => { 
     setOpen(!!q && items.length > 0) 

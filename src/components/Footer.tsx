@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} ShopWave. All rights reserved. | <Link href="/admin" className="hover:text-white">Admin Panel</Link></p>
+          <p>&copy; {new Date().getFullYear()} ShopWave. All rights reserved.</p>
         </div>
       </div>
     </footer>
