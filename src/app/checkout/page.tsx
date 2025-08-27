@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { Address } from '@/lib/types'
 import { CreditCard, Banknote, QrCode, Truck } from 'lucide-react'
+import Image from 'next/image'
 
 const paymentOptions = [
   { id: 'COD', icon: Truck, title: 'Cash on Delivery', description: 'Pay upon arrival' },
@@ -83,9 +84,23 @@ export default function Checkout(){
       </div>
       <div className="card sticky top-24 p-4">
         <h2 className="text-lg font-semibold">Order Summary</h2>
-        <div className="mt-3 space-y-2 border-b pb-3 text-sm">
+        <div className="mt-4 space-y-3">
+          {items.map(item => (
+            <div key={item.id} className="flex items-center gap-3 text-sm">
+              <div className="relative h-14 w-14 shrink-0">
+                <Image src={item.image} alt={item.name} fill className="rounded-md object-cover" />
+              </div>
+              <div className="flex-grow">
+                <div className="line-clamp-1 font-medium">{item.name}</div>
+                <div className="text-xs text-gray-500">Qty: {item.qty}</div>
+              </div>
+              <div className="font-medium">₹{(item.price * item.qty).toLocaleString('en-IN')}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 space-y-2 border-t pt-4 text-sm">
           <div className="flex justify-between">
-            <span>Items ({items.reduce((s,i)=>s+i.qty,0)})</span>
+            <span>Subtotal ({items.reduce((s,i)=>s+i.qty,0)} items)</span>
             <span>₹{total.toLocaleString('en-IN')}</span>
           </div>
            <div className="flex justify-between text-green-600">
@@ -93,7 +108,7 @@ export default function Checkout(){
                 <span>Free</span>
             </div>
         </div>
-        <div className="mt-3 flex justify-between font-semibold">
+        <div className="mt-3 flex justify-between font-semibold border-t pt-3">
           <span>Total Amount</span>
           <span>₹{total.toLocaleString('en-IN')}</span>
         </div>
