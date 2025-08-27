@@ -2,13 +2,7 @@
 import create from 'zustand'
 import Cookies from 'js-cookie'
 import api from './api'
-
-type User = {
-  id: string;
-  fullName: string;
-  email: string;
-  role: string;
-}
+import type { User } from './types'
 
 type AuthState = {
   user: User | null;
@@ -33,6 +27,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       const { data } = await api.post('/auth/login', { email, password });
       set({ user: data.user, token: data.token, isLoading: false });
       Cookies.set('token', data.token, { expires: 7 }); // expires in 7 days
+      api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       return true;
     } catch (err: any) {
       const message = err.response?.data?.message || "Login failed.";
@@ -57,17 +52,21 @@ export const useAuth = create<AuthState>((set, get) => ({
   logout: () => {
     set({ user: null, token: null });
     Cookies.remove('token');
+    delete api.defaults.headers.common['Authorization'];
   },
 
   checkAuth: async () => {
     const token = Cookies.get('token');
     if (token && !get().user) {
       try {
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         const { data } = await api.get('/auth/me');
-        set({ user: data.user, token });
+        set({ user: data.data, token });
       } catch (error) {
         get().logout();
       }
+    } else if (!token) {
+        set({ user: null, token: null });
     }
   }
 }));

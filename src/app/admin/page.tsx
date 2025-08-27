@@ -2,9 +2,11 @@
 import Link from 'next/link'
 import { DollarSign, ShoppingCart, Users, Package } from 'lucide-react'
 import { useOrders } from '@/lib/ordersStore'
-import { PRODUCTS } from '@/lib/sampleData'
 import PriceTag from '@/components/PriceTag'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import api from '@/lib/api'
+import type { Product, User } from '@/lib/types'
 
 const StatCard = ({ title, value, icon:Icon, currency }: { title: string, value: string | number, icon: React.ElementType, currency?: string }) => (
     <div className="bg-white p-4 rounded-xl shadow-md flex items-center justify-between">
@@ -19,17 +21,44 @@ const StatCard = ({ title, value, icon:Icon, currency }: { title: string, value:
 )
 
 export default function AdminDashboard() {
-  const { orders } = useOrders()
+  const { orders } = useOrders() // This is still client-side, will replace later
+  const [products, setProducts] = useState<Product[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [productsRes, usersRes] = await Promise.all([
+            api.get('/products'),
+            api.get('/users')
+        ]);
+        setProducts(productsRes.data.data);
+        setUsers(usersRes.data.data);
+      } catch (error) {
+        console.error("Failed to fetch admin data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+  
   const totalSales = orders.reduce((sum, order) => sum + order.total, 0)
   const totalOrders = orders.length
   
+  if (loading) {
+      return <div>Loading dashboard...</div>
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard title="Total Sales" value={totalSales.toLocaleString('en-IN')} currency="₹" icon={DollarSign} />
         <StatCard title="Total Orders" value={totalOrders} icon={ShoppingCart} />
-        <StatCard title="Total Products" value={PRODUCTS.length} icon={Package} />
-        <StatCard title="Total Customers" value="132" icon={Users} />
+        <StatCard title="Total Products" value={products.length} icon={Package} />
+        <StatCard title="Total Customers" value={users.length} icon={Users} />
       </div>
 
       <div className="bg-white p-4 rounded-xl shadow-md">
@@ -51,8 +80,8 @@ export default function AdminDashboard() {
                     </tr>
                 </thead>
                 <tbody>
-                    {PRODUCTS.map(p => (
-                        <tr key={p.id} className="bg-white border-b hover:bg-gray-50">
+                    {products.slice(0, 5).map(p => (
+                        <tr key={p._id} className="bg-white border-b hover:bg-gray-50">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex items-center gap-3">
                                 <div className="relative h-10 w-10 shrink-0">
                                   <Image src={p.image} alt={p.name} fill className="rounded-md object-cover"/>

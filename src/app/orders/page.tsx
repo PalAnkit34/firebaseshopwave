@@ -2,13 +2,26 @@
 import { useOrders } from '@/lib/ordersStore'
 import Image from 'next/image'
 import Link from 'next/link'
-import { PRODUCTS } from '@/lib/sampleData'
 import { useAuth } from '@/lib/authStore'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import api from '@/lib/api'
 
 export default function OrdersPage(){
-  const { orders } = useOrders()
+  const { orders } = useOrders() // This is still client-side for now
   const { user } = useAuth()
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+
+   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await api.get('/products');
+        setAllProducts(res.data.data);
+      } catch (error) {
+        console.error("Failed to fetch products", error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   if (!user) {
     return (
@@ -41,7 +54,7 @@ export default function OrdersPage(){
 
             <div className="space-y-2 mb-3">
               {o.items.map(item => {
-                 const product = PRODUCTS.find(p => p.id === item.productId);
+                 const product = allProducts.find(p => p.id === item.productId);
                  return (
                   <div key={item.productId} className="flex items-center gap-3 text-sm">
                     <div className="relative h-12 w-12 shrink-0">

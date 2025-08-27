@@ -1,18 +1,19 @@
 import Fuse from 'fuse.js'
-import { PRODUCTS } from './sampleData'
+import type { Product } from './types'
 
-const fuse = new Fuse(PRODUCTS, { keys: ['name','brand','category','tags'], includeScore: true, threshold: 0.4 })
+// This file is now for client-side filtering of data fetched from the backend.
 
-export const liveSearch = (q: string) => {
-  if (!q.trim()) return [] as typeof PRODUCTS
+export const liveSearch = (q: string, products: Product[]) => {
+  if (!q.trim()) return []
+  const fuse = new Fuse(products, { keys: ['name','brand','category','tags'], includeScore: true, threshold: 0.4 })
   return fuse.search(q).slice(0, 8).map(r => r.item)
 }
 
-export const filterProducts = (opts: { q?: string; category?: string; min?: number; max?: number; brand?: string; rating?: number; sort?: 'new'|'priceAsc'|'priceDesc'|'popular' }) => {
-  let list = [...PRODUCTS]
+export const filterProducts = (products: Product[], opts: { q?: string; category?: string; min?: number; max?: number; brand?: string; rating?: number; sort?: 'new'|'priceAsc'|'priceDesc'|'popular' }) => {
+  let list = [...products]
   if (opts.q) {
-    const set = new Set(liveSearch(opts.q).map(p => p.id))
-    list = list.filter(p => set.has(p.id))
+    const fuse = new Fuse(products, { keys: ['name','brand','category','tags'], threshold: 0.4 });
+    list = fuse.search(opts.q).map(result => result.item);
   }
   if (opts.category && opts.category !== 'All') list = list.filter(p => p.category === opts.category)
   if (opts.brand) list = list.filter(p => p.brand === opts.brand)

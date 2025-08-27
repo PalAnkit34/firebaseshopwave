@@ -1,5 +1,7 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import api from '@/lib/api'
 
 const InputField = ({ id, label, type = 'text', placeholder, value, onChange, required = false }) => (
     <div>
@@ -7,6 +9,7 @@ const InputField = ({ id, label, type = 'text', placeholder, value, onChange, re
         <input
             type={type}
             id={id}
+            name={id}
             value={value}
             onChange={onChange}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -21,6 +24,7 @@ const TextAreaField = ({ id, label, placeholder, value, onChange }) => (
         <label htmlFor={id} className="block mb-2 text-sm font-medium text-gray-900">{label}</label>
         <textarea
             id={id}
+            name={id}
             rows={4}
             value={value}
             onChange={onChange}
@@ -35,6 +39,7 @@ const SelectField = ({ id, label, value, onChange, children }) => (
         <label htmlFor={id} className="block mb-2 text-sm font-medium text-gray-900">{label}</label>
         <select
             id={id}
+            name={id}
             value={value}
             onChange={onChange}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -46,6 +51,7 @@ const SelectField = ({ id, label, value, onChange, children }) => (
 
 
 export default function AddProductPage() {
+    const router = useRouter();
     const [product, setProduct] = useState({
         name: '',
         brand: '',
@@ -57,23 +63,50 @@ export default function AddProductPage() {
         description: '',
         shortDescription: ''
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleChange = (e) => {
-        const { id, value } = e.target;
-        setProduct(prev => ({ ...prev, [id]: value }));
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setProduct(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Here you would typically send the data to your backend API
-        console.log('Product submitted:', product);
-        alert('Product added successfully! (Check console for data)');
-        // router.push('/admin');
+        setIsLoading(true);
+        setError(null);
+        
+        const productData = {
+            name: product.name,
+            brand: product.brand,
+            category: product.category,
+            image: product.image,
+            price: {
+                original: Number(product.originalPrice),
+                discounted: product.discountedPrice ? Number(product.discountedPrice) : undefined,
+            },
+            quantity: Number(product.quantity),
+            description: product.description,
+            shortDescription: product.shortDescription,
+            slug: product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+        };
+
+        try {
+            await api.post('/products', productData);
+            alert('Product added successfully!');
+            router.push('/admin');
+        } catch (err) {
+            console.error(err);
+            setError('Failed to add product. Please check the console for details.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-md">
             <h1 className="text-2xl font-bold mb-6">Add New Product</h1>
+            {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">{error}</div>}
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <InputField id="name" label="Product Name" placeholder="e.g., Samsung Galaxy S23" value={product.name} onChange={handleChange} required />
@@ -98,8 +131,10 @@ export default function AddProductPage() {
                 <TextAreaField id="description" label="Full Description" placeholder="Detailed product description" value={product.description} onChange={handleChange} />
 
                 <div className="flex justify-end space-x-4">
-                    <button type="button" className="py-2 px-4 rounded-lg border border-gray-300 text-sm font-medium hover:bg-gray-100">Cancel</button>
-                    <button type="submit" className="py-2 px-4 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand/90 transition-colors">Add Product</button>
+                    <button type="button" onClick={() => router.back()} className="py-2 px-4 rounded-lg border border-gray-300 text-sm font-medium hover:bg-gray-100">Cancel</button>
+                    <button type="submit" disabled={isLoading} className="py-2 px-4 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand/90 transition-colors disabled:opacity-50">
+                        {isLoading ? 'Adding...' : 'Add Product'}
+                    </button>
                 </div>
             </form>
         </div>
