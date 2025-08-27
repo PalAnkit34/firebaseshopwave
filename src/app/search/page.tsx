@@ -1,6 +1,7 @@
 
+
 'use client'
-import { useMemo, Suspense, useState } from 'react'
+import { useMemo, Suspense, useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link';
 import Image from 'next/image';
@@ -13,6 +14,7 @@ import CategoryPills from '@/components/CategoryPills'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Filter } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const ayurvedicCategories = [
   { name: 'Healthy Juice', href: '/search?category=Ayurvedic&subcategory=Beverages', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
@@ -41,7 +43,16 @@ const fashionCategories = [
     { name: 'Accessories', href: '/search?category=Fashion&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=800&auto=format&fit=crop', dataAiHint: 'sunglasses fashion' },
 ];
 
-function CategoryHeader({ title, description, linkText, bannerImage, categories, bannerColor = "bg-gray-100", buttonColor = "bg-brand" }: { title: string, description: string, linkText: string, bannerImage: string, categories: any[], bannerColor?: string, buttonColor?:string }) {
+function CategoryHeader({ title, description, linkText, bannerImages, categories, bannerColor = "bg-gray-100", buttonColor = "bg-brand" }: { title: string, description: string, linkText: string, bannerImages: string[], categories: any[], bannerColor?: string, buttonColor?:string }) {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
+        }, 3000);
+        return () => clearInterval(timer);
+    }, [bannerImages.length]);
+
     return (
         <div className="space-y-8 mb-8">
             <section>
@@ -55,12 +66,23 @@ function CategoryHeader({ title, description, linkText, bannerImage, categories,
                             </Link>
                         </div>
                         <div className="relative h-64 md:h-full">
-                            <Image
-                            src={bannerImage}
-                            alt="Category Banner"
-                            fill
-                            className="object-contain"
-                            />
+                            <AnimatePresence>
+                                <motion.div
+                                    key={currentImageIndex}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.8 }}
+                                    className="absolute inset-0"
+                                >
+                                    <Image
+                                        src={bannerImages[currentImageIndex]}
+                                        alt="Category Banner"
+                                        fill
+                                        className="object-contain"
+                                    />
+                                </motion.div>
+                            </AnimatePresence>
                         </div>
                     </div>
                 </div>
@@ -115,7 +137,11 @@ function SearchContent() {
                 title="Buy Online 100% Pure Products at Best Price"
                 description="Get all Ashram Products Delivered Anywhere in India - Order from your Home!"
                 linkText="Shop Now"
-                bannerImage="https://storage.googleapis.com/stabl-media/pro-101/476e93e2-8958-4796-913a-f110a3070659.png"
+                bannerImages={[
+                    "https://storage.googleapis.com/stabl-media/pro-101/476e93e2-8958-4796-913a-f110a3070659.png",
+                    "https://images.unsplash.com/photo-1591185854599-0734914c814b?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1558642144-3c82255d6b38?q=80&w=1200&auto=format&fit=crop",
+                ]}
                 categories={ayurvedicCategories}
                 bannerColor="bg-green-50"
                 buttonColor="bg-green-700 hover:bg-green-800"
@@ -125,7 +151,11 @@ function SearchContent() {
                 title="Latest in Electronics"
                 description="Discover cutting-edge technology and get the best deals on all electronic gadgets."
                 linkText="Explore Tech"
-                bannerImage="https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=1200&auto=format&fit=crop"
+                bannerImages={[
+                    "https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?q=80&w=1200&auto=format&fit=crop",
+                ]}
                 categories={techCategories}
                 bannerColor="bg-blue-50"
                 buttonColor="bg-blue-600 hover:bg-blue-700"
@@ -135,7 +165,11 @@ function SearchContent() {
                 title="Trendsetting Styles"
                 description="Update your wardrobe with the latest trends in fashion. Unbeatable prices."
                 linkText="Shop Fashion"
-                bannerImage="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1200&auto=format&fit=crop"
+                bannerImages={[
+                    "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop",
+                ]}
                 categories={fashionCategories}
                 bannerColor="bg-pink-50"
                 buttonColor="bg-pink-500 hover:bg-pink-600"
