@@ -25,11 +25,11 @@ export default function Home() {
                 </div>
                 <div className="relative h-64 md:h-96">
                     <Image 
-                        src="https://images.unsplash.com/photo-1600115332243-55f673449d85?q=80&w=800&auto=format&fit=crop"
-                        alt="Ayurvedic Products"
+                        src="https://storage.googleapis.com/stabl-media/pro-101/476e93e2-8958-4796-913a-f110a3070659.png"
+                        alt="Ayurvedic Products Collage"
                         fill
                         className="object-contain"
-                        data-ai-hint="ayurvedic products collage"
+                        data-ai-hint="ayurvedic products"
                     />
                 </div>
             </div>
