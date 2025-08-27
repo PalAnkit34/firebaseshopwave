@@ -1,5 +1,5 @@
 'use client'
-import { useMemo, Suspense } from 'react'
+import { useMemo, Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { PRODUCTS } from '@/lib/sampleData'
 import { filterProducts } from '@/lib/search'
@@ -7,9 +7,13 @@ import Filters from '@/components/Filters'
 import SortBar from '@/components/SortBar'
 import ProductCard from '@/components/ProductCard'
 import CategoryPills from '@/components/CategoryPills'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Filter } from 'lucide-react'
 
 function SearchContent() {
   const sp = useSearchParams()
+  const [isFilterOpen, setFilterOpen] = useState(false)
   const opts = {
     q: sp.get('query') || undefined,
     category: sp.get('category') || undefined,
@@ -36,9 +40,28 @@ function SearchContent() {
         </aside>
         <section>
           <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-            <div>
-              <div className="text-sm text-gray-600">Showing {list.length} result{list.length === 1 ? '' : 's'}</div>
-              {opts.q && <div className="text-xs text-gray-500">for "{opts.q}"</div>}
+            <div className="flex-grow">
+                <div className="flex items-center gap-4">
+                     <div className="md:hidden">
+                        <Sheet open={isFilterOpen} onOpenChange={setFilterOpen}>
+                            <SheetTrigger asChild>
+                                <Button variant="outline" size="icon">
+                                    <Filter className="h-4 w-4" />
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                                <div className="p-4">
+                                     <h3 className="text-lg font-semibold mb-4">Filters</h3>
+                                    <Filters />
+                                </div>
+                            </SheetContent>
+                        </Sheet>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-600">Showing {list.length} result{list.length === 1 ? '' : 's'}</div>
+                      {opts.q && <div className="text-xs text-gray-500">for "{opts.q}"</div>}
+                    </div>
+                </div>
             </div>
             <SortBar />
           </div>
