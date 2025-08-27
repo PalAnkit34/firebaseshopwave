@@ -4,12 +4,29 @@ import Link from 'next/link'
 import SearchBar from './SearchBar'
 import { useCart } from '@/lib/cartStore'
 
+function SubNavBar() {
+  const categories = ['Healthy Juice', 'Ayurvedic', 'Daily Needs', 'Pooja Items', 'Homeopathy'];
+  return (
+    <div className="bg-white border-b hidden md:block">
+      <div className="container mx-auto">
+        <nav className="flex items-center justify-center gap-6">
+          {categories.map(cat => (
+            <Link key={cat} href={`/search?category=${cat}`} className="py-2 text-sm font-medium text-gray-600 hover:text-brand transition-colors">
+              {cat}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    </div>
+  )
+}
+
 export default function TopBar() {
   const { items } = useCart();
   const cartItemCount = items.reduce((acc, item) => acc + item.qty, 0);
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md">
       <div className="container flex items-center gap-4 py-3">
         <Link href="/" className="text-xl font-bold text-brand">ShopWave</Link>
         <div className="hidden flex-1 md:block md:px-8 lg:px-16">
@@ -29,7 +46,8 @@ export default function TopBar() {
           </Link>
         </nav>
       </div>
-      <div className="container md:hidden pb-3"><SearchBar /></div>
+      <div className="container md:hidden pb-3 border-t md:border-t-0"><SearchBar /></div>
+      <SubNavBar />
     </header>
   )
 }

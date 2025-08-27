@@ -37,7 +37,6 @@ export default function AccountPage(){
           </form>
         </motion.div>
       </AnimatePresence>
-      <p className="mt-4 text-center text-xs text-gray-500">This is a mock authentication screen. <br/> Connect to your real authentication API later.</p>
     </div>
   )
 }
