@@ -8,12 +8,34 @@ import { AddressProvider } from '@/lib/addressStore';
 import { OrdersProvider } from '@/lib/ordersStore';
 import OfferPopup from '@/components/OfferPopup';
 import Footer from '@/components/Footer';
+import { usePathname } from 'next/navigation';
+
 
 export const metadata: Metadata = {
   title: 'ShopWave — Mobile‑first E‑Commerce',
   description:
     'Flipkart/Amazon‑like frontend with search, filters, wishlist, checkout.',
 };
+
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <OrdersProvider>
+      <AddressProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <div className="flex flex-col min-h-screen">
+              <TopBar />
+              <main className="container py-4 pb-24 md:pb-8 flex-grow">{children}</main>
+              <Footer />
+            </div>
+            <BottomNav />
+            <OfferPopup />
+          </CartProvider>
+        </WishlistProvider>
+      </AddressProvider>
+    </OrdersProvider>
+  )
+}
 
 export default function RootLayout({
   children,
@@ -30,26 +52,12 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
       <body className="font-body antialiased bg-background">
-        <OrdersProvider>
-          <AddressProvider>
-            <WishlistProvider>
-              <CartProvider>
-                <div className="flex flex-col min-h-screen">
-                  <TopBar />
-                  <main className="container py-4 pb-24 md:pb-8 flex-grow">{children}</main>
-                  <Footer />
-                </div>
-                <BottomNav />
-                <OfferPopup />
-              </CartProvider>
-            </WishlistProvider>
-          </AddressProvider>
-        </OrdersProvider>
+        {children}
       </body>
     </html>
   );

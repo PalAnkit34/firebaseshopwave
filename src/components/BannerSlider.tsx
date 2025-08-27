@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
 const BANNERS = [
-  { id:1, img:'https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1600&auto=format&fit=crop', title:'Big Tech Deals', link:'/search?category=Tech' },
-  { id:2, img:'https://images.unsplash.com/photo-1479064555552-3ef4979f8908?q=80&w=1600&auto=format&fit=crop', title:'Festive Fashion Sale', link:'/search?category=Fashion' },
-  { id:3, img:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1600&auto=format&fit=crop', title:'Ayurvedic Essentials', link:'/search?category=Ayurvedic' },
+  { id:1, img:'https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1600&auto=format&fit=crop', title:'Big Tech Deals', link:'/search?category=Tech', dataAiHint: 'latest gadgets' },
+  { id:2, img:'https://images.unsplash.com/photo-1479064555552-3ef4979f8908?q=80&w=1600&auto=format&fit=crop', title:'Festive Fashion Sale', link:'/search?category=Fashion', dataAiHint: 'stylish apparel' },
+  { id:3, img:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1600&auto=format&fit=crop', title:'Ayurvedic Essentials', link:'/search?category=Ayurvedic', dataAiHint: 'natural remedies' },
 ]
 
 export default function BannerSlider(){
@@ -14,7 +14,7 @@ export default function BannerSlider(){
   useEffect(() => { const t = setInterval(()=> setIdx(i => (i+1)%BANNERS.length), 4000); return ()=>clearInterval(t) }, [])
   const b = BANNERS[idx]
   return (
-    <div className="relative h-44 w-full overflow-hidden rounded-2xl md:h-64">
+    <div className="relative h-52 w-full overflow-hidden rounded-2xl md:h-80">
       <AnimatePresence>
         <motion.a 
           key={b.id} 
@@ -25,14 +25,17 @@ export default function BannerSlider(){
           exit={{opacity:0, scale:1.05}} 
           transition={{duration:0.7, ease: 'easeInOut'}}
         >
-          <Image src={b.img} alt={b.title} fill sizes="100vw" className="object-cover"/>
+          <Image src={b.img} alt={b.title} fill sizes="100vw" className="object-cover" data-ai-hint={b.dataAiHint}/>
         </motion.a>
       </AnimatePresence>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-      <div className="absolute bottom-3 left-3 rounded-full bg-white/80 px-3 py-1 text-sm font-medium backdrop-blur-sm">{b.title}</div>
-      <div className="absolute bottom-3 right-3 flex gap-1">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+      <div className="absolute bottom-4 left-4 text-white">
+        <h2 className="text-2xl md:text-4xl font-bold">{b.title}</h2>
+        <p className="hidden md:block mt-1">Shop the latest collection now</p>
+      </div>
+      <div className="absolute bottom-4 right-4 flex gap-1.5">
         {BANNERS.map((_, i) => (
-            <button key={i} onClick={() => setIdx(i)} className={`h-2 w-2 rounded-full ${i === idx ? 'bg-white' : 'bg-white/50'}`}></button>
+            <button key={i} onClick={() => setIdx(i)} className={`h-2 w-2 rounded-full transition-all ${i === idx ? 'bg-white w-6' : 'bg-white/50'}`}></button>
         ))}
       </div>
     </div>
