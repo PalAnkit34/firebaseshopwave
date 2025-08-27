@@ -1,10 +1,11 @@
 
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { User, Package, Heart, MapPin, LifeBuoy, LogOut, ChevronRight, Edit } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import AddressManager from '@/components/AddressManager'
+import { safeGet, safeSet } from '@/lib/storage'
 
 const accountSections = {
   DASHBOARD: 'DASHBOARD',
@@ -12,13 +13,56 @@ const accountSections = {
   EDIT_PROFILE: 'EDIT_PROFILE',
 }
 
+interface UserProfile {
+  fullName: string;
+  email: string;
+  phone: string;
+}
+
 export default function AccountPage() {
   const [activeSection, setActiveSection] = useState(accountSections.DASHBOARD)
-
-  const mockUser = {
+  const [user, setUser] = useState<UserProfile>({
     fullName: 'Dhananjay Singh',
     email: 'd.singh@example.com',
     phone: '+91 98765 43210',
+  })
+
+  // Load user from local storage on mount
+  useEffect(() => {
+    const savedUser = safeGet<UserProfile>('userProfile', user);
+    setUser(savedUser);
+  }, []);
+
+  // Save user to local storage on change
+  useEffect(() => {
+    safeSet('userProfile', user);
+  }, [user]);
+
+  const EditProfileSection = () => {
+    const [formData, setFormData] = useState(user);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+
+    const handleSave = () => {
+      setUser(formData);
+      setActiveSection(accountSections.DASHBOARD);
+    }
+
+    return (
+       <div>
+        <button onClick={() => setActiveSection(accountSections.DASHBOARD)} className="text-sm text-brand font-semibold mb-4">&larr; Back to Account</button>
+        <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+        <div className="card p-6 space-y-4">
+          <input name="fullName" value={formData.fullName} onChange={handleInputChange} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Full Name"/>
+          <input name="email" value={formData.email} onChange={handleInputChange} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Email" type="email"/>
+          <input name="phone" value={formData.phone} onChange={handleInputChange} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Phone"/>
+          <button onClick={handleSave} className="rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Save Changes</button>
+        </div>
+      </div>
+    )
   }
 
   const renderSection = () => {
@@ -26,18 +70,7 @@ export default function AccountPage() {
       case accountSections.ADDRESSES:
         return <AddressManager onBack={() => setActiveSection(accountSections.DASHBOARD)} />
       case accountSections.EDIT_PROFILE:
-        return (
-           <div>
-            <button onClick={() => setActiveSection(accountSections.DASHBOARD)} className="text-sm text-brand font-semibold mb-4">&larr; Back to Account</button>
-            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
-            <div className="card p-6 space-y-4">
-              <input defaultValue={mockUser.fullName} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Full Name"/>
-              <input defaultValue={mockUser.email} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Email" type="email"/>
-              <input defaultValue={mockUser.phone} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Phone"/>
-              <button className="rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Save Changes</button>
-            </div>
-          </div>
-        )
+        return <EditProfileSection />
       case accountSections.DASHBOARD:
       default:
         return (
@@ -48,9 +81,9 @@ export default function AccountPage() {
                         <User className="w-8 h-8 text-gray-500" />
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold">{mockUser.fullName}</h2>
-                        <p className="text-sm text-gray-500">{mockUser.email}</p>
-                        <p className="text-sm text-gray-500">{mockUser.phone}</p>
+                        <h2 className="text-xl font-bold">{user.fullName}</h2>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                        <p className="text-sm text-gray-500">{user.phone}</p>
                     </div>
                 </div>
             </div>
