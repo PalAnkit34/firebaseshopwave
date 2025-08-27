@@ -9,7 +9,7 @@ import ProductSuggestionsRow from './ProductSuggestionsRow'
 import Image from 'next/image'
 import type { Product } from '@/lib/types'
 
-export default function ProductCard({ p, suggest }:{ p: Product, suggest: any[] }){
+export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[] }) {
   const { add } = useCart()
   const price = p.price.discounted ?? p.price.original
   return (

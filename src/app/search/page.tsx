@@ -68,7 +68,7 @@ function SearchContent() {
           {list.length > 0 ? (
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
               {list.map(p => (
-                <ProductCard key={p.id} p={p} suggest={suggestions(p.category, p.id)} />
+                <ProductCard key={p.id} p={p} />
               ))}
             </div>
           ) : (
