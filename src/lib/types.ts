@@ -1,3 +1,4 @@
+
 export type Money = { original: number; discounted?: number; currency?: string }
 export type Rating = { average: number; count: number }
 export type Variant = { color?: string; size?: string; price?: number; quantity?: number; sku?: string }
@@ -41,13 +42,15 @@ export type Address = {
   default?: boolean
 }
 
+export type PaymentMethod = 'COD' | 'UPI' | 'Card' | 'NetBanking';
+
 export type Order = {
   id: string
   createdAt: number
   items: { productId: string; qty: number; price: number, name: string, image: string }[]
   total: number
   address: Address
-  payment: 'COD'
+  payment: PaymentMethod
   status: 'Pending'|'Processing'|'Shipped'|'Delivered'
 }
 

@@ -1,3 +1,4 @@
+
 'use client'
 import { useOrders } from '@/lib/ordersStore'
 import { PRODUCTS } from '@/lib/sampleData'
@@ -48,7 +49,7 @@ export default function OrdersPage(){
               <div className="text-gray-600">
                 <span className="font-medium">Status:</span> 
                 <span className="ml-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-800">{o.status}</span>
-                <div className="text-xs text-gray-500 mt-1">Payment: {o.payment}</div>
+                <div className="text-xs text-gray-500 mt-1">Payment: <span className="font-medium">{o.payment}</span></div>
               </div>
               <div className="mt-2 sm:mt-0 sm:text-right">
                 <div className="font-medium">Deliver to:</div>

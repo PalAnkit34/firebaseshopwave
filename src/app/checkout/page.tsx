@@ -1,3 +1,4 @@
+
 'use client'
 import { useState } from 'react'
 import { useCart } from '@/lib/cartStore'
@@ -7,14 +8,23 @@ import { useOrders } from '@/lib/ordersStore'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { Address } from '@/lib/types'
+import { CreditCard, Banknote, QrCode, Truck } from 'lucide-react'
+
+const paymentOptions = [
+  { id: 'COD', icon: Truck, title: 'Cash on Delivery', description: 'Pay upon arrival' },
+  { id: 'UPI', icon: QrCode, title: 'UPI / QR Code', description: 'Pay with any UPI app' },
+  { id: 'Card', icon: CreditCard, title: 'Credit / Debit Card', description: 'Visa, Mastercard, RuPay & more' },
+  { id: 'NetBanking', icon: Banknote, title: 'Net Banking', description: 'All major banks supported' },
+]
 
 export default function Checkout(){
   const { items, total, clear } = useCart()
   const { addresses, save, setDefault } = useAddressBook()
-  const { placeCOD } = useOrders()
+  const { placeOrder } = useOrders()
   const router = useRouter()
   const [showForm, setShowForm] = useState(addresses.length === 0)
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
+  const [paymentMethod, setPaymentMethod] = useState('COD')
 
   const onPlace = () => {
     const addr = addresses.find(a => a.default) || addresses[0]
@@ -23,7 +33,7 @@ export default function Checkout(){
       setShowForm(true);
       return;
     }
-    placeCOD(items, addr, total)
+    placeOrder(items, addr, total, paymentMethod as any)
     clear()
     router.push('/orders')
   }
@@ -78,13 +88,41 @@ export default function Checkout(){
             <span>Items ({items.reduce((s,i)=>s+i.qty,0)})</span>
             <span>₹{total.toLocaleString('en-IN')}</span>
           </div>
+           <div className="flex justify-between text-green-600">
+                <span>Delivery</span>
+                <span>Free</span>
+            </div>
         </div>
         <div className="mt-3 flex justify-between font-semibold">
           <span>Total Amount</span>
           <span>₹{total.toLocaleString('en-IN')}</span>
         </div>
-        <div className="mt-2 text-xs text-gray-500">Payment Method: <span className="font-medium text-gray-700">Cash on Delivery</span></div>
-        <button onClick={onPlace} className="mt-4 w-full rounded-xl bg-brand py-2.5 font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50" disabled={items.length === 0}>Place Order</button>
+        
+        <div className="mt-4">
+            <h3 className="text-md font-semibold mb-2">Payment Method</h3>
+            <div className="space-y-2">
+                {paymentOptions.map(opt => (
+                    <label key={opt.id} className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`}>
+                        <input type="radio" name="paymentMethod" value={opt.id} checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="h-4 w-4 text-brand focus:ring-brand" />
+                        <opt.icon className="h-6 w-6 text-gray-600" />
+                        <div>
+                            <div className="font-semibold text-sm">{opt.title}</div>
+                            <div className="text-xs text-gray-500">{opt.description}</div>
+                        </div>
+                    </label>
+                ))}
+            </div>
+        </div>
+
+        <button 
+            onClick={onPlace} 
+            className="mt-4 w-full rounded-xl bg-brand py-2.5 font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50" 
+            disabled={items.length === 0 || (paymentMethod !== 'COD' && true)}
+        >
+            {paymentMethod === 'COD' ? 'Place Order' : 'Pay Now'}
+        </button>
+        {paymentMethod !== 'COD' && <p className="text-center text-xs text-gray-500 mt-2">Online payment is currently disabled. Please select Cash on Delivery.</p>}
+
         <Link href="/cart" className="mt-2 block text-center text-sm text-gray-500 hover:underline">Edit Cart</Link>
       </div>
     </div>
