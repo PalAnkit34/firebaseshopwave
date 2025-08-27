@@ -7,52 +7,6 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { cn } from '@/lib/utils';
 import React from 'react';
 
-const techComponents: { title: string; href: string; description: string }[] = [
-  {
-    title: "Smartphones",
-    href: "/search?category=Tech&subcategory=Mobiles",
-    description: "Latest and greatest smartphones.",
-  },
-  {
-    title: "Laptops",
-    href: "/search?category=Tech&subcategory=Laptops",
-    description: "Powerful laptops for work and play.",
-  },
-  {
-    title: "Headphones",
-    href: "/search?category=Tech&subcategory=Audio",
-    description: "Immersive audio experience.",
-  },
-  {
-    title: "Smartwatches",
-    href: "/search?category=Tech&subcategory=Wearables",
-    description: "Stay connected and track your fitness.",
-  },
-]
-
-const fashionComponents: { title: string; href: string; description: string }[] = [
-  {
-    title: "Men's Ethnic Wear",
-    href: "/search?category=Fashion&subcategory=Men-Ethnic",
-    description: "Traditional and stylish kurtas and sets.",
-  },
-  {
-    title: "Women's Ethnic Wear",
-    href: "/search?category=Fashion&subcategory=Women-Ethnic",
-    description: "Elegant sarees, kurtis, and suits.",
-  },
-  {
-    title: "Men's Casual",
-    href: "/search?category=Fashion&subcategory=Men-Casual",
-    description: "Comfortable t-shirts, shirts, and jeans.",
-  },
-  {
-    title: "Women's Western",
-    href: "/search?category=Fashion&subcategory=Women-Western",
-    description: "Modern dresses, tops, and trousers.",
-  },
-];
-
 const ayurvedicComponents: { title: string; href: string; description: string }[] = [
     {
         title: "Supplements",
@@ -69,7 +23,25 @@ const ayurvedicComponents: { title: string; href: string; description: string }[
         href: "/search?category=Ayurvedic&subcategory=Personal-Care",
         description: "Soaps, oils, and creams with natural ingredients."
     },
-]
+];
+
+const dailyNeedsComponents: { title: string; href: string; description: string }[] = [
+  {
+    title: "Staples",
+    href: "/search?category=Groceries&subcategory=Staples",
+    description: "Rice, flour, salt and other kitchen essentials.",
+  },
+  {
+    title: "Snacks",
+    href: "/search?category=Groceries&subcategory=Snacks",
+    description: "Cookies, noodles, and other quick bites.",
+  },
+  {
+    title: "Beverages",
+    href: "/search?category=Groceries&subcategory=Beverages",
+    description: "Coffee, tea, and other drinks.",
+  },
+];
 
 
 const ListItem = React.forwardRef<
@@ -100,81 +72,46 @@ ListItem.displayName = "ListItem"
 
 
 function SubNavBar() {
+  const NavItem = ({ href, children, hasDropdown }: { href?: string; children: React.ReactNode; hasDropdown?: boolean }) => {
+    const content = (
+      <div className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-gray-700 hover:text-white focus:bg-gray-700 focus:text-white disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-700/50 data-[state=open]:bg-gray-700/50">
+        {children}
+        {hasDropdown && <ChevronDown
+          className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
+          aria-hidden="true"
+        />}
+      </div>
+    );
+    return href ? <Link href={href}>{content}</Link> : content;
+  };
+
   return (
-    <div className="bg-white border-b hidden md:block">
+    <div className="bg-gray-800 border-b border-gray-700 hidden md:block">
       <div className="container mx-auto">
         <NavigationMenu.Root className="relative z-10 flex max-w-max flex-1 items-center justify-center">
           <NavigationMenu.List className="group flex flex-1 list-none items-center justify-center space-x-1">
             
             <NavigationMenu.Item>
-              <NavigationMenu.Trigger className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50">
-                Tech <ChevronDown
-                  className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                  aria-hidden="true"
-                />
+              <NavigationMenu.Trigger>
+                <NavItem hasDropdown>Ayurvedic Medicines</NavItem>
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white border rounded-lg shadow-lg">
                   <li className="row-span-3">
                     <NavigationMenu.Link asChild>
                       <a
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-rose-500 to-indigo-700 p-6 no-underline outline-none focus:shadow-md"
-                        href="/"
+                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-emerald-500 to-green-700 p-6 no-underline outline-none focus:shadow-md"
+                        href="/search?category=Ayurvedic"
                       >
-                        
                         <div className="mt-4 mb-2 text-lg font-medium text-white">
-                          ShopWave Tech
+                          Pure Ayurveda
                         </div>
                         <p className="text-sm leading-tight text-white/90">
-                          Cutting-edge electronics for a modern lifestyle.
+                          Natural healing and wellness from ancient traditions.
                         </p>
                       </a>
                     </NavigationMenu.Link>
                   </li>
-                  {techComponents.map((component) => (
-                    <ListItem
-                      key={component.title}
-                      title={component.title}
-                      href={component.href}
-                    >
-                      {component.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenu.Content>
-            </NavigationMenu.Item>
-
-            <NavigationMenu.Item>
-              <NavigationMenu.Trigger className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50">
-                Fashion <ChevronDown
-                  className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                  aria-hidden="true"
-                />
-              </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
-                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 bg-white border rounded-lg shadow-lg">
-                  {fashionComponents.map((component) => (
-                    <ListItem
-                      key={component.title}
-                      title={component.title}
-                      href={component.href}
-                    >
-                      {component.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenu.Content>
-            </NavigationMenu.Item>
-            
-            <NavigationMenu.Item>
-              <NavigationMenu.Trigger className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50">
-                Ayurvedic <ChevronDown
-                  className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
-                  aria-hidden="true"
-                />
-              </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
-                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 bg-white border rounded-lg shadow-lg">
                   {ayurvedicComponents.map((component) => (
                     <ListItem
                       key={component.title}
@@ -189,20 +126,63 @@ function SubNavBar() {
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
-               <Link href="/search?category=Home" legacyBehavior passHref>
-                  <NavigationMenu.Link className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50">
-                    Home & Kitchen
+              <Link href="/search?category=Homeopathy" legacyBehavior passHref>
+                <NavigationMenu.Link asChild>
+                  <NavItem>Homeopathy</NavItem>
+                </NavigationMenu.Link>
+              </Link>
+            </NavigationMenu.Item>
+
+            <NavigationMenu.Item>
+               <Link href="/search?category=Groceries&subcategory=Beverages" legacyBehavior passHref>
+                  <NavigationMenu.Link asChild>
+                     <NavItem>Food & Drinks</NavItem>
                   </NavigationMenu.Link>
                 </Link>
             </NavigationMenu.Item>
-             <NavigationMenu.Item>
-               <Link href="/search?category=Beauty" legacyBehavior passHref>
-                  <NavigationMenu.Link className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50">
-                    Beauty
+             
+            <NavigationMenu.Item>
+               <Link href="/search?category=Pooja" legacyBehavior passHref>
+                  <NavigationMenu.Link asChild>
+                    <NavItem>Pooja Items</NavItem>
                   </NavigationMenu.Link>
                 </Link>
             </NavigationMenu.Item>
 
+            <NavigationMenu.Item>
+              <NavigationMenu.Trigger>
+                <NavItem hasDropdown>Daily Needs</NavItem>
+              </NavigationMenu.Trigger>
+              <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
+                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 bg-white border rounded-lg shadow-lg">
+                  {dailyNeedsComponents.map((component) => (
+                    <ListItem
+                      key={component.title}
+                      title={component.title}
+                      href={component.href}
+                    >
+                      {component.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenu.Content>
+            </NavigationMenu.Item>
+            
+            <NavigationMenu.Item>
+               <Link href="/search?category=Fashion" legacyBehavior passHref>
+                  <NavigationMenu.Link asChild>
+                    <NavItem>Apparel</NavItem>
+                  </NavigationMenu.Link>
+                </Link>
+            </NavigationMenu.Item>
+
+            <NavigationMenu.Item>
+               <Link href="/search?category=Groceries&subcategory=Dairy" legacyBehavior passHref>
+                  <NavigationMenu.Link asChild>
+                    <NavItem>Dairy Products</NavItem>
+                  </NavigationMenu.Link>
+                </Link>
+            </NavigationMenu.Item>
           </NavigationMenu.List>
         </NavigationMenu.Root>
       </div>

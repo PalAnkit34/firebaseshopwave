@@ -5,7 +5,7 @@ import BannerSlider from '@/components/BannerSlider';
 const categories = [
   { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
   { name: 'Fashion', href: '/search?category=Fashion', image: 'https://images.unsplash.com/photo-1593032228653-25cb157b70a8?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ethnic wear' },
-  { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+  { name: 'Home', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=800&auto=format&fit=crop', dataAiHint: 'modern kitchen' },
 ];
 
 export default function Home() {
@@ -13,6 +13,29 @@ export default function Home() {
     <div className="space-y-8">
       <BannerSlider />
       
+      <section className="bg-gray-100 rounded-2xl">
+        <div className="container mx-auto px-4 py-8 md:py-12">
+            <div className="grid md:grid-cols-2 gap-6 items-center">
+                <div className="text-center md:text-left">
+                    <h2 className="text-3xl md:text-5xl font-bold text-gray-800">Buy Online 100% Pure Products at Best Price</h2>
+                    <p className="mt-4 text-gray-600">Get all Ashram Products Delivered Anywhere in India - Order from your Home!</p>
+                    <Link href="/search?category=Ayurvedic" className="mt-6 inline-block bg-green-700 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-800 transition-colors">
+                        Shop Now
+                    </Link>
+                </div>
+                <div className="relative h-64 md:h-96">
+                    <Image 
+                        src="https://images.unsplash.com/photo-1600115332243-55f673449d85?q=80&w=800&auto=format&fit=crop"
+                        alt="Ayurvedic Products"
+                        fill
+                        className="object-contain"
+                        data-ai-hint="ayurvedic products collage"
+                    />
+                </div>
+            </div>
+        </div>
+      </section>
+
       <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Shop by Category</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
