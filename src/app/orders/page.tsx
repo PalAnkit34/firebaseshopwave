@@ -3,9 +3,22 @@ import { useOrders } from '@/lib/ordersStore'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PRODUCTS } from '@/lib/sampleData'
+import { useAuth } from '@/lib/authStore'
+import { useEffect } from 'react'
 
 export default function OrdersPage(){
   const { orders } = useOrders()
+  const { user } = useAuth()
+
+  if (!user) {
+    return (
+        <div className="rounded-2xl border bg-white p-8 text-center">
+          <h2 className="text-lg font-medium text-gray-700">Please log in to see your orders.</h2>
+          <Link href="/account" className="mt-4 inline-block rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Login</Link>
+        </div>
+    )
+  }
+
   return (
     <div>
       <h1 className="mb-4 text-xl font-semibold">Your Orders</h1>
