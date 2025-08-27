@@ -18,7 +18,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const ayurvedicCategories = [
   { name: 'Healthy Juice', href: '/search?category=Ayurvedic&subcategory=Beverages', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
-  { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+  { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Supplements', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
   { name: 'Homeopathy', href: '/search?category=Homeopathy', image: 'https://images.unsplash.com/photo-1631049354023-866d3a95f50f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
   { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Herbal-Powders', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
   { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1604580862942-5340152a7813?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
@@ -131,6 +131,9 @@ function SearchContent() {
   const list = useMemo(() => filterProducts(PRODUCTS, opts), [sp])
   
   const renderCategoryHeader = () => {
+    // Only show category header if there is no subcategory selected
+    if (opts.subcategory) return null;
+
     switch (opts.category) {
         case 'Ayurvedic':
             return <CategoryHeader 
@@ -179,9 +182,21 @@ function SearchContent() {
     }
   }
 
+  const PageTitle = () => {
+    if (opts.category && opts.subcategory) {
+      return <h1 className="text-2xl font-bold mb-4">{opts.category} / <span className="text-brand">{opts.subcategory.replace('-', ' ')}</span></h1>
+    }
+    if (opts.q) {
+      return <h1 className="text-2xl font-bold mb-4">Search results for &quot;{opts.q}&quot;</h1>
+    }
+    return null;
+  }
+
   return (
     <>
       {renderCategoryHeader()}
+      
+      {/* Product Grid and Filters Section */}
       <div className="md:hidden">
         <CategoryPills />
       </div>
@@ -190,6 +205,7 @@ function SearchContent() {
           <Filters />
         </aside>
         <section>
+          <PageTitle />
           <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
             <div className="flex-grow">
                 <div className="flex items-center gap-4">
@@ -210,7 +226,7 @@ function SearchContent() {
                     </div>
                     <div>
                       <div className="text-sm text-gray-600">Showing {list.length} result{list.length === 1 ? '' : 's'}</div>
-                      {opts.q && <div className="text-xs text-gray-500">for "{opts.q}"</div>}
+                      {opts.q && !opts.subcategory && <div className="text-xs text-gray-500">for &quot;{opts.q}&quot;</div>}
                     </div>
                 </div>
             </div>
@@ -241,3 +257,5 @@ export default function SearchPage() {
     </Suspense>
   )
 }
+
+    
