@@ -1,8 +1,12 @@
 'use client'
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
+import type { Product } from './types'
 
-export type CartItem = { id: string; qty: number; price: number; name: string; image: string }
+export type CartItem = Pick<Product, 'id' | 'name' | 'image'> & {
+  qty: number
+  price: number
+}
 
 type CartState = {
   items: CartItem[]
@@ -10,7 +14,7 @@ type CartState = {
   remove: (id: string) => void
   setQty: (id: string, qty: number) => void
   clear: () => void
-  total: () => number
+  total: number
 }
 
 export const useCart = create<CartState>()(
@@ -27,7 +31,7 @@ export const useCart = create<CartState>()(
               ),
             }
           }
-          return { items: [...state.items, item] }
+          return { items: [...state.items, { ...item, qty: Math.max(1, item.qty) }] }
         })
       },
       remove: (id) => {
@@ -45,7 +49,7 @@ export const useCart = create<CartState>()(
       clear: () => {
         set({ items: [] })
       },
-      total: () => {
+      get total() {
         return get().items.reduce((s, i) => s + i.qty * i.price, 0)
       },
     }),

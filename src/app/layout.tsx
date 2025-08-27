@@ -3,8 +3,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
-import { CartProvider } from '@/lib/cartStore';
-import { WishlistProvider } from '@/lib/wishlistStore';
 import { AddressProvider } from '@/lib/addressStore';
 import { OrdersProvider } from '@/lib/ordersStore';
 import OfferPopup from '@/components/OfferPopup';
@@ -39,17 +37,13 @@ export default function RootLayout({
       <body className="font-body antialiased bg-background">
         <OrdersProvider>
           <AddressProvider>
-            <WishlistProvider>
-              <CartProvider>
-                <div className="flex flex-col min-h-screen">
-                  <TopBar />
-                  <main className="container py-4 pb-24 md:pb-8 flex-grow">{children}</main>
-                  <Footer />
-                </div>
-                <BottomNav />
-                <OfferPopup />
-              </CartProvider>
-            </WishlistProvider>
+            <div className="flex flex-col min-h-screen">
+              <TopBar />
+              <main className="container py-4 pb-24 md:pb-8 flex-grow">{children}</main>
+              <Footer />
+            </div>
+            <BottomNav />
+            <OfferPopup />
           </AddressProvider>
         </OrdersProvider>
       </body>
