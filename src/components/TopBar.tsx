@@ -92,37 +92,11 @@ function SubNavBar() {
           <NavigationMenu.List className="group flex flex-1 list-none items-center justify-center space-x-1">
             
             <NavigationMenu.Item>
-              <NavigationMenu.Trigger>
-                <NavItem hasDropdown>Ayurvedic Medicines</NavItem>
-              </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="absolute top-0 left-0 w-full sm:w-auto">
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white border rounded-lg shadow-lg">
-                  <li className="row-span-3">
+                <Link href="/ayurvedic" legacyBehavior passHref>
                     <NavigationMenu.Link asChild>
-                      <a
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-emerald-500 to-green-700 p-6 no-underline outline-none focus:shadow-md"
-                        href="/search?category=Ayurvedic"
-                      >
-                        <div className="mt-4 mb-2 text-lg font-medium text-white">
-                          Pure Ayurveda
-                        </div>
-                        <p className="text-sm leading-tight text-white/90">
-                          Natural healing and wellness from ancient traditions.
-                        </p>
-                      </a>
+                        <NavItem>Ayurvedic Medicines</NavItem>
                     </NavigationMenu.Link>
-                  </li>
-                  {ayurvedicComponents.map((component) => (
-                    <ListItem
-                      key={component.title}
-                      title={component.title}
-                      href={component.href}
-                    >
-                      {component.description}
-                    </ListItem>
-                  ))}
-                </ul>
-              </NavigationMenu.Content>
+                </Link>
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
