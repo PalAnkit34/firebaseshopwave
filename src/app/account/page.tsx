@@ -1,112 +1,110 @@
+
 'use client'
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { User, Package, Heart, MapPin, LifeBuoy, LogOut, ChevronRight, Edit } from 'lucide-react'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import AddressManager from '@/components/AddressManager'
+
+const accountSections = {
+  DASHBOARD: 'DASHBOARD',
+  ADDRESSES: 'ADDRESSES',
+  EDIT_PROFILE: 'EDIT_PROFILE',
+}
 
 export default function AccountPage() {
-  const [isLogin, setIsLogin] = useState(true)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [fullName, setFullName] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [activeSection, setActiveSection] = useState(accountSections.DASHBOARD)
 
-  const formVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
+  const mockUser = {
+    fullName: 'Dhananjay Singh',
+    email: 'd.singh@example.com',
+    phone: '+91 98765 43210',
+  }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-    setSuccess(null);
-    // Mock API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    if (isLogin) {
-        if (email === 'user@example.com' && password === 'password') {
-            setSuccess('Login successful! Redirecting...');
-        } else {
-            setError('Invalid credentials. (Hint: use user@example.com)');
-        }
-    } else {
-        if (fullName && email && password) {
-            setSuccess('Registration successful! You can now log in.');
-            setIsLogin(true);
-        } else {
-            setError('Please fill all fields.');
-        }
+  const renderSection = () => {
+    switch (activeSection) {
+      case accountSections.ADDRESSES:
+        return <AddressManager onBack={() => setActiveSection(accountSections.DASHBOARD)} />
+      case accountSections.EDIT_PROFILE:
+        return (
+           <div>
+            <button onClick={() => setActiveSection(accountSections.DASHBOARD)} className="text-sm text-brand font-semibold mb-4">&larr; Back to Account</button>
+            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+            <div className="card p-6 space-y-4">
+              <input defaultValue={mockUser.fullName} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Full Name"/>
+              <input defaultValue={mockUser.email} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Email" type="email"/>
+              <input defaultValue={mockUser.phone} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Phone"/>
+              <button className="rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Save Changes</button>
+            </div>
+          </div>
+        )
+      case accountSections.DASHBOARD:
+      default:
+        return (
+          <div>
+            <div className="card p-4 md:p-6 mb-6">
+                <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
+                        <User className="w-8 h-8 text-gray-500" />
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-bold">{mockUser.fullName}</h2>
+                        <p className="text-sm text-gray-500">{mockUser.email}</p>
+                        <p className="text-sm text-gray-500">{mockUser.phone}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mb-6">
+                <DashboardCard icon={Package} title="My Orders" href="/orders" />
+                <DashboardCard icon={Heart} title="Wishlist" href="/wishlist" />
+                <DashboardCard icon={MapPin} title="My Addresses" onClick={() => setActiveSection(accountSections.ADDRESSES)} />
+                <DashboardCard icon={LifeBuoy} title="Help Center" href="#" />
+            </div>
+
+            <div className="card p-4">
+                 <AccountLink title="Edit Profile" icon={Edit} onClick={() => setActiveSection(accountSections.EDIT_PROFILE)} />
+                 <AccountLink title="Logout" icon={LogOut} />
+            </div>
+          </div>
+        )
     }
-    setIsLoading(false);
-  };
+  }
 
   return (
-    <div className="mx-auto max-w-sm">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={isLogin ? 'login' : 'signup'}
-          variants={formVariants}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          transition={{ duration: 0.3 }}
-        >
-          <h1 className="mb-4 text-center text-2xl font-semibold">{isLogin ? 'Welcome Back' : 'Create Your Account'}</h1>
-          <p className="text-center text-sm text-gray-500 mb-4">This is a mock authentication screen. No real accounts are created.</p>
-          <form onSubmit={handleSubmit} className="card space-y-4 p-6">
-            {error && <div className="rounded-md bg-red-100 p-3 text-sm text-red-700">{error}</div>}
-            {success && <div className="rounded-md bg-green-100 p-3 text-sm text-green-700">{success}</div>}
-            {!isLogin && (
-              <input 
-                className="w-full rounded-lg border px-3 py-2 text-sm" 
-                placeholder="Full Name" 
-                value={fullName}
-                onChange={e => setFullName(e.target.value)}
-                required 
-              />
-            )}
-            <input 
-              className="w-full rounded-lg border px-3 py-2 text-sm" 
-              placeholder="Email Address" 
-              type="email" 
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required 
-            />
-            <input 
-              type="password" 
-              className="w-full rounded-lg border px-3 py-2 text-sm" 
-              placeholder="Password" 
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required 
-            />
-            <button 
-              type="submit" 
-              disabled={isLoading} 
-              className="w-full rounded-xl bg-brand py-2.5 font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-60"
-            >
-              {isLoading ? 'Processing...' : (isLogin ? 'Login' : 'Create Account')}
-            </button>
-            <div className="relative flex items-center">
-                <div className="flex-grow border-t border-gray-200"></div>
-                <span className="flex-shrink mx-4 text-xs text-gray-400">OR</span>
-                <div className="flex-grow border-t border-gray-200"></div>
-            </div>
-            <button 
-              type="button" 
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setError(null);
-                setSuccess(null);
-              }} 
-              className="w-full rounded-xl border py-2 text-sm font-semibold transition-colors hover:bg-gray-50"
-            >
-              {isLogin ? 'New user? Create account' : 'Already have an account? Login'}
-            </button>
-          </form>
-        </motion.div>
-      </AnimatePresence>
-    </div>
+     <motion.div
+      key={activeSection}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      className="mx-auto max-w-2xl"
+    >
+      {renderSection()}
+    </motion.div>
   )
 }
+
+const DashboardCard = ({ icon: Icon, title, href, onClick }: { icon: React.ElementType, title: string, href?: string, onClick?: () => void }) => {
+  const content = (
+      <div className="card p-4 text-center flex flex-col items-center justify-center h-full">
+          <Icon className="w-8 h-8 mb-2 text-brand" />
+          <h3 className="font-semibold">{title}</h3>
+      </div>
+  );
+
+  if (href) {
+    return <Link href={href}>{content}</Link>;
+  }
+  
+  return <button onClick={onClick} className="w-full">{content}</button>;
+};
+
+const AccountLink = ({ title, icon: Icon, onClick }: { title: string, icon: React.ElementType, onClick?: () => void }) => (
+    <button onClick={onClick} className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
+        <div className="flex items-center gap-3">
+            <Icon className="w-5 h-5 text-gray-600" />
+            <span className="font-medium">{title}</span>
+        </div>
+        <ChevronRight className="w-5 h-5 text-gray-400" />
+    </button>
+)
