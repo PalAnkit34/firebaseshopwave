@@ -30,9 +30,9 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-0 left-0 p-4">
                   <h3 className="text-white text-2xl font-semibold">{category.name}</h3>
-                   <button className="mt-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/30 transition-colors">
+                   <div className="mt-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/30 transition-colors inline-block">
                     Shop Now
-                  </button>
+                  </div>
                 </div>
               </div>
             </Link>
