@@ -13,6 +13,7 @@ function SearchContent() {
   const opts = {
     q: sp.get('query') || undefined,
     category: sp.get('category') || undefined,
+    subcategory: sp.get('subcategory') || undefined,
     min: sp.get('min') ? Number(sp.get('min')) : undefined,
     max: sp.get('max') ? Number(sp.get('max')) : undefined,
     brand: sp.get('brand') || undefined,
@@ -42,7 +43,7 @@ function SearchContent() {
             <SortBar />
           </div>
           {list.length > 0 ? (
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
               {list.map(p => (
                 <ProductCard key={p.id} p={p} suggest={suggestions(p.category, p.id)} />
               ))}

@@ -7,13 +7,14 @@ export const liveSearch = (q: string, products: Product[]) => {
   return fuse.search(q).slice(0, 8).map(r => r.item)
 }
 
-export const filterProducts = (products: Product[], opts: { q?: string; category?: string; min?: number; max?: number; brand?: string; rating?: number; sort?: 'new'|'priceAsc'|'priceDesc'|'popular' }) => {
+export const filterProducts = (products: Product[], opts: { q?: string; category?: string; subcategory?:string; min?: number; max?: number; brand?: string; rating?: number; sort?: 'new'|'priceAsc'|'priceDesc'|'popular' }) => {
   let list = [...products]
   if (opts.q) {
     const fuse = new Fuse(products, { keys: ['name','brand','category','tags'], threshold: 0.4 });
     list = fuse.search(opts.q).map(result => result.item);
   }
   if (opts.category && opts.category !== 'All') list = list.filter(p => p.category === opts.category)
+  if (opts.subcategory) list = list.filter(p => p.subcategory === opts.subcategory)
   if (opts.brand) list = list.filter(p => p.brand === opts.brand)
   if (opts.rating) list = list.filter(p => (p.ratings?.average ?? 0) >= opts.rating!)
   if (typeof opts.min === 'number') list = list.filter(p => (p.price.discounted ?? p.price.original) >= opts.min!)
@@ -21,7 +22,7 @@ export const filterProducts = (products: Product[], opts: { q?: string; category
   switch (opts.sort) {
     case 'priceAsc': list.sort((a,b) => (a.price.discounted ?? a.price.original) - (b.price.discounted ?? b.price.original)); break
     case 'priceDesc': list.sort((a,b) => (b.price.discounted ?? b.price.original) - (a.price.discounted ?? a.price.original)); break
-    case 'popular': list.sort((a,b) => (b.ratings?.count ?? 0) - (a.ratings?.count ?? 0)); break
+    case 'popular': list.sort((a,b) => (b.ratings?.count ?? 0) - (a.ratings?.count ?? 0)); break;
     // case 'new': list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); break;
     default: break
   }
