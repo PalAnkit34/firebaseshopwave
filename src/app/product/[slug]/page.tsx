@@ -1,3 +1,4 @@
+
 'use client'
 import { useMemo, useState, Suspense } from 'react'
 import { useParams, useRouter } from 'next/navigation'
@@ -8,8 +9,9 @@ import RatingStars from '@/components/RatingStars'
 import QtyCounter from '@/components/QtyCounter'
 import { useCart } from '@/lib/cartStore'
 import WishlistButton from '@/components/WishlistButton'
-import ProductSuggestionsRow from '@/components/ProductSuggestionsRow'
 import { ChevronLeft } from 'lucide-react'
+import CustomerReviews from '@/components/CustomerReviews'
+import ProductGrid from '@/components/ProductGrid'
 
 function ProductDetailContent() {
   const router = useRouter()
@@ -24,7 +26,7 @@ function ProductDetailContent() {
 
   const price = p.price.discounted ?? p.price.original
   const images = [p.image, ...(p.extraImages||[])]
-  const related = PRODUCTS.filter(x => x.category===p.category && x.id!==p.id).slice(0,8).map(x=>({ slug:x.slug, image:x.image, name:x.name, price:x.price.discounted ?? x.price.original }))
+  const related = PRODUCTS.filter(x => x.category===p.category && x.id!==p.id).slice(0,4)
 
   const handleBuyNow = () => {
     add({ id:p.id, qty, price, name:p.name, image:p.image });
@@ -82,15 +84,19 @@ function ProductDetailContent() {
               </table>
             </div>
           </div>
-
-          {related.length > 0 && (
-            <div className="mt-8">
-              <h3 className="mb-1 text-sm font-semibold">Similar products</h3>
-              <ProductSuggestionsRow products={related} />
-            </div>
-          )}
         </div>
       </div>
+      
+      <div className="mt-12">
+        <CustomerReviews product={p} />
+      </div>
+
+      {related.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold mb-4 text-center">Related Products</h2>
+          <ProductGrid products={related} />
+        </div>
+      )}
     </div>
   )
 }
