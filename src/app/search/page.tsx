@@ -23,27 +23,43 @@ const ayurvedicCategories = [
   { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
 ];
 
+const techCategories = [
+  { name: 'Mobiles', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
+  { name: 'Laptops', href: '/search?category=Tech&subcategory=Laptops', image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=800&auto=format&fit=crop', dataAiHint: 'modern laptop' },
+  { name: 'Audio', href: '/search?category=Tech&subcategory=Audio', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'headphones audio' },
+  { name: 'Cameras', href: '/search?category=Tech&subcategory=Cameras', image: 'https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?q=80&w=800&auto=format&fit=crop', dataAiHint: 'dslr camera' },
+  { name: 'Wearables', href: '/search?category=Tech&subcategory=Wearables', image: 'https://images.unsplash.com/photo-1544117519-31a4b719223d?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartwatch technology' },
+  { name: 'Accessories', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1615663245642-9904791cd90f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'computer mouse' },
+];
 
-function AyurvedicHeader() {
+const fashionCategories = [
+    { name: 'Men\'s Casual', href: '/search?category=Fashion&subcategory=Men-Casual', image: 'https://images.unsplash.com/photo-1602293589922-3a5682d3809d?q=80&w=800&auto=format&fit=crop', dataAiHint: 'denim shirt' },
+    { name: 'Women\'s Ethnic', href: '/search?category=Fashion&subcategory=Women-Ethnic', image: 'https://images.unsplash.com/photo-1622354223106-24c01798835d?q=80&w=800&auto=format&fit=crop', dataAiHint: 'anarkali kurta' },
+    { name: 'Footwear', href: '/search?category=Fashion&subcategory=Footwear', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=800&auto=format&fit=crop', dataAiHint: 'stylish sneakers' },
+    { name: 'Men\'s Ethnic', href: '/search?category=Fashion&subcategory=Men-Ethnic', image: 'https://images.unsplash.com/photo-1593032228653-25cb157b70a8?q=80&w=800&auto=format&fit=crop', dataAiHint: 'cotton kurta' },
+    { name: 'Women\'s Western', href: '/search?category=Fashion&subcategory=Women-Western', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=800&auto=format&fit=crop', dataAiHint: 'floral dress' },
+    { name: 'Accessories', href: '/search?category=Fashion&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=800&auto=format&fit=crop', dataAiHint: 'sunglasses fashion' },
+];
+
+function CategoryHeader({ title, description, linkText, bannerImage, categories, bannerColor = "bg-gray-100", buttonColor = "bg-brand" }: { title: string, description: string, linkText: string, bannerImage: string, categories: any[], bannerColor?: string, buttonColor?:string }) {
     return (
         <div className="space-y-8 mb-8">
             <section>
-                <div className="relative overflow-hidden rounded-2xl bg-gray-100 p-6 md:p-12">
+                <div className={`relative overflow-hidden rounded-2xl p-6 md:p-12 ${bannerColor}`}>
                     <div className="grid md:grid-cols-2 gap-6 items-center">
                         <div className="text-center md:text-left z-10">
-                            <h1 className="text-3xl md:text-5xl font-bold text-gray-800">Buy Online 100% Pure Products at Best Price</h1>
-                            <p className="mt-4 text-gray-600">Get all Ashram Products Delivered Anywhere in India - Order from your Home!</p>
-                            <Link href="/search?category=Ayurvedic" className="mt-6 inline-block bg-green-700 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-800 transition-colors">
-                                Shop Now
+                            <h1 className="text-3xl md:text-5xl font-bold text-gray-800">{title}</h1>
+                            <p className="mt-4 text-gray-600">{description}</p>
+                            <Link href="/search?category=Ayurvedic" className={`mt-6 inline-block text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors ${buttonColor}`}>
+                                {linkText}
                             </Link>
                         </div>
                         <div className="relative h-64 md:h-full">
                             <Image
-                            src="https://storage.googleapis.com/stabl-media/pro-101/476e93e2-8958-4796-913a-f110a3070659.png"
-                            alt="Ayurvedic Products Collage"
+                            src={bannerImage}
+                            alt="Category Banner"
                             fill
                             className="object-contain"
-                            data-ai-hint="ayurvedic products"
                             />
                         </div>
                     </div>
@@ -52,7 +68,7 @@ function AyurvedicHeader() {
             
             <section>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                {ayurvedicCategories.map((category) => (
+                {categories.map((category) => (
                     <Link key={category.name} href={category.href} className="group block relative aspect-video overflow-hidden rounded-2xl shadow-soft hover:shadow-lg transition-shadow duration-300">
                         <Image
                         src={category.image}
@@ -64,7 +80,7 @@ function AyurvedicHeader() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                         <div className="absolute bottom-0 left-0 p-3 md:p-4 text-white">
                         <h3 className="text-lg md:text-xl font-semibold">{category.name}</h3>
-                        <div className="mt-1 bg-green-600 text-white px-3 py-1 rounded-md text-xs font-semibold hover:bg-green-700 transition-colors inline-block">
+                        <div className={`mt-1 text-white px-3 py-1 rounded-md text-xs font-semibold transition-colors inline-block ${buttonColor}`}>
                             Shop Now
                         </div>
                         </div>
@@ -92,11 +108,46 @@ function SearchContent() {
   
   const list = useMemo(() => filterProducts(PRODUCTS, opts), [sp])
   
-  const isAyurvedic = opts.category === 'Ayurvedic';
+  const renderCategoryHeader = () => {
+    switch (opts.category) {
+        case 'Ayurvedic':
+            return <CategoryHeader 
+                title="Buy Online 100% Pure Products at Best Price"
+                description="Get all Ashram Products Delivered Anywhere in India - Order from your Home!"
+                linkText="Shop Now"
+                bannerImage="https://storage.googleapis.com/stabl-media/pro-101/476e93e2-8958-4796-913a-f110a3070659.png"
+                categories={ayurvedicCategories}
+                bannerColor="bg-green-50"
+                buttonColor="bg-green-700 hover:bg-green-800"
+            />
+        case 'Tech':
+            return <CategoryHeader 
+                title="Latest in Electronics"
+                description="Discover cutting-edge technology and get the best deals on all electronic gadgets."
+                linkText="Explore Tech"
+                bannerImage="https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=1200&auto=format&fit=crop"
+                categories={techCategories}
+                bannerColor="bg-blue-50"
+                buttonColor="bg-blue-600 hover:bg-blue-700"
+            />
+        case 'Fashion':
+             return <CategoryHeader 
+                title="Trendsetting Styles"
+                description="Update your wardrobe with the latest trends in fashion. Unbeatable prices."
+                linkText="Shop Fashion"
+                bannerImage="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1200&auto=format&fit=crop"
+                categories={fashionCategories}
+                bannerColor="bg-pink-50"
+                buttonColor="bg-pink-500 hover:bg-pink-600"
+            />
+        default:
+            return null;
+    }
+  }
 
   return (
     <>
-      {isAyurvedic && <AyurvedicHeader />}
+      {renderCategoryHeader()}
       <div className="md:hidden">
         <CategoryPills />
       </div>
@@ -132,7 +183,7 @@ function SearchContent() {
             <SortBar />
           </div>
           {list.length > 0 ? (
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
               {list.map(p => (
                 <ProductCard key={p.id} p={p} />
               ))}
