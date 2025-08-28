@@ -9,13 +9,15 @@ import RatingStars from '@/components/RatingStars'
 import QtyCounter from '@/components/QtyCounter'
 import { useCart } from '@/lib/cartStore'
 import WishlistButton from '@/components/WishlistButton'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, Share2 } from 'lucide-react'
 import CustomerReviews from '@/components/CustomerReviews'
 import ProductGrid from '@/components/ProductGrid'
+import { useToast } from '@/hooks/use-toast'
 
 function ProductDetailContent() {
   const router = useRouter()
   const { slug } = useParams()
+  const { toast } = useToast()
   const p = useMemo(() => PRODUCTS.find(p => p.slug === slug), [slug])
   const [qty, setQty] = useState(1)
   const { add } = useCart()
@@ -33,19 +35,48 @@ function ProductDetailContent() {
     router.push('/checkout');
   }
 
+  const handleShare = async () => {
+    const shareData = {
+      title: p.name,
+      text: p.shortDescription,
+      url: window.location.href,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast({ title: "Link Copied!", description: "Product link copied to clipboard." });
+      }
+    } catch (error) {
+      console.error('Share failed:', error);
+      await navigator.clipboard.writeText(window.location.href);
+      toast({ title: "Link Copied!", description: "Product link copied to clipboard." });
+    }
+  };
+
   return (
     <div>
       <button onClick={() => router.back()} className="md:hidden flex items-center gap-1 text-sm text-gray-600 mb-2">
         <ChevronLeft size={16} /> Back
       </button>
-      <div className="grid gap-6 md:grid-cols-2 md:gap-10">
-        <div>
+      <div className="grid gap-6 md:grid-cols-2 md:gap-10 md:items-start">
+        <div className="md:sticky md:top-24">
           <Gallery images={images} />
         </div>
-        <div>
+        <div className="min-w-0">
           <div className="flex items-start justify-between gap-3">
             <h1 className="text-xl font-semibold md:text-2xl">{p.name}</h1>
-            <WishlistButton id={p.id} />
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={handleShare}
+                className="rounded-full p-2 bg-gray-100/80 text-gray-600 hover:bg-gray-200 transition-colors"
+                aria-label="Share"
+              >
+                <Share2 className="h-5 w-5" />
+              </button>
+              <WishlistButton id={p.id} />
+            </div>
           </div>
           <div className="mt-1 text-sm text-gray-500">by {p.brand}</div>
           <div className="mt-2"><RatingStars value={p.ratings?.average ?? 0} /></div>
@@ -84,13 +115,14 @@ function ProductDetailContent() {
               </table>
             </div>
           </div>
+
+          <div className="mt-12">
+            <CustomerReviews product={p} />
+          </div>
+
         </div>
       </div>
       
-      <div className="mt-12">
-        <CustomerReviews product={p} />
-      </div>
-
       {related.length > 0 && (
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-4 text-center">Related Products</h2>

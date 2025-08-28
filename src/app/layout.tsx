@@ -7,6 +7,7 @@ import { AddressProvider } from '@/lib/addressStore';
 import { OrdersProvider } from '@/lib/ordersStore';
 import OfferPopup from '@/components/OfferPopup';
 import Footer from '@/components/Footer';
+import { Toaster } from '@/components/ui/toast';
 
 
 export const metadata: Metadata = {
@@ -44,6 +45,7 @@ export default function RootLayout({
             </div>
             <BottomNav />
             <OfferPopup />
+            <Toaster />
           </AddressProvider>
         </OrdersProvider>
       </body>
