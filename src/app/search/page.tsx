@@ -66,20 +66,20 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
                             </Link>
                         </div>
                         <div className="relative h-64 md:h-full">
-                            <AnimatePresence>
+                            <AnimatePresence initial={false}>
                                 <motion.div
                                     key={currentImageIndex}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.8 }}
+                                    transition={{ duration: 1, ease: 'easeInOut' }}
                                     className="absolute inset-0"
                                 >
                                     <Image
                                         src={bannerImages[currentImageIndex]}
                                         alt="Category Banner"
                                         fill
-                                        className="object-contain"
+                                        className="object-cover"
                                     />
                                 </motion.div>
                             </AnimatePresence>
