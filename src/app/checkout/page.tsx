@@ -8,14 +8,13 @@ import { useOrders } from '@/lib/ordersStore'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { Address } from '@/lib/types'
-import { CreditCard, Banknote, QrCode, Truck } from 'lucide-react'
+import { CreditCard, Banknote, QrCode } from 'lucide-react'
 import Image from 'next/image'
 import Script from 'next/script'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 
 const paymentOptions = [
-  { id: 'COD', icon: Truck, title: 'Cash on Delivery', description: 'Pay upon arrival' },
   { id: 'UPI', icon: QrCode, title: 'UPI / QR Code', description: 'Pay with any UPI app' },
   { id: 'Card', icon: CreditCard, title: 'Credit / Debit Card', description: 'Visa, Mastercard, RuPay & more' },
   { id: 'NetBanking', icon: Banknote, title: 'Net Banking', description: 'All major banks supported' },
@@ -43,11 +42,11 @@ export default function Checkout(){
     setShowForm(addresses.length === 0);
   }, [addresses.length]);
 
-  const handlePlaceOrder = () => {
+  const handleSuccessfulPayment = () => {
     const addr = addresses.find(a => a.default) || addresses[0]
     if (!addr) {
-      toast({ title: "Error", description: "Please add and select a delivery address.", variant: 'destructive' });
-      setShowForm(true);
+      // This should ideally not happen if checked before payment
+      toast({ title: "Error", description: "Could not find address to place order.", variant: 'destructive' });
       return;
     }
     placeOrder(items, addr, total, paymentMethod as any)
@@ -87,8 +86,8 @@ export default function Checkout(){
         name: 'ShopWave',
         description: 'E-Commerce Transaction',
         order_id: order.id,
-        handler: async function (response: any) {
-          handlePlaceOrder();
+        handler: function (response: any) {
+          handleSuccessfulPayment();
         },
         prefill: {
           name: addr.fullName,
@@ -125,11 +124,7 @@ export default function Checkout(){
   }
 
   const handleAction = () => {
-    if (paymentMethod === 'COD') {
-      handlePlaceOrder()
-    } else {
-      handleOnlinePayment()
-    }
+    handleOnlinePayment()
   }
 
   return (
@@ -243,7 +238,7 @@ export default function Checkout(){
               className="mt-4 w-full" 
               disabled={isProcessing || (paymentMethod === 'UPI')}
           >
-              {isProcessing ? 'Processing...' : (paymentMethod === 'COD' ? 'Place Order' : `Pay ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)}
+              {isProcessing ? 'Processing...' : `Pay ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           </Button>
           
           <Button variant="link" asChild className="mt-2 w-full">
