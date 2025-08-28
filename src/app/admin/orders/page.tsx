@@ -2,14 +2,32 @@
 'use client'
 import { useOrders } from '@/lib/ordersStore'
 import { useEffect, useState } from 'react'
+import { Copy } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
+import type { Address } from '@/lib/types'
 
 export default function AdminOrdersPage() {
     const { orders } = useOrders()
     const [isClient, setIsClient] = useState(false)
+    const { toast } = useToast()
 
     useEffect(() => {
         setIsClient(true)
     }, [])
+
+    const handleCopyDetails = (address: Address) => {
+        const details = [
+            address.fullName,
+            address.phone,
+            address.line1,
+            address.line2,
+            `${address.city}, ${address.state} - ${address.pincode}`,
+            address.landmark ? `Landmark: ${address.landmark}` : null
+        ].filter(Boolean).join('\n');
+        
+        navigator.clipboard.writeText(details);
+        toast({ title: "Details Copied!", description: "Customer shipping details copied to clipboard." });
+    }
 
     if (!isClient) {
         return (
@@ -38,6 +56,7 @@ export default function AdminOrdersPage() {
                                 <th className="p-3">Payment</th>
                                 <th className="p-3">Status</th>
                                 <th className="p-3">Items</th>
+                                <th className="p-3">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,6 +74,15 @@ export default function AdminOrdersPage() {
                                         <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-800">{order.status}</span>
                                     </td>
                                     <td className="p-3">{order.items.length}</td>
+                                    <td className="p-3">
+                                        <button 
+                                            onClick={() => handleCopyDetails(order.address)}
+                                            className="flex items-center gap-1.5 rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+                                        >
+                                            <Copy size={12} />
+                                            Copy
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
