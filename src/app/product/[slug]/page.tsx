@@ -38,7 +38,7 @@ function ProductDetailContent() {
       <button onClick={() => router.back()} className="md:hidden flex items-center gap-1 text-sm text-gray-600 mb-2">
         <ChevronLeft size={16} /> Back
       </button>
-      <div className="grid gap-6 md:gap-10 lg:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2 md:gap-10">
         <div>
           <Gallery images={images} />
         </div>
