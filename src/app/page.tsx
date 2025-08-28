@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import BannerSlider from '@/components/BannerSlider';
@@ -15,6 +15,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import PriceTag from '@/components/PriceTag';
+import type { Product } from '@/lib/types';
 
 
 const topCategories = [
