@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -77,7 +78,7 @@ export default function Home() {
 
       <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Today's Best Offers</h2>
-        <div className="no-scrollbar -mx-3 flex gap-3 overflow-x-auto px-3 pb-2">
+        <div className="no-scrollbar -mx-3 flex gap-3 overflow-x-auto px-3 pb-2 md:justify-center">
             <OfferCard title="Top Tech Deals" products={techDeals} href="/search?category=Tech"/>
             <OfferCard title="Latest in Fashion" products={fashionDeals} href="/search?category=Fashion"/>
             <OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/>
