@@ -53,8 +53,8 @@ export default function OfferCard({ title, products, href }: { title: string; pr
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
                     className="grid grid-cols-2 grid-rows-2 gap-2 absolute inset-0"
                 >
-                    {visibleProducts.map((p) => (
-                        <Link key={p.id} href={`/product/${p.slug}`} className="block w-full h-full relative rounded-lg overflow-hidden group">
+                    {visibleProducts.map((p, i) => (
+                        <Link key={`${p.id}-${i}`} href={`/product/${p.slug}`} className="block w-full h-full relative rounded-lg overflow-hidden group">
                             <Image
                                 src={p.image}
                                 alt={p.name}
