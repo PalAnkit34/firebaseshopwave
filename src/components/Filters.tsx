@@ -115,23 +115,6 @@ export default function Filters(){
       </div>
 
       <div className="rounded-xl border p-3">
-        <div className="mb-2 text-sm font-medium">Brand</div>
-        <select className="w-full rounded-lg border px-2 py-1 text-sm" defaultValue={sp.get('brand')||''} onChange={e=>set({ brand: e.target.value||undefined })}>
-          <option value="">All</option>
-          <option>AyurArogya</option>
-          <option>Achyutaya</option>
-          <option>Samsung</option>
-          <option>DesiWear</option>
-          <option>HerbCare</option>
-          <option>Apple</option>
-          <option>Google</option>
-          <option>Dell</option>
-          <option>Asus</option>
-          <option>Sony</option>
-        </select>
-      </div>
-
-      <div className="rounded-xl border p-3">
         <div className="mb-2 text-sm font-medium">Rating</div>
         <select className="w-full rounded-lg border px-2 py-1 text-sm" defaultValue={sp.get('rating')||''} onChange={e=>set({ rating: e.target.value||undefined })}>
           <option value="">Any</option>
