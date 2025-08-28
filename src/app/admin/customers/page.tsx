@@ -2,6 +2,7 @@
 'use client'
 import { useOrders } from '@/lib/ordersStore'
 import { useEffect, useState, useMemo } from 'react'
+import Link from 'next/link'
 
 export default function AdminCustomersPage() {
     const { orders } = useOrders()
@@ -66,7 +67,11 @@ export default function AdminCustomersPage() {
                         <tbody>
                             {customers.map(customer => (
                                 <tr key={customer.phone} className="border-b hover:bg-gray-50">
-                                    <td className="p-3 font-medium">{customer.fullName}</td>
+                                    <td className="p-3 font-medium">
+                                        <Link href={`/admin/customers/${customer.phone}`} className="text-brand hover:underline">
+                                            {customer.fullName}
+                                        </Link>
+                                    </td>
                                     <td className="p-3">{customer.phone}</td>
                                     <td className="p-3">{customer.orderCount}</td>
                                     <td className="p-3">₹{customer.totalSpent.toLocaleString('en-IN')}</td>
