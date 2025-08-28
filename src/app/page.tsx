@@ -7,19 +7,108 @@ import Image from 'next/image';
 import BannerSlider from '@/components/BannerSlider';
 import { PRODUCTS } from '@/lib/sampleData';
 import ProductCard from '@/components/ProductCard';
-import OfferCard from '@/components/OfferCard';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import PriceTag from '@/components/PriceTag';
 
-const categories = [
-  { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1748636879951-f4a4a7a2b794?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzbWFydHBob25lcyUyMGdhZGdldHN8ZW58MHx8fHwxNzU2MzgwMTIwfDA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'smartphones gadgets' },
-  { name: 'Fashion', href: '/search?category=Fashion', image: 'https://images.unsplash.com/photo-1668371679302-a8ec781e876e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxldGhuaWMlMjB3ZWFyfGVufDB8fHx8MTc1NjM4MDExOXww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'ethnic wear' },
-  { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: 'https://images.unsplash.com/photo-1749752010108-cce0f32bb7fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxheXVydmVkaWMlMjBoZXJic3xlbnwwfHx8fDE3NTYzNzg5Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'ayurvedic herbs' },
+
+const topCategories = [
+  { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=400&auto=format&fit=crop', dataAiHint: 'pooja items' },
+  { name: 'Best Selling', href: '/search?sort=popular', image: 'https://images.unsplash.com/photo-1572584642822-6f8de0243c93?q=80&w=400&auto=format&fit=crop', dataAiHint: 'sale offer' },
+  { name: 'New Arrivals', href: '/search?sort=new', image: 'https://images.unsplash.com/photo-1524678606370-a47625cb810c?q=80&w=400&auto=format&fit=crop', dataAiHint: 'new products' },
+  { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'corporate gifts' },
+  { name: 'Home & Kitchen', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=400&auto=format&fit=crop', dataAiHint: 'modern kitchen' },
+  { name: 'Toys & Games', href: '/search?category=Toys', image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop', dataAiHint: 'children toys' },
+  { name: 'Cleaning Supplies', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1582735773152-7935fbb1b41f?q=80&w=400&auto=format&fit=crop', dataAiHint: 'cleaning supplies' },
+  { name: 'Personal Care', href: '/search?category=Ayurvedic&subcategory=Personal-Care', image: 'https://images.unsplash.com/photo-1631777053082-a7459143992a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'personal care' },
+  { name: 'Electronics', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=400&auto=format&fit=crop', dataAiHint: 'electronic gadgets' },
+  { name: 'Home Improvement', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=400&auto=format&fit=crop', dataAiHint: 'modern home' },
+  { name: 'Mobile Cover', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=400&auto=format&fit=crop', dataAiHint: 'phone case' },
+  { name: 'Custom Print Products', href: '/search', image: 'https://images.unsplash.com/photo-1506784983877-45594efa4c85?q=80&w=400&auto=format&fit=crop', dataAiHint: 'custom printing' },
 ];
+
 
 const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted && p.quantity > 0).slice(0, 8);
 const fashionDeals = PRODUCTS.filter(p => p.category === 'Fashion' && p.price.discounted && p.quantity > 0).slice(0, 8);
 const ayurvedicDeals = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted && p.quantity > 0).slice(0, 8);
 const filterCategories = ['All', 'Tech', 'Fashion', 'Ayurvedic'];
 const PRODUCTS_TO_SHOW = 10;
+
+const useProductCycler = (products: Product[], interval: number) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (products.length <= 1) return;
+    const timer = setInterval(() => {
+      handleNext();
+    }, interval);
+    return () => clearInterval(timer);
+  }, [products.length, interval]);
+
+  const handleNext = () => {
+    setCurrentIndex(prevIndex => (prevIndex + 1) % products.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex(prevIndex => (prevIndex - 1 + products.length) % products.length);
+  };
+
+  return {
+    currentProduct: products[currentIndex],
+    handleNext,
+    handlePrev,
+    currentIndex
+  };
+};
+
+function OfferCard({ title, products, href }: { title: string; products: Product[]; href: string }) {
+  const { currentProduct, handleNext, handlePrev } = useProductCycler(products, 4000);
+
+  if (!products || products.length === 0) return null;
+
+  return (
+    <div className="card p-3 h-full flex flex-col">
+      <h3 className="font-bold text-md mb-2">{title}</h3>
+      <div className="relative flex-grow">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full h-full"
+        >
+          <CarouselContent>
+            {products.map((p, index) => (
+              <CarouselItem key={index}>
+                <Link href={`/product/${p.slug}`} className="block w-full h-full relative rounded-lg overflow-hidden group aspect-square">
+                  <Image
+                    src={p.image}
+                    alt={p.name}
+                    fill
+                    sizes="25vw"
+                    className="object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+                </Link>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2" />
+          <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2" />
+        </Carousel>
+      </div>
+      <Link href={href} className="block mt-3 text-center text-sm font-semibold text-brand hover:underline">
+        See all deals
+      </Link>
+    </div>
+  );
+}
+
 
 export default function Home() {
   const [visibleCount, setVisibleCount] = useState(PRODUCTS_TO_SHOW);
@@ -51,27 +140,24 @@ export default function Home() {
       <BannerSlider />
       
       <section>
-        <h2 className="text-2xl font-bold mb-4 text-center">Shop by Category</h2>
-        <div className="grid grid-cols-3 gap-3 md:gap-6">
-          {categories.map((category) => (
-            <Link key={category.name} href={category.href} className="group block">
-              <div className="relative overflow-hidden rounded-xl shadow-soft group-hover:shadow-lg transition-shadow duration-300">
-                <Image
-                  src={category.image}
-                  alt={category.name}
-                  width={400}
-                  height={300}
-                  className="w-full aspect-[4/3] object-cover transform group-hover:scale-105 transition-transform duration-300"
-                  data-ai-hint={category.dataAiHint}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-2 md:p-4">
-                  <h3 className="text-white text-md md:text-2xl font-semibold">{category.name}</h3>
-                  <div className="hidden md:inline-block mt-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/30 transition-colors">
-                    Shop Now
-                  </div>
+        <h2 className="text-2xl font-bold mb-4 text-center">Top Categories</h2>
+         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
+          {topCategories.map((category) => (
+            <Link key={category.name} href={category.href} className="group block text-center">
+              <div className="relative aspect-square w-full mx-auto max-w-[150px]">
+                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-white rounded-b-lg shadow-md"></div>
+                <div className="absolute inset-0 flex items-end justify-center pb-2">
+                   <Image
+                    src={category.image}
+                    alt={category.name}
+                    width={120}
+                    height={120}
+                    className="w-full h-auto object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-105"
+                    data-ai-hint={category.dataAiHint}
+                  />
                 </div>
               </div>
+              <h3 className="mt-2 text-sm font-semibold text-gray-700 group-hover:text-brand">{category.name}</h3>
             </Link>
           ))}
         </div>
@@ -79,7 +165,7 @@ export default function Home() {
 
       <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Today's Best Offers</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <OfferCard title="Top Tech Deals" products={techDeals} href="/search?category=Tech"/>
             <OfferCard title="Latest in Fashion" products={fashionDeals} href="/search?category=Fashion"/>
             <OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/>
