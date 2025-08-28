@@ -4,7 +4,7 @@ import Image from 'next/image';
 import BannerSlider from '@/components/BannerSlider';
 import { PRODUCTS } from '@/lib/sampleData';
 import ProductCard from '@/components/ProductCard';
-import ProductSlider from '@/components/ProductSlider';
+import OfferCard from '@/components/OfferCard';
 
 const categories = [
   { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
@@ -13,7 +13,9 @@ const categories = [
 ];
 
 const latestProducts = PRODUCTS.slice(0, 8);
-const dealProducts = PRODUCTS.filter(p => p.price.discounted).slice(0, 10);
+const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted).slice(0, 8);
+const fashionDeals = PRODUCTS.filter(p => p.category === 'Fashion' && p.price.discounted).slice(0, 8);
+const ayurvedicDeals = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted).slice(0, 8);
 
 
 export default function Home() {
@@ -49,8 +51,12 @@ export default function Home() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold mb-4 text-center">Top Deals</h2>
-        <ProductSlider products={dealProducts} />
+        <h2 className="text-2xl font-bold mb-4 text-center">Today's Best Offers</h2>
+        <div className="no-scrollbar -mx-3 flex gap-3 overflow-x-auto px-3 pb-2">
+            <OfferCard title="Top Tech Deals" products={techDeals} href="/search?category=Tech"/>
+            <OfferCard title="Latest in Fashion" products={fashionDeals} href="/search?category=Fashion"/>
+            <OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/>
+        </div>
       </section>
 
       <section>
