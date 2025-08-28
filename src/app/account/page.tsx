@@ -6,6 +6,8 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import AddressManager from '@/components/AddressManager'
 import { safeGet, safeSet } from '@/lib/storage'
+import { useOrders } from '@/lib/ordersStore'
+import { useWishlist } from '@/lib/wishlistStore'
 
 const accountSections = {
   DASHBOARD: 'DASHBOARD',
@@ -26,6 +28,8 @@ export default function AccountPage() {
     email: 'd.singh@example.com',
     phone: '+91 98765 43210',
   })
+  const { hasNewOrder } = useOrders()
+  const { ids: wishlistIds } = useWishlist()
 
   // Load user from local storage on mount
   useEffect(() => {
@@ -89,8 +93,8 @@ export default function AccountPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
-                <DashboardCard icon={Package} title="My Orders" href="/orders" />
-                <DashboardCard icon={Heart} title="Wishlist" href="/wishlist" />
+                <DashboardCard icon={Package} title="My Orders" href="/orders" hasNotification={hasNewOrder} />
+                <DashboardCard icon={Heart} title="Wishlist" href="/wishlist" hasNotification={wishlistIds.length > 0} />
                 <DashboardCard icon={MapPin} title="My Addresses" onClick={() => setActiveSection(accountSections.ADDRESSES)} />
                 <DashboardCard icon={LifeBuoy} title="Help Center" href="#" />
             </div>
@@ -117,9 +121,10 @@ export default function AccountPage() {
   )
 }
 
-const DashboardCard = ({ icon: Icon, title, href, onClick }: { icon: React.ElementType, title: string, href?: string, onClick?: () => void }) => {
+const DashboardCard = ({ icon: Icon, title, href, onClick, hasNotification }: { icon: React.ElementType, title: string, href?: string, onClick?: () => void, hasNotification?: boolean }) => {
   const content = (
-      <div className="card p-4 text-center flex flex-col items-center justify-center h-full">
+      <div className="card p-4 text-center flex flex-col items-center justify-center h-full relative">
+          {hasNotification && <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full"></div>}
           <Icon className="w-8 h-8 mb-2 text-brand" />
           <h3 className="font-semibold">{title}</h3>
       </div>
