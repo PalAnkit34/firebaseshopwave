@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import Footer from '@/components/Footer';
@@ -14,7 +14,9 @@ export default function RootContent({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const isAdminPage = pathname.startsWith('/admin');
+  const isTechLandingPage = pathname.startsWith('/search') && searchParams.get('category') === 'Tech' && !searchParams.get('subcategory');
 
   if (isAdminPage) {
     return (
@@ -23,6 +25,13 @@ export default function RootContent({
         <main className="container py-6 flex-grow">{children}</main>
       </>
     );
+  }
+
+  if (isTechLandingPage) {
+      return <>
+        {children}
+        <Toaster />
+      </>;
   }
 
   return (
