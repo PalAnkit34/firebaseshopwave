@@ -5,6 +5,7 @@ import Link from 'next/link'
 import SearchBar from './SearchBar'
 import { useCart } from '@/lib/cartStore'
 import { useWishlist } from '@/lib/wishlistStore'
+import { useOrders } from '@/lib/ordersStore'
 import { useSearchParams } from 'next/navigation'
 
 const mainCategories = ['Tech', 'Fashion', 'Ayurvedic'];
@@ -12,6 +13,7 @@ const mainCategories = ['Tech', 'Fashion', 'Ayurvedic'];
 export default function TopBar() {
   const { items } = useCart();
   const { ids: wishlistIds } = useWishlist();
+  const { hasNewOrder } = useOrders();
   const cartItemCount = items.reduce((acc, item) => acc + item.qty, 0);
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get('category');
@@ -39,8 +41,11 @@ export default function TopBar() {
               </span>
             )}
           </Link>
-          <Link href="/account" className="rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Account">
+          <Link href="/account" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Account">
             <User className="h-5 w-5" />
+             {hasNewOrder && (
+              <span className="absolute right-0 top-0 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white" />
+            )}
           </Link>
           <Link href="/cart" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Cart">
             <ShoppingCart className="h-5 w-5" />

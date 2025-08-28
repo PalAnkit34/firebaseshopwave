@@ -4,9 +4,16 @@ import { useOrders } from '@/lib/ordersStore'
 import { PRODUCTS } from '@/lib/sampleData'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 export default function OrdersPage(){
-  const { orders } = useOrders()
+  const { orders, clearNewOrderStatus } = useOrders()
+
+  useEffect(() => {
+    // When the user visits this page, clear the new order notification
+    clearNewOrderStatus();
+  }, [clearNewOrderStatus]);
+
   return (
     <div>
       <h1 className="mb-4 text-xl font-semibold">Your Orders</h1>
