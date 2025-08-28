@@ -30,6 +30,8 @@ const ayurvedicSubCategories = [
 const poojaSubCategories = [
     { name: 'Dhoop', href: '/search?category=Pooja&subcategory=Dhoop', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Dhoop/photo_2024-03-05_07-10-38-300x300.webp?updatedAt=1756372192267', dataAiHint: 'incense dhoop' },
     { name: 'Agarbatti', href: '/search?category=Pooja&subcategory=Agarbatti', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Aggarbatti/shanti-flora-2-300x300.jpg?updatedAt=1756372078860', dataAiHint: 'incense sticks' },
+    { name: 'Aasan and Mala', href: '/search?category=Pooja&subcategory=Aasan%20and%20Mala', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Aasan%20and%20Mala/1485014052Tulsi-Mala80-300x300.webp?updatedAt=1756371924065', dataAiHint: 'prayer beads' },
+    { name: 'Photo Frame', href: '/search?category=Pooja&subcategory=Photo%20Frame', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Photo%20Frame/1643871099bapujiphotoframeL26-300x300.webp?updatedAt=1756372238874', dataAiHint: 'photo frame' },
 ];
 
 const techCategories = [
