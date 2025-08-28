@@ -57,7 +57,13 @@ const fashionCategories = [
     { name: 'Accessories', href: '/search?category=Fashion&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=800&auto=format&fit=crop', dataAiHint: 'sunglasses fashion' },
 ];
 
-function CategoryHeader({ title, description, linkText, bannerImages, categories, bannerColor = "bg-gray-100", buttonColor = "bg-brand" }: { title: string, description: string, linkText: string, bannerImages: string[], categories: any[], bannerColor?: string, buttonColor?:string }) {
+const foodAndDrinksCategories = [
+  { name: 'Beverages', href: '/search?category=Food%20%26%20Drinks&subcategory=Beverages', image: 'https://images.unsplash.com/photo-1551024709-8f232a510e52?q=80&w=800&auto=format&fit=crop', dataAiHint: 'cold beverages' },
+  { name: 'Dry Fruits', href: '/search?category=Food%20%26%20Drinks&subcategory=Dry%20Fruits', image: 'https://images.unsplash.com/photo-1595425126622-db139b5523f0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'assorted nuts' },
+];
+
+
+function CategoryHeader({ title, description, linkText, bannerImages, categories, bannerColor = "bg-gray-100", buttonColor = "bg-primary" }: { title: string, description: string, linkText: string, bannerImages: string[], categories: any[], bannerColor?: string, buttonColor?:string }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
@@ -191,6 +197,20 @@ function SearchContent() {
                 categories={fashionCategories}
                 bannerColor="bg-pink-50"
                 buttonColor="bg-pink-500 hover:bg-pink-600"
+            />
+        case 'Food & Drinks':
+             return <CategoryHeader 
+                title="Delicious Food & Drinks"
+                description="Explore our range of healthy and tasty beverages and dry fruits."
+                linkText="Shop Now"
+                bannerImages={[
+                    "https://images.unsplash.com/photo-1497515114629-481d0be42f57?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1627833055909-6d1a19b3a7b5?q=80&w=1200&auto=format&fit=crop",
+                ]}
+                categories={foodAndDrinksCategories}
+                bannerColor="bg-orange-50"
+                buttonColor="bg-orange-500 hover:bg-orange-600"
             />
         default:
             return null;
