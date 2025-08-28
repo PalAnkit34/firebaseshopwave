@@ -135,7 +135,7 @@ function SearchContent() {
   const list = useMemo(() => filterProducts(PRODUCTS, opts), [sp])
   
   const renderCategoryHeader = () => {
-    if (opts.q || opts.subcategory) return null;
+    if (opts.q || opts.subcategory || opts.tertiaryCategory) return null;
 
     switch (opts.category) {
         case 'Ayurvedic':
@@ -195,6 +195,25 @@ function SearchContent() {
                 buttonColor="bg-orange-500 hover:bg-orange-600"
             />
         default:
+             if (!opts.category) {
+                 return <CategoryHeader 
+                    title="Explore Our Products"
+                    description="Find everything you need from tech gadgets to ayurvedic essentials."
+                    linkText="Shop All"
+                    bannerImages={[
+                         "https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1200&auto=format&fit=crop",
+                         "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop",
+                    ]}
+                    categories={[
+                        { name: 'Tech', href: '/search?category=Tech', image: techCategories[0].image, dataAiHint: 'latest gadgets' },
+                        { name: 'Fashion', href: '/search?category=Fashion', image: fashionCategories[0].image, dataAiHint: 'stylish apparel' },
+                        { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[0].image, dataAiHint: 'natural remedies' },
+                        { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
+                        { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Groceries')?.image || '', dataAiHint: 'fresh groceries' },
+                        { name: 'Pooja Items', href: '/search?category=Pooja', image: ayurvedicSubCategories.find(c => c.name === 'Pooja Items')?.image || '', dataAiHint: 'holy items' },
+                    ]}
+                />
+            }
             return null;
     }
   }
@@ -202,8 +221,6 @@ function SearchContent() {
   const renderTertiaryCategoryHeader = () => {
       const sub = opts.subcategory;
       if (!sub || opts.tertiaryCategory) return null;
-      
-      const tertiaryCategoriesList = Object.values(ayurvedicTertiaryCategories).flat();
       
       const subcategoryTertiary = [...new Set(PRODUCTS
           .filter(p => p.subcategory === sub && p.tertiaryCategory)
@@ -239,7 +256,7 @@ function SearchContent() {
       return <h1 className="text-2xl font-bold mb-4">Search results for &quot;{opts.q}&quot;</h1>
     }
     if (!opts.category) {
-        return <h1 className="text-2xl font-bold mb-4">All Categories</h1>
+        return null; // The main category grid is shown, so no title needed here
     }
     return null;
   }
