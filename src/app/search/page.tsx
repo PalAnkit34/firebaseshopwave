@@ -197,7 +197,7 @@ function SearchContent() {
                 linkText="Explore Items"
                 bannerImages={[
                     "https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1594580236058-f4a473455963?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1594580236058-f4a4a73455963?q=80&w=1200&auto=format&fit=crop",
                 ]}
                 categories={poojaSubCategories}
                 bannerColor="bg-amber-50"
