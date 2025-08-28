@@ -10,6 +10,8 @@ import Link from 'next/link'
 import type { Address } from '@/lib/types'
 import { CreditCard, Banknote, QrCode, Truck } from 'lucide-react'
 import Image from 'next/image'
+import Script from 'next/script'
+import { useToast } from '@/hooks/use-toast'
 
 const paymentOptions = [
   { id: 'COD', icon: Truck, title: 'Cash on Delivery', description: 'Pay upon arrival' },
@@ -23,9 +25,11 @@ export default function Checkout(){
   const { addresses, save, setDefault } = useAddressBook()
   const { placeOrder } = useOrders()
   const router = useRouter()
+  const { toast } = useToast()
   const [showForm, setShowForm] = useState(addresses.length === 0)
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
-  const [paymentMethod, setPaymentMethod] = useState('COD')
+  const [paymentMethod, setPaymentMethod] = useState('UPI')
+  const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
     if (items.length === 0) {
@@ -33,118 +37,185 @@ export default function Checkout(){
     }
   }, [items, router]);
 
-  const onPlace = () => {
+  const handlePlaceOrder = () => {
     const addr = addresses.find(a => a.default) || addresses[0]
     if (!addr) {
-      alert('Please add and select a delivery address.');
+      toast({ title: "Error", description: "Please add and select a delivery address.", variant: 'destructive' });
       setShowForm(true);
       return;
     }
     placeOrder(items, addr, total, paymentMethod as any)
     clear()
     router.push('/orders')
+    toast({ title: "Order Placed!", description: "Thank you for your purchase." });
   }
 
-  const handleSaveAddress = (addr: Address) => {
-    save({ ...addr, default: addresses.length === 0 || addr.default });
-    setShowForm(false);
-    setEditingAddress(undefined);
+  const handleOnlinePayment = async () => {
+    setIsProcessing(true);
+    const addr = addresses.find(a => a.default) || addresses[0]
+    if (!addr) {
+      toast({ title: "Error", description: "Please add and select a delivery address.", variant: 'destructive' });
+      setShowForm(true);
+      setIsProcessing(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/razorpay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: total }),
+      });
+
+      if (!res.ok) throw new Error('Failed to create order');
+      
+      const { order } = await res.json();
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: 'ShopWave',
+        description: 'E-Commerce Transaction',
+        order_id: order.id,
+        handler: async function (response: any) {
+          // Here you would typically verify the payment signature on the backend
+          // For this demo, we'll assume it's successful
+          handlePlaceOrder();
+        },
+        prefill: {
+          name: addr.fullName,
+          contact: addr.phone,
+        },
+        notes: {
+          address: `${addr.line1}, ${addr.city}`,
+        },
+        theme: {
+          color: '#3399cc'
+        }
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', function (response: any) {
+        toast({ title: "Payment Failed", description: response.error.description, variant: 'destructive' });
+        setIsProcessing(false);
+      });
+      rzp.open();
+
+    } catch (error) {
+      console.error(error);
+      toast({ title: "Error", description: "Could not initiate payment. Please try again.", variant: 'destructive' });
+      setIsProcessing(false);
+    }
   }
   
   if (items.length === 0) {
     return null;
   }
 
-  return (
-    <div className="grid gap-6 md:grid-cols-[1fr_360px] md:items-start">
-      <div>
-        <h1 className="mb-4 text-xl font-semibold">Checkout</h1>
-        <div className="card p-4">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-lg font-medium">Delivery Address</h2>
-            {!showForm && <button onClick={() => { setEditingAddress(undefined); setShowForm(true); }} className="text-sm font-semibold text-brand hover:underline">+ Add New</button>}
-          </div>
+  const handleAction = () => {
+    if (paymentMethod === 'COD') {
+      handlePlaceOrder()
+    } else {
+      handleOnlinePayment()
+    }
+  }
 
-          {!showForm ? (
-            <div className="space-y-3">
-              {addresses.map((a) => (
-                <div key={a.id} className={`rounded-xl border p-3 cursor-pointer transition-all ${a.default ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`} onClick={() => a.id && setDefault(a.id)}>
-                  <div className="font-semibold text-sm">{a.fullName} — {a.phone}</div>
-                  <div className="text-sm text-gray-600">{a.line1}{a.line2 ? `, ${a.line2}` : ''}, {a.city}, {a.state} - {a.pincode}</div>
-                  {a.landmark && <div className="text-xs text-gray-500">Landmark: {a.landmark}</div>}
-                  {a.default && <div className="mt-1 text-xs font-bold text-green-600">Default Address</div>}
+  return (
+    <>
+      <Script
+        id="razorpay-checkout-js"
+        src="https://checkout.razorpay.com/v1/checkout.js"
+      />
+      <div className="grid gap-6 md:grid-cols-[1fr_360px] md:items-start">
+        <div>
+          <h1 className="mb-4 text-xl font-semibold">Checkout</h1>
+          <div className="card p-4">
+            <div className="flex justify-between items-center mb-3">
+              <h2 className="text-lg font-medium">Delivery Address</h2>
+              {!showForm && <button onClick={() => { setEditingAddress(undefined); setShowForm(true); }} className="text-sm font-semibold text-brand hover:underline">+ Add New</button>}
+            </div>
+
+            {!showForm ? (
+              <div className="space-y-3">
+                {addresses.map((a) => (
+                  <div key={a.id} className={`rounded-xl border p-3 cursor-pointer transition-all ${a.default ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`} onClick={() => a.id && setDefault(a.id)}>
+                    <div className="font-semibold text-sm">{a.fullName} — {a.phone}</div>
+                    <div className="text-sm text-gray-600">{a.line1}{a.line2 ? `, ${a.line2}` : ''}, {a.city}, {a.state} - {a.pincode}</div>
+                    {a.landmark && <div className="text-xs text-gray-500">Landmark: {a.landmark}</div>}
+                    {a.default && <div className="mt-1 text-xs font-bold text-green-600">Default Address</div>}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-3">
+                <AddressForm 
+                  onSubmit={(addr) => { save({ ...addr, default: addresses.length === 0 || addr.default }); setShowForm(false); setEditingAddress(undefined); }} 
+                  initial={editingAddress} 
+                  onCancel={() => { setShowForm(false); setEditingAddress(undefined); }} 
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="card sticky top-24 p-4">
+          <h2 className="text-lg font-semibold">Order Summary</h2>
+          <div className="mt-4 space-y-3">
+            {items.map(item => (
+              <div key={item.id} className="flex items-center gap-3 text-sm">
+                <div className="relative h-14 w-14 shrink-0">
+                  <Image src={item.image} alt={item.name} fill className="rounded-md object-cover" />
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="mt-3">
-              <AddressForm 
-                onSubmit={handleSaveAddress} 
-                initial={editingAddress} 
-                onCancel={() => { setShowForm(false); setEditingAddress(undefined); }} 
-              />
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="card sticky top-24 p-4">
-        <h2 className="text-lg font-semibold">Order Summary</h2>
-        <div className="mt-4 space-y-3">
-          {items.map(item => (
-            <div key={item.id} className="flex items-center gap-3 text-sm">
-              <div className="relative h-14 w-14 shrink-0">
-                <Image src={item.image} alt={item.name} fill className="rounded-md object-cover" />
+                <div className="flex-grow">
+                  <div className="line-clamp-1 font-medium">{item.name}</div>
+                  <div className="text-xs text-gray-500">Qty: {item.qty}</div>
+                </div>
+                <div className="font-medium">₹{(item.price * item.qty).toLocaleString('en-IN')}</div>
               </div>
-              <div className="flex-grow">
-                <div className="line-clamp-1 font-medium">{item.name}</div>
-                <div className="text-xs text-gray-500">Qty: {item.qty}</div>
-              </div>
-              <div className="font-medium">₹{(item.price * item.qty).toLocaleString('en-IN')}</div>
+            ))}
+          </div>
+          <div className="mt-4 space-y-2 border-t pt-4 text-sm">
+            <div className="flex justify-between">
+              <span>Subtotal ({items.reduce((s,i)=>s+i.qty,0)} items)</span>
+              <span>₹{total.toLocaleString('en-IN')}</span>
             </div>
-          ))}
-        </div>
-        <div className="mt-4 space-y-2 border-t pt-4 text-sm">
-          <div className="flex justify-between">
-            <span>Subtotal ({items.reduce((s,i)=>s+i.qty,0)} items)</span>
+             <div className="flex justify-between text-green-600">
+                  <span>Delivery</span>
+                  <span>Free</span>
+              </div>
+          </div>
+          <div className="mt-3 flex justify-between font-semibold border-t pt-3">
+            <span>Total Amount</span>
             <span>₹{total.toLocaleString('en-IN')}</span>
           </div>
-           <div className="flex justify-between text-green-600">
-                <span>Delivery</span>
-                <span>Free</span>
-            </div>
-        </div>
-        <div className="mt-3 flex justify-between font-semibold border-t pt-3">
-          <span>Total Amount</span>
-          <span>₹{total.toLocaleString('en-IN')}</span>
-        </div>
-        
-        <div className="mt-4">
-            <h3 className="text-md font-semibold mb-2">Payment Method</h3>
-            <div className="space-y-2">
-                {paymentOptions.map(opt => (
-                    <label key={opt.id} className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`}>
-                        <input type="radio" name="paymentMethod" value={opt.id} checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="h-4 w-4 text-brand focus:ring-brand" />
-                        <opt.icon className="h-6 w-6 text-gray-600" />
-                        <div>
-                            <div className="font-semibold text-sm">{opt.title}</div>
-                            <div className="text-xs text-gray-500">{opt.description}</div>
-                        </div>
-                    </label>
-                ))}
-            </div>
-        </div>
+          
+          <div className="mt-4">
+              <h3 className="text-md font-semibold mb-2">Payment Method</h3>
+              <div className="space-y-2">
+                  {paymentOptions.map(opt => (
+                      <label key={opt.id} className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`}>
+                          <input type="radio" name="paymentMethod" value={opt.id} checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="h-4 w-4 text-brand focus:ring-brand" />
+                          <opt.icon className="h-6 w-6 text-gray-600" />
+                          <div>
+                              <div className="font-semibold text-sm">{opt.title}</div>
+                              <div className="text-xs text-gray-500">{opt.description}</div>
+                          </div>
+                      </label>
+                  ))}
+              </div>
+          </div>
 
-        <button 
-            onClick={onPlace} 
-            className="mt-4 w-full rounded-xl bg-brand py-2.5 font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50" 
-            disabled={items.length === 0 || (paymentMethod !== 'COD' && true)}
-        >
-            {paymentMethod === 'COD' ? 'Place Order' : 'Pay Now'}
-        </button>
-        {paymentMethod !== 'COD' && <p className="text-center text-xs text-gray-500 mt-2">Online payment is currently disabled. Please select Cash on Delivery.</p>}
-
-        <Link href="/cart" className="mt-2 block text-center text-sm text-gray-500 hover:underline">Edit Cart</Link>
+          <button 
+              onClick={handleAction} 
+              className="mt-4 w-full rounded-xl bg-brand py-2.5 font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50" 
+              disabled={isProcessing}
+          >
+              {isProcessing ? 'Processing...' : (paymentMethod === 'COD' ? 'Place Order' : 'Pay Now')}
+          </button>
+          
+          <Link href="/cart" className="mt-2 block text-center text-sm text-gray-500 hover:underline">Edit Cart</Link>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
