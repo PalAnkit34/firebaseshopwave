@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
+// Due to a bug in Razorpay's type definitions, we need to use `any` here.
+// The instance is correctly created, but the types are not recognized by TypeScript.
+const razorpay: any = new Razorpay({
+  key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
   key_secret: process.env.RAZORPAY_KEY_SECRET!,
 })
 
