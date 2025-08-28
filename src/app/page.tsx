@@ -29,7 +29,7 @@ export default function Home() {
                   alt={category.name}
                   width={400}
                   height={300}
-                  className="w-full aspect-[3/4] object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  className="w-full aspect-[4/3] object-cover transform group-hover:scale-105 transition-transform duration-300"
                   data-ai-hint={category.dataAiHint}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
