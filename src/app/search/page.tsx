@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Filter } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import CategoryGrid from '@/components/CategoryGrid';
 
 const ayurvedicSubCategories = [
   { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
@@ -67,6 +68,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
+        if (bannerImages.length === 0) return;
         const timer = setInterval(() => {
             setCurrentImageIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
         }, 3000);
@@ -95,12 +97,14 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
                                     transition={{ duration: 1, ease: 'easeInOut' }}
                                     className="absolute inset-0"
                                 >
-                                    <Image
-                                        src={bannerImages[currentImageIndex]}
-                                        alt="Category Banner"
-                                        fill
-                                        className="object-cover"
-                                    />
+                                    {bannerImages.length > 0 && (
+                                        <Image
+                                            src={bannerImages[currentImageIndex]}
+                                            alt="Category Banner"
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    )}
                                 </motion.div>
                             </AnimatePresence>
                         </div>
@@ -108,28 +112,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
                 </div>
             </section>
             
-            <section>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                {categories.map((category) => (
-                    <Link key={category.name} href={category.href} className="group block relative aspect-video overflow-hidden rounded-2xl shadow-soft hover:shadow-lg transition-shadow duration-300">
-                        <Image
-                        src={category.image}
-                        alt={category.name}
-                        fill
-                        className="object-cover transform group-hover:scale-105 transition-transform duration-300"
-                        data-ai-hint={category.dataAiHint}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                        <div className="absolute bottom-0 left-0 p-3 md:p-4 text-white">
-                        <h3 className="text-lg md:text-xl font-semibold">{category.name}</h3>
-                        <div className={`mt-1 text-white px-3 py-1 rounded-md text-xs font-semibold transition-colors inline-block ${buttonColor}`}>
-                            Shop Now
-                        </div>
-                        </div>
-                    </Link>
-                ))}
-                </div>
-            </section>
+            <CategoryGrid categories={categories} buttonColor={buttonColor} />
         </div>
     );
 }
@@ -152,8 +135,7 @@ function SearchContent() {
   const list = useMemo(() => filterProducts(PRODUCTS, opts), [sp])
   
   const renderCategoryHeader = () => {
-    // Only show category header if there is no subcategory selected
-    if (opts.subcategory) return null;
+    if (opts.q || opts.subcategory) return null;
 
     switch (opts.category) {
         case 'Ayurvedic':
@@ -222,48 +204,28 @@ function SearchContent() {
       if (!sub || opts.tertiaryCategory) return null;
       
       const tertiaryCategoriesList = Object.values(ayurvedicTertiaryCategories).flat();
-      const tertiaryCategories = tertiaryCategoriesList.filter(tc => tc.href.includes(`subcategory=${sub}`));
       
-      if (!tertiaryCategories || tertiaryCategories.length === 0) {
-        // Attempt to find it in the main product list if not in the predefined map
-          const dynamicTertiary = [...new Set(PRODUCTS
-              .filter(p => p.subcategory === sub && p.tertiaryCategory)
-              .map(p => p.tertiaryCategory!)
-          )].map(tc => ({
-              name: tc.replace(/-/g, ' '),
-              href: `/search?category=${opts.category}&subcategory=${sub}&tertiaryCategory=${tc}`,
-              image: PRODUCTS.find(p => p.tertiaryCategory === tc)?.image || 'https://picsum.photos/400/300',
-              dataAiHint: tc.toLowerCase()
-          }));
+      const subcategoryTertiary = [...new Set(PRODUCTS
+          .filter(p => p.subcategory === sub && p.tertiaryCategory)
+          .map(p => p.tertiaryCategory!)
+      )].map(tc => ({
+          name: tc.replace(/-/g, ' '),
+          href: `/search?category=${opts.category}&subcategory=${sub}&tertiaryCategory=${tc}`,
+          image: PRODUCTS.find(p => p.tertiaryCategory === tc)?.image || 'https://picsum.photos/400/300',
+          dataAiHint: tc.toLowerCase()
+      }));
 
-          if(dynamicTertiary.length === 0) return null;
+      if(subcategoryTertiary.length === 0) return null;
 
-          return <CategoryHeader 
-                title={sub.replace(/-/g, ' ')}
-                description="Traditional and effective remedies for your health and well-being."
-                linkText="Explore Now"
-                bannerImages={[
-                     "https://images.unsplash.com/photo-1581075379766-c1316f1a892b?w=800&auto=format&fit=crop&q=60",
-                     "https://images.unsplash.com/photo-1584308666744-8480404b63ae?w=800&auto=format&fit=crop&q=60",
-                ]}
-                categories={dynamicTertiary}
-                bannerColor="bg-emerald-50"
-                buttonColor="bg-emerald-700 hover:bg-emerald-800"
-            />
-      }
-      
       return <CategoryHeader 
-                title={sub.replace(/-/g, ' ')}
-                description="Traditional and effective remedies for your health and well-being."
-                linkText="Explore Now"
-                bannerImages={[
-                     "https://images.unsplash.com/photo-1581075379766-c1316f1a892b?w=800&auto=format&fit=crop&q=60",
-                     "https://images.unsplash.com/photo-1584308666744-8480404b63ae?w=800&auto=format&fit=crop&q=60",
-                ]}
-                categories={tertiaryCategories}
-                bannerColor="bg-emerald-50"
-                buttonColor="bg-emerald-700 hover:bg-emerald-800"
-            />
+            title={sub.replace(/-/g, ' ')}
+            description="Traditional and effective remedies for your health and well-being."
+            linkText="Explore Now"
+            bannerImages={[]}
+            categories={subcategoryTertiary}
+            bannerColor="bg-emerald-50"
+            buttonColor="bg-emerald-700 hover:bg-emerald-800"
+        />
   }
 
   const PageTitle = () => {
@@ -275,6 +237,9 @@ function SearchContent() {
     }
     if (opts.q) {
       return <h1 className="text-2xl font-bold mb-4">Search results for &quot;{opts.q}&quot;</h1>
+    }
+    if (!opts.category) {
+        return <h1 className="text-2xl font-bold mb-4">All Categories</h1>
     }
     return null;
   }
