@@ -45,8 +45,8 @@ export default function Filters(){
     };
   }, [sp]);
 
-  const handleSubcategoryChange = (subcategory: string, checked: boolean) => {
-    set({ subcategory: checked ? subcategory : null, tertiaryCategory: null }); // Reset tertiary on subcategory change
+  const handleSubcategoryChange = (subcategory: string | null) => {
+    set({ subcategory: subcategory, tertiaryCategory: null }); // Reset tertiary on subcategory change
   };
 
   const handleTertiaryCategoryChange = (tertiaryCategory: string, checked: boolean) => {
@@ -59,6 +59,16 @@ export default function Filters(){
         <div className="rounded-xl border p-3">
           <div className="mb-2 text-sm font-medium">Subcategory</div>
           <div className="space-y-2">
+             <label className="flex items-center gap-2 text-sm">
+                <input 
+                  type="radio" 
+                  name="subcategory"
+                  className="h-4 w-4 rounded-full border-gray-300 text-brand focus:ring-brand"
+                  checked={!activeSubcategory}
+                  onChange={() => handleSubcategoryChange(null)}
+                />
+                All
+              </label>
             {availableSubcategories.map(sub => (
               <label key={sub} className="flex items-center gap-2 text-sm">
                 <input 
@@ -66,7 +76,7 @@ export default function Filters(){
                   name="subcategory"
                   className="h-4 w-4 rounded-full border-gray-300 text-brand focus:ring-brand"
                   checked={activeSubcategory === sub}
-                  onChange={(e) => handleSubcategoryChange(sub, e.target.checked)}
+                  onChange={() => handleSubcategoryChange(sub)}
                 />
                 {sub.replace(/-/g, ' ')}
               </label>
