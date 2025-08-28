@@ -12,14 +12,11 @@ const config: Config = {
         headline: ['Inter', 'sans-serif'],
       },
       colors: {
-        brand: {
-          DEFAULT: 'hsl(220 60% 50%)',
-          dark: 'hsl(220 60% 40%)',
-        },
-        accent: {
-          DEFAULT: 'hsl(30 80% 50%)',
-        },
-        background: 'hsl(220 20% 95%)',
+        brand: 'hsl(var(--brand-hsl))',
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -37,6 +34,10 @@ const config: Config = {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -46,8 +47,13 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+       borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
       boxShadow: {
-        soft: '0 8px 24px rgba(0,0,0,0.08)'
+        soft: '0 4px 12px rgba(0,0,0,0.05)'
       },
        keyframes: {
         "accordion-down": {

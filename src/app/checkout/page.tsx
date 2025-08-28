@@ -12,6 +12,7 @@ import { CreditCard, Banknote, QrCode, Truck } from 'lucide-react'
 import Image from 'next/image'
 import Script from 'next/script'
 import { useToast } from '@/hooks/use-toast'
+import { Button } from '@/components/ui/button'
 
 const paymentOptions = [
   { id: 'COD', icon: Truck, title: 'Cash on Delivery', description: 'Pay upon arrival' },
@@ -97,7 +98,7 @@ export default function Checkout(){
           address: `${addr.line1}, ${addr.city}`,
         },
         theme: {
-          color: '#3399cc'
+          color: '#3b82f6'
         }
       };
 
@@ -139,7 +140,7 @@ export default function Checkout(){
       />
       <div className="grid gap-6 md:grid-cols-[1fr_360px] md:items-start">
         <div>
-          <h1 className="mb-4 text-xl font-semibold">Checkout</h1>
+          <h1 className="mb-4 text-2xl font-bold">Checkout</h1>
           <div className="card p-4">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-lg font-medium">Delivery Address</h2>
@@ -149,7 +150,7 @@ export default function Checkout(){
             {!showForm ? (
               <div className="space-y-3">
                 {addresses.map((a) => (
-                  <div key={a.id} className={`rounded-xl border p-3 cursor-pointer transition-all ${a.default ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`} onClick={() => a.id && setDefault(a.id)}>
+                  <div key={a.id} className={`rounded-lg border p-3 cursor-pointer transition-all ${a.default ? 'border-brand ring-2 ring-brand/20' : 'border-gray-200 hover:border-gray-400'}`} onClick={() => a.id && setDefault(a.id)}>
                     <div className="font-semibold text-sm">{a.fullName} — {a.phone}</div>
                     <div className="text-sm text-gray-600">{a.line1}{a.line2 ? `, ${a.line2}` : ''}, {a.city}, {a.state} - {a.pincode}</div>
                     {a.landmark && <div className="text-xs text-gray-500">Landmark: {a.landmark}</div>}
@@ -208,7 +209,7 @@ export default function Checkout(){
               <div className="space-y-2">
                   {paymentOptions.map(opt => (
                       <div key={opt.id}>
-                          <label className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`}>
+                          <label className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-brand ring-2 ring-brand/20' : 'border-gray-200 hover:border-gray-400'}`}>
                               <input type="radio" name="paymentMethod" value={opt.id} checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="h-4 w-4 text-brand focus:ring-brand" />
                               <opt.icon className="h-6 w-6 text-gray-600" />
                               <div>
@@ -217,7 +218,7 @@ export default function Checkout(){
                               </div>
                           </label>
                           {paymentMethod === 'UPI' && opt.id === 'UPI' && (
-                              <div className="p-3 bg-gray-50 rounded-b-xl border border-t-0">
+                              <div className="p-3 bg-gray-50 rounded-b-lg border border-t-0">
                                   <div className="flex flex-col items-center">
                                       <Image src="https://storage.googleapis.com/stabl-media/pro-101/qr-code.png" alt="QR Code for UPI payment" width={150} height={150} className="rounded-lg"/>
                                       <p className="text-sm my-2">OR</p>
@@ -228,7 +229,7 @@ export default function Checkout(){
                                         placeholder="Enter your UPI ID" 
                                         className="w-full rounded-lg border px-3 py-2 text-sm" 
                                       />
-                                      <button onClick={handleOnlinePayment} className="mt-2 w-full rounded-lg bg-brand/10 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand/20">Verify & Pay</button>
+                                      <Button onClick={handleOnlinePayment} className="mt-2 w-full" variant="outline" size="sm">Verify & Pay</Button>
                                   </div>
                               </div>
                           )}
@@ -237,15 +238,17 @@ export default function Checkout(){
               </div>
           </div>
 
-          <button 
+          <Button 
               onClick={handleAction} 
-              className="mt-4 w-full rounded-xl bg-brand py-2.5 font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50" 
+              className="mt-4 w-full" 
               disabled={isProcessing || (paymentMethod === 'UPI')}
           >
               {isProcessing ? 'Processing...' : (paymentMethod === 'COD' ? 'Place Order' : `Pay ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)}
-          </button>
+          </Button>
           
-          <Link href="/cart" className="mt-2 block text-center text-sm text-gray-500 hover:underline">Edit Cart</Link>
+          <Button variant="link" asChild className="mt-2 w-full">
+            <Link href="/cart">Edit Cart</Link>
+          </Button>
         </div>
       </div>
     </>

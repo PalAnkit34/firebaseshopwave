@@ -5,17 +5,20 @@ import Link from 'next/link'
 import PriceTag from '@/components/PriceTag'
 import Image from 'next/image'
 import { Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export default function CartPage(){
   const { items, setQty, remove, subtotal, totalShipping, totalTax, total } = useCart()
   return (
     <div>
-      <h1 className="mb-4 text-xl font-semibold">Your Cart</h1>
+      <h1 className="mb-4 text-2xl font-bold">Your Cart</h1>
       {items.length === 0 && (
-        <div className="rounded-2xl border bg-white p-8 text-center">
+        <div className="card p-8 text-center">
           <h2 className="text-lg font-medium text-gray-700">Your cart is empty.</h2>
           <p className="text-sm text-gray-500 mt-1">Looks like you haven't added anything to your cart yet.</p>
-          <Link href="/" className="mt-4 inline-block rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Start Shopping</Link>
+          <Button asChild className="mt-4">
+            <Link href="/">Start Shopping</Link>
+          </Button>
         </div>
       )}
       {items.length > 0 && (
@@ -24,7 +27,7 @@ export default function CartPage(){
             {items.map(it => (
               <div key={it.id} className="card flex items-center gap-4 p-3">
                 <div className="relative h-20 w-20 shrink-0">
-                    <Image src={it.image} alt={it.name} fill className="rounded-xl object-cover"/>
+                    <Image src={it.image} alt={it.name} fill className="rounded-lg object-cover"/>
                 </div>
                 <div className="flex-1">
                   <div className="line-clamp-2 font-medium text-sm">{it.name}</div>
@@ -58,7 +61,9 @@ export default function CartPage(){
                 <span>Total Amount</span>
                 <span>₹{total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
-            <Link href="/checkout" className="mt-4 block w-full rounded-xl bg-brand py-2.5 text-center font-semibold text-white transition-colors hover:bg-brand/90">Checkout</Link>
+             <Button asChild className="mt-4 w-full">
+              <Link href="/checkout">Checkout</Link>
+            </Button>
           </div>
         </div>
       )}
