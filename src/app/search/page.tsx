@@ -206,34 +206,32 @@ function SearchContent() {
           </aside>
           <section>
             <PageTitle />
-            <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-              <div className="flex-grow">
-                  <div className="flex items-center gap-4">
-                      <div className="md:hidden">
-                          <Sheet open={isFilterOpen} onOpenChange={setFilterOpen}>
-                              <SheetTrigger asChild>
-                                  <Button variant="outline" size="icon">
-                                      <Filter className="h-4 w-4" />
-                                  </Button>
-                              </SheetTrigger>
-                              <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                                  <div className="p-4">
-                                      <h3 className="text-lg font-semibold mb-4">Filters</h3>
-                                      <Filters />
-                                  </div>
-                              </SheetContent>
-                          </Sheet>
-                      </div>
-                      <div>
-                        <div className="text-sm text-gray-600">Showing {list.length} result{list.length === 1 ? '' : 's'}</div>
-                        {opts.q && !opts.subcategory && <div className="text-xs text-gray-500">for &quot;{opts.q}&quot;</div>}
-                      </div>
-                  </div>
-              </div>
+            <div className="mb-4 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-4">
+                    <div className="md:hidden">
+                        <Sheet open={isFilterOpen} onOpenChange={setFilterOpen}>
+                            <SheetTrigger asChild>
+                                <Button variant="outline" size="icon">
+                                    <Filter className="h-4 w-4" />
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                                <div className="p-4 overflow-y-auto">
+                                    <h3 className="text-lg font-semibold mb-4">Filters</h3>
+                                    <Filters />
+                                </div>
+                            </SheetContent>
+                        </Sheet>
+                    </div>
+                    <div className="hidden sm:block">
+                      <div className="text-sm text-gray-600">Showing {list.length} result{list.length === 1 ? '' : 's'}</div>
+                      {opts.q && !opts.subcategory && <div className="text-xs text-gray-500">for &quot;{opts.q}&quot;</div>}
+                    </div>
+                </div>
               <SortBar />
             </div>
             {list.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
                 {list.map(p => (
                   <ProductCard key={p.id} p={p} />
                 ))}
