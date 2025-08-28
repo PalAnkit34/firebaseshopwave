@@ -7,17 +7,25 @@ import Link from 'next/link'
 import { useEffect, useState, useMemo } from 'react'
 import { IndianRupee, ShoppingCart, Users, Package } from 'lucide-react'
 
-const StatCard = ({ icon: Icon, title, value, color }: { icon: React.ElementType, title: string, value: string | number, color: string }) => (
-    <div className="card p-4 flex items-center gap-4">
-        <div className={`rounded-full p-3 ${color}`}>
-            <Icon className="h-6 w-6 text-white" />
+const StatCard = ({ icon: Icon, title, value, color, href }: { icon: React.ElementType, title: string, value: string | number, color: string, href?: string }) => {
+    const cardContent = (
+        <div className="card p-4 flex items-center gap-4 transition-transform transform hover:scale-105">
+            <div className={`rounded-full p-3 ${color}`}>
+                <Icon className="h-6 w-6 text-white" />
+            </div>
+            <div>
+                <div className="text-gray-500 text-sm">{title}</div>
+                <div className="text-2xl font-bold">{value}</div>
+            </div>
         </div>
-        <div>
-            <div className="text-gray-500 text-sm">{title}</div>
-            <div className="text-2xl font-bold">{value}</div>
-        </div>
-    </div>
-)
+    )
+    
+    if (href) {
+        return <a href={href}>{cardContent}</a>
+    }
+
+    return <div>{cardContent}</div>
+}
 
 export default function AdminPage() {
     const { orders } = useOrders()
@@ -52,13 +60,13 @@ export default function AdminPage() {
             <h1 className="text-3xl font-bold">Admin Dashboard</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard icon={IndianRupee} title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString('en-IN')}`} color="bg-green-500" />
-                <StatCard icon={ShoppingCart} title="Total Sales" value={stats.totalSales} color="bg-blue-500" />
+                <StatCard href="#orders" icon={IndianRupee} title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString('en-IN')}`} color="bg-green-500" />
+                <StatCard href="#orders" icon={ShoppingCart} title="Total Sales" value={stats.totalSales} color="bg-blue-500" />
                 <StatCard icon={Package} title="Total Products" value={PRODUCTS.length} color="bg-orange-500" />
                 <StatCard icon={Users} title="Total Customers" value={stats.totalCustomers} color="bg-purple-500" />
             </div>
 
-            <div className="card p-4">
+            <div id="orders" className="card p-4 scroll-mt-20">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold">Recent Orders</h2>
                      <button className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90">
