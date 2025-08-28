@@ -17,12 +17,12 @@ import { Filter } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const ayurvedicCategories = [
-  { name: 'Healthy Juice', href: '/search?category=Ayurvedic&subcategory=Beverages', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
-  { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Supplements', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
-  { name: 'Homeopathy', href: '/search?category=Homeopathy', image: 'https://images.unsplash.com/photo-1631049354023-866d3a95f50f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
-  { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Herbal-Powders', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
+  { name: 'Tablets', href: '/search?category=Ayurvedic&subcategory=Tablets', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+  { name: 'Supplements', href: '/search?category=Ayurvedic&subcategory=Supplements', image: 'https://images.unsplash.com/photo-1631049354023-866d3a95f50f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
+  { name: 'Herbal Powders', href: '/search?category=Ayurvedic&subcategory=Herbal-Powders', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
+  { name: 'Beverages', href: '/search?category=Ayurvedic&subcategory=Beverages', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
   { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1604580862942-5340152a7813?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
-  { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
+  { name: 'Groceries', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
 ];
 
 const techCategories = [
@@ -137,8 +137,8 @@ function SearchContent() {
     switch (opts.category) {
         case 'Ayurvedic':
             return <CategoryHeader 
-                title="Buy Online 100% Pure Products at Best Price"
-                description="Get all Ashram Products Delivered Anywhere in India - Order from your Home!"
+                title="100% Pure Ayurvedic Products"
+                description="Get authentic Ashram products delivered right to your doorstep, anywhere in India!"
                 linkText="Shop Now"
                 bannerImages={[
                     "https://storage.googleapis.com/stabl-media/pro-101/476e93e2-8958-4796-913a-f110a3070659.png",
