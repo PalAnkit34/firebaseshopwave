@@ -27,15 +27,10 @@ const ayurvedicSubCategories = [
   { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z3JvY2VyeSUyMHN0b3JlfGVufDB8fHx8MTc1NjM3ODk3N3ww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'grocery store' },
 ];
 
-const ayurvedicTertiaryCategories: Record<string, any[]> = {
-    'Ayurvedic Medicine': [
-        { name: 'Ark', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Ark', image: 'https://plus.unsplash.com/premium_photo-1678737104381-37466967733a?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal extract' },
-        { name: 'Tablets', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Tablets', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
-        { name: 'Oil', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Oil', image: 'https://images.unsplash.com/photo-1572455324483-c359ae4878a2?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal oil' },
-        { name: 'Skin Care', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Skin Care', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=60', dataAiHint: 'natural cosmetics' },
-    ],
-}
-
+const poojaSubCategories = [
+    { name: 'Dhoop', href: '/search?category=Pooja&subcategory=Dhoop', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Dhoop/photo_2024-03-05_07-10-38-300x300.webp?updatedAt=1756372192267', dataAiHint: 'incense dhoop' },
+    { name: 'Agarbatti', href: '/search?category=Pooja&subcategory=Agarbatti', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Aggarbatti/shanti-flora-2-300x300.jpg?updatedAt=1756372078860', dataAiHint: 'incense sticks' },
+];
 
 const techCategories = [
   { name: 'Mobiles', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
@@ -195,6 +190,19 @@ function SearchContent() {
                 bannerColor="bg-orange-50"
                 buttonColor="bg-orange-500 hover:bg-orange-600"
             />
+         case 'Pooja':
+            return <CategoryHeader 
+                title="Sacred Pooja Essentials"
+                description="Find all your pooja samagri in one place. Pure and authentic items for your rituals."
+                linkText="Explore Items"
+                bannerImages={[
+                    "https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1594580236058-f4a473455963?q=80&w=1200&auto=format&fit=crop",
+                ]}
+                categories={poojaSubCategories}
+                bannerColor="bg-amber-50"
+                buttonColor="bg-amber-600 hover:bg-amber-700"
+            />
         default:
              if (!opts.category) {
                  return <CategoryHeader 
@@ -210,8 +218,8 @@ function SearchContent() {
                         { name: 'Fashion', href: '/search?category=Fashion', image: fashionCategories[0].image, dataAiHint: 'stylish apparel' },
                         { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[1].image, dataAiHint: 'natural remedies' },
                         { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
+                        { name: 'Pooja', href: '/search?category=Pooja', image: poojaSubCategories[0].image, dataAiHint: 'pooja items' },
                         { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || '', dataAiHint: 'fresh groceries' },
-                        { name: 'Pooja Items', href: '/search?category=Pooja', image: ayurvedicSubCategories.find(c => c.name === 'Pooja Items')?.image || '', dataAiHint: 'holy items' },
                     ]}
                 />
             }
@@ -296,7 +304,7 @@ function SearchContent() {
   }
 
 
-  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && !['Ayurvedic', 'Tech', 'Fashion', 'Food & Drinks'].includes(opts.category)));
+  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && !['Ayurvedic', 'Tech', 'Fashion', 'Food & Drinks', 'Pooja'].includes(opts.category)));
 
 
   return (
@@ -385,5 +393,3 @@ export default function SearchPage() {
     </Suspense>
   )
 }
-
-    
