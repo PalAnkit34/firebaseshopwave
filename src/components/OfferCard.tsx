@@ -40,7 +40,7 @@ export default function OfferCard({ title, products, href }: { title: string; pr
   const animationKey = visibleProducts.map(p => p.id).join('-');
 
   return (
-    <div className="card p-4 shrink-0 w-[calc(100%-2rem)] md:w-[320px]">
+    <div className="card p-4">
         <h3 className="font-bold text-lg">{title}</h3>
         <p className="text-sm text-gray-500 mb-3">Top picks for you</p>
         <div className="relative grid grid-cols-2 grid-rows-2 gap-2 aspect-square">

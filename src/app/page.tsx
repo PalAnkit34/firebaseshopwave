@@ -78,7 +78,7 @@ export default function Home() {
 
       <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Today's Best Offers</h2>
-        <div className="no-scrollbar -mx-3 flex gap-3 overflow-x-auto px-3 pb-2 md:justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <OfferCard title="Top Tech Deals" products={techDeals} href="/search?category=Tech"/>
             <OfferCard title="Latest in Fashion" products={fashionDeals} href="/search?category=Fashion"/>
             <OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/>
