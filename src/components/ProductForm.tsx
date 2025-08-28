@@ -74,48 +74,57 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         }
     }
 
-    const Input = ({ name, label, value, ...props }: any) => (
+    const Input = ({ name, label, ...props }: any) => (
         <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700">{label}</label>
-            <input id={name} name={name} value={value} onChange={handleChange} {...props} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand focus:ring-brand sm:text-sm" />
+            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+            <input id={name} name={name} onChange={handleChange} {...props} className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand focus:ring-brand" />
         </div>
     )
 
-    const Select = ({ name, label, value, children, ...props }: any) => (
+    const Select = ({ name, label, children, ...props }: any) => (
          <div>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700">{label}</label>
-            <select id={name} name={name} value={value} onChange={props.onChange || handleChange} {...props} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand focus:ring-brand sm:text-sm">
+            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+            <select id={name} name={name} onChange={props.onChange || handleChange} {...props} className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand focus:ring-brand">
                 {children}
             </select>
         </div>
     )
+    
+    const TextArea = ({ name, label, ...props }: any) => (
+        <div>
+            <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+            <textarea id={name} name={name} onChange={handleChange} {...props} className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand focus:ring-brand" />
+        </div>
+    )
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
+        <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto p-1 pr-4">
+            <Input name="name" label="Product Name" value={formData.name} required />
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input name="name" label="Product Name" value={formData.name} required />
                 <Input name="brand" label="Brand" value={formData.brand} required />
+                <Input name="image" label="Image URL" value={formData.image} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select name="category" label="Category" value={formData.category} onChange={handleCategoryChange}>
                     {categories.map(c => <option key={c} value={c}>{c}</option>)}
                 </Select>
                 <Select name="subcategory" label="Subcategory" value={formData.subcategory}>
-                    {subcategories[formData.category || 'Tech']?.map(sc => <option key={sc} value={sc}>{sc}</option>)}
+                    {subcategories[formData.category || 'Tech']?.map(sc => <option key={sc} value={sc}>{sc.replace('-', ' ')}</option>)}
                 </Select>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Input name="original" label="Original Price" type="number" value={formData.price?.original} required />
                 <Input name="discounted" label="Discounted Price" type="number" value={formData.price?.discounted} />
                 <Input name="quantity" label="Stock Quantity" type="number" value={formData.quantity} required />
-                <Input name="image" label="Image URL" value={formData.image} />
-            </div>
-             <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Full Description</label>
-                <textarea id="description" name="description" value={formData.description} onChange={handleChange} rows={4} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand focus:ring-brand sm:text-sm"></textarea>
-            </div>
-             <div>
-                <label htmlFor="shortDescription" className="block text-sm font-medium text-gray-700">Short Description</label>
-                <input id="shortDescription" name="shortDescription" value={formData.shortDescription} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand focus:ring-brand sm:text-sm" />
             </div>
             
-            <div className="flex justify-end gap-2 pt-4">
+            <TextArea name="shortDescription" label="Short Description (for product card)" value={formData.shortDescription} rows={2} />
+            <TextArea name="description" label="Full Description (for product page)" value={formData.description} rows={4} />
+            
+            <div className="flex justify-end gap-2 pt-4 border-t sticky bottom-0 bg-white py-3">
                 <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
                 <Button type="submit">Save Product</Button>
             </div>
