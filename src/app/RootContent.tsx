@@ -16,7 +16,6 @@ export default function RootContent({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isAdminPage = pathname.startsWith('/admin');
-  const isTechLandingPage = pathname.startsWith('/search') && searchParams.get('category') === 'Tech' && !searchParams.get('subcategory');
 
   if (isAdminPage) {
     return (
@@ -25,13 +24,6 @@ export default function RootContent({
         <main className="container py-6 flex-grow">{children}</main>
       </>
     );
-  }
-
-  if (isTechLandingPage) {
-      return <>
-        {children}
-        <Toaster />
-      </>;
   }
 
   return (

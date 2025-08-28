@@ -17,7 +17,6 @@ import { Filter, ChevronLeft, ChevronRight, PanelLeftClose, PanelLeftOpen } from
 import { motion, AnimatePresence } from 'framer-motion'
 import CategoryGrid from '@/components/CategoryGrid';
 import { cn } from '@/lib/utils';
-import TechLandingPage from '@/components/TechLandingPage';
 
 const ayurvedicSubCategories = [
   { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1652122788538-9aba111c550e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxqdWljZSUyMGJvdHRsZXN8ZW58MHx8fHwxNzU2Mzc5MTM3fDA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'juice bottles' },
@@ -74,12 +73,12 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
     return (
         <div className="space-y-8 mb-8">
             <section>
-                <div className={`relative overflow-hidden rounded-2xl p-6 md:p-12 ${bannerColor}`}>
+                <div className={cn("relative overflow-hidden rounded-2xl p-6 md:p-12", bannerColor)}>
                     <div className="grid md:grid-cols-2 gap-6 items-center">
                         <div className="text-center md:text-left z-10">
                             <h1 className="text-3xl md:text-5xl font-bold text-gray-800">{title}</h1>
                             <p className="mt-4 text-gray-600">{description}</p>
-                            <Link href="#product-grid" className={`mt-6 inline-block text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors ${buttonColor}`}>
+                            <Link href="#product-grid" className={cn("mt-6 inline-block text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors", buttonColor)}>
                                 {linkText}
                             </Link>
                         </div>
@@ -133,10 +132,6 @@ function SearchContent() {
   
   const list = useMemo(() => filterProducts(PRODUCTS, opts), [sp])
   
-  if (opts.category === 'Tech' && !opts.subcategory && !opts.q) {
-    return <TechLandingPage />;
-  }
-
   const renderCategoryHeader = () => {
     if (opts.q || opts.subcategory || opts.tertiaryCategory) return null;
 
@@ -154,6 +149,20 @@ function SearchContent() {
                 categories={ayurvedicSubCategories}
                 bannerColor="bg-green-50"
                 buttonColor="bg-green-700 hover:bg-green-800"
+            />
+        case 'Tech':
+            return <CategoryHeader 
+                title="Latest in Tech"
+                description="Explore the newest gadgets and accessories to elevate your lifestyle."
+                linkText="Shop Tech"
+                bannerImages={[
+                    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1200&auto=format&fit=crop",
+                ]}
+                categories={techCategories}
+                bannerColor="bg-blue-50"
+                buttonColor="bg-blue-600 hover:bg-blue-700"
             />
         case 'Fashion':
              return <CategoryHeader 
