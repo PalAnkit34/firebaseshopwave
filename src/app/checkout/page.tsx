@@ -21,12 +21,12 @@ const paymentOptions = [
 ]
 
 export default function Checkout(){
-  const { items, total, clear } = useCart()
+  const { items, subtotal, totalShipping, totalTax, total, clear } = useCart()
   const { addresses, save, setDefault } = useAddressBook()
   const { placeOrder } = useOrders()
   const router = useRouter()
   const { toast } = useToast()
-  const [showForm, setShowForm] = useState(addresses.length === 0)
+  const [showForm, setShowForm] = useState(false)
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
   const [paymentMethod, setPaymentMethod] = useState('UPI')
   const [isProcessing, setIsProcessing] = useState(false)
@@ -36,6 +36,10 @@ export default function Checkout(){
       router.replace('/');
     }
   }, [items, router]);
+
+  useEffect(() => {
+    setShowForm(addresses.length === 0);
+  }, [addresses.length]);
 
   const handlePlaceOrder = () => {
     const addr = addresses.find(a => a.default) || addresses[0]
@@ -67,7 +71,10 @@ export default function Checkout(){
         body: JSON.stringify({ amount: total }),
       });
 
-      if (!res.ok) throw new Error('Failed to create order');
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to create order');
+      }
       
       const { order } = await res.json();
 
@@ -104,7 +111,8 @@ export default function Checkout(){
 
     } catch (error) {
       console.error(error);
-      toast({ title: "Error", description: "Could not initiate payment. Please try again.", variant: 'destructive' });
+      const errorMessage = error instanceof Error ? error.message : "Could not initiate payment. Please try again.";
+      toast({ title: "Error", description: errorMessage, variant: 'destructive' });
       setIsProcessing(false);
     }
   }
@@ -176,17 +184,21 @@ export default function Checkout(){
           </div>
           <div className="mt-4 space-y-2 border-t pt-4 text-sm">
             <div className="flex justify-between">
-              <span>Subtotal ({items.reduce((s,i)=>s+i.qty,0)} items)</span>
-              <span>₹{total.toLocaleString('en-IN')}</span>
+              <span>Subtotal</span>
+              <span>₹{subtotal.toLocaleString('en-IN')}</span>
             </div>
-             <div className="flex justify-between text-green-600">
-                  <span>Delivery</span>
-                  <span>Free</span>
+             <div className="flex justify-between">
+                  <span>Shipping</span>
+                  <span>{totalShipping > 0 ? `₹${totalShipping.toLocaleString('en-IN')}` : 'Free'}</span>
+              </div>
+              <div className="flex justify-between">
+                  <span>Taxes</span>
+                  <span>₹{totalTax.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
           </div>
           <div className="mt-3 flex justify-between font-semibold border-t pt-3">
             <span>Total Amount</span>
-            <span>₹{total.toLocaleString('en-IN')}</span>
+            <span>₹{total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </div>
           
           <div className="mt-4">
@@ -210,7 +222,7 @@ export default function Checkout(){
               className="mt-4 w-full rounded-xl bg-brand py-2.5 font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50" 
               disabled={isProcessing}
           >
-              {isProcessing ? 'Processing...' : (paymentMethod === 'COD' ? 'Place Order' : 'Pay Now')}
+              {isProcessing ? 'Processing...' : (paymentMethod === 'COD' ? 'Place Order' : `Pay ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)}
           </button>
           
           <Link href="/cart" className="mt-2 block text-center text-sm text-gray-500 hover:underline">Edit Cart</Link>

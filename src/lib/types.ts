@@ -22,7 +22,8 @@ export type Product = {
   tags?: string[]
   sku?: string
   variants?: Variant[]
-  shipping?: { weight?: number; freeShipping?: boolean }
+  shippingCost?: number;
+  taxPercent?: number;
   inventory?: { inStock: boolean; lowStockThreshold?: number }
   ratings?: Rating
   status?: 'active'|'inactive'|'out_of_stock'|'discontinued'

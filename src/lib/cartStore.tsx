@@ -2,6 +2,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Product } from './types'
+import { PRODUCTS } from './sampleData'
 
 export type CartItem = Pick<Product, 'id' | 'name' | 'image'> & {
   qty: number
@@ -14,6 +15,9 @@ type CartState = {
   remove: (id: string) => void
   setQty: (id: string, qty: number) => void
   clear: () => void
+  subtotal: number
+  totalShipping: number
+  totalTax: number
   total: number
 }
 
@@ -49,8 +53,25 @@ export const useCart = create<CartState>()(
       clear: () => {
         set({ items: [] })
       },
-      get total() {
+      get subtotal() {
         return get().items.reduce((s, i) => s + i.qty * i.price, 0)
+      },
+      get totalShipping() {
+        return get().items.reduce((acc, cartItem) => {
+          const product = PRODUCTS.find(p => p.id === cartItem.id)
+          return acc + (product?.shippingCost || 0) * cartItem.qty;
+        }, 0)
+      },
+      get totalTax() {
+        return get().items.reduce((acc, cartItem) => {
+          const product = PRODUCTS.find(p => p.id === cartItem.id)
+          const taxRate = product?.taxPercent || 0
+          return acc + (cartItem.price * cartItem.qty * (taxRate / 100));
+        }, 0)
+      },
+      get total() {
+        const state = get();
+        return state.subtotal + state.totalShipping + state.totalTax;
       },
     }),
     { name: 'cart-storage' }

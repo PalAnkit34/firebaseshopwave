@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { Trash2 } from 'lucide-react'
 
 export default function CartPage(){
-  const { items, setQty, remove, total } = useCart()
+  const { items, setQty, remove, subtotal, totalShipping, totalTax, total } = useCart()
   return (
     <div>
       <h1 className="mb-4 text-xl font-semibold">Your Cart</h1>
@@ -43,16 +43,20 @@ export default function CartPage(){
             <div className="mt-3 space-y-2 border-b pb-3 text-sm">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>₹{total.toLocaleString('en-IN')}</span>
+                <span>₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
-              <div className="flex justify-between text-green-600">
-                <span>Delivery</span>
-                <span>Free</span>
+              <div className="flex justify-between">
+                <span>Shipping</span>
+                <span>{totalShipping > 0 ? `₹${totalShipping.toLocaleString('en-IN')}`: 'Free'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Taxes</span>
+                <span>₹{totalTax.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
             <div className="mt-3 flex justify-between font-semibold">
                 <span>Total Amount</span>
-                <span>₹{total.toLocaleString('en-IN')}</span>
+                <span>₹{total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             </div>
             <Link href="/checkout" className="mt-4 block w-full rounded-xl bg-brand py-2.5 text-center font-semibold text-white transition-colors hover:bg-brand/90">Checkout</Link>
           </div>

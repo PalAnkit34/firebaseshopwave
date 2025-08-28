@@ -27,6 +27,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year Warranty',
+    shippingCost: 50,
+    taxPercent: 18,
   },
   {
     id: 'P1002',
@@ -49,6 +51,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P1003',
@@ -71,6 +75,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: false,
     warranty: '2 Years Onsite Warranty',
+    shippingCost: 100,
+    taxPercent: 18,
   },
     {
     id: 'P1004',
@@ -93,6 +99,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 10 },
     codAvailable: false,
     warranty: '1 Year International Warranty',
+    shippingCost: 150,
+    taxPercent: 28,
   },
   {
     id: 'P2001',
@@ -114,6 +122,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 640 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 12,
   },
   {
     id: 'P2002',
@@ -135,6 +145,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 980 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 40,
+    taxPercent: 12,
   },
     {
     id: 'P2003',
@@ -156,6 +168,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 1500 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 12,
   },
   {
     id: 'P3001',
@@ -177,6 +191,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.1, count: 213 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 30,
+    taxPercent: 5,
   },
    {
     id: 'P3002',
@@ -198,6 +214,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.4, count: 450 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 25,
+    taxPercent: 5,
   },
   {
     id: 'P1005',
@@ -219,6 +237,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: false,
     warranty: '1 Year Apple Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P1006',
@@ -240,6 +260,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P1007',
@@ -261,6 +283,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: false,
     warranty: '1 Year Apple Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P1008',
@@ -282,6 +306,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P1009',
@@ -303,6 +329,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 10 },
     codAvailable: true,
     warranty: '1 Year Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P1010',
@@ -324,6 +352,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 15 },
     codAvailable: true,
     warranty: '2 Years Limited Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P2004',
@@ -344,6 +374,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 8500 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 12,
   },
   {
     id: 'P2005',
@@ -364,6 +396,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 750 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 12,
   },
   {
     id: 'P2006',
@@ -384,6 +418,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 6200 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P2007',
@@ -404,6 +440,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 9800 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 12,
   },
   {
     id: 'P3003',
@@ -424,6 +462,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 15000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 20,
+    taxPercent: 5,
   },
   {
     id: 'P3004',
@@ -444,6 +484,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 12500 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 50,
+    taxPercent: 5,
   },
   {
     id: 'P4001',
@@ -465,6 +507,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 10 },
     codAvailable: true,
     warranty: '5 Years Warranty',
+    shippingCost: 80,
+    taxPercent: 12,
   },
   {
     id: 'P4002',
@@ -486,6 +530,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 10 },
     codAvailable: true,
     warranty: '2 Years Warranty',
+    shippingCost: 60,
+    taxPercent: 12,
   },
   {
     id: 'P4003',
@@ -507,6 +553,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 15 },
     codAvailable: true,
     warranty: '2 Years Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P5001',
@@ -527,6 +575,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 25000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 15,
+    taxPercent: 5,
   },
   {
     id: 'P5002',
@@ -547,6 +597,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 11000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 35,
+    taxPercent: 5,
   },
   {
     id: 'P6001',
@@ -567,6 +619,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 35000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 5,
+    taxPercent: 0,
   },
   {
     id: 'P6002',
@@ -587,6 +641,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 28000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 45,
+    taxPercent: 0,
   },
   {
     id: 'P6003',
@@ -607,6 +663,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 45000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 20,
+    taxPercent: 5,
   },
   {
     id: 'P1011',
@@ -628,6 +686,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year Onsite Warranty',
+    shippingCost: 150,
+    taxPercent: 28,
   },
   {
     id: 'P1012',
@@ -649,6 +709,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P2008',
@@ -669,6 +731,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.4, count: 3200 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P3005',
@@ -689,6 +753,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 6700 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 15,
+    taxPercent: 5,
   },
   {
     id: 'P4004',
@@ -710,6 +776,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 10 },
     codAvailable: true,
     warranty: '1 Year Warranty',
+    shippingCost: 70,
+    taxPercent: 12,
   },
   {
     id: 'P5003',
@@ -730,6 +798,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.4, count: 19000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 55,
+    taxPercent: 5,
   },
   {
     id: 'P6004',
@@ -750,6 +820,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 22000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 10,
+    taxPercent: 5,
   },
   {
     id: 'P1013',
@@ -771,6 +843,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: false,
     warranty: '1 Year Apple Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P2009',
@@ -791,6 +865,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 1250 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 60,
+    taxPercent: 12,
   },
   {
     id: 'P3006',
@@ -811,6 +887,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.4, count: 9800 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 40,
+    taxPercent: 5,
   },
   {
     id: 'P4005',
@@ -832,6 +910,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 15 },
     codAvailable: false,
     warranty: '2 Years Comprehensive Warranty',
+    shippingCost: 500,
+    taxPercent: 28,
   },
   {
     id: 'P5004',
@@ -852,6 +932,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 17000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 45,
+    taxPercent: 5,
   },
   {
     id: 'P6005',
@@ -872,6 +954,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 14000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 30,
+    taxPercent: 5,
   },
    {
     id: 'P1014',
@@ -893,6 +977,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '2 Years Manufacturer Warranty',
+    shippingCost: 120,
+    taxPercent: 18,
   },
   {
     id: 'P2010',
@@ -913,6 +999,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.4, count: 4800 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 12,
   },
   {
     id: 'P4006',
@@ -934,6 +1022,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year Limited Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P6006',
@@ -954,6 +1044,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 12000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 100,
+    taxPercent: 0,
   },
   {
     id: 'P2011',
@@ -975,6 +1067,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P4007',
@@ -996,6 +1090,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '1 Year + 3 Years Free Service',
+    shippingCost: 200,
+    taxPercent: 18,
   },
   {
     id: 'P6007',
@@ -1016,6 +1112,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 32000 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 10,
+    taxPercent: 5,
   },
   {
     id: 'P1015',
@@ -1037,6 +1135,8 @@ export const PRODUCTS: Product[] = [
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
     warranty: '10 Years Limited Warranty',
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P2012',
@@ -1057,6 +1157,8 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 7800 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    shippingCost: 0,
+    taxPercent: 18,
   },
   {
     id: 'P3007',
@@ -1077,5 +1179,7 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 5400 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    shippingCost: 40,
+    taxPercent: 5,
   }
 ]
