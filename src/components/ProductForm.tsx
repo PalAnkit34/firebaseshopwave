@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import type { Product } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { PlusCircle, Trash2, Upload } from 'lucide-react'
-import { IKContext, IKUpload } from 'imagekit-react';
+import { IKContext, IKUpload } from 'imagekitio-react';
 import { useToast } from '@/hooks/use-toast'
 
 const categories = ['Tech', 'Fashion', 'Ayurvedic', 'Home', 'Beauty', 'Groceries']
