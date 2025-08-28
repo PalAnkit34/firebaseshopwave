@@ -867,7 +867,7 @@ export const PRODUCTS: Product[] = [
     quantity: 100,
     price: { original: 50, currency: '₹' },
     shortDescription: 'Provides immediate and long-lasting relief from joint pain.',
-    description: 'दर्दनाक जोड़ों बहुत परेशानी हो सकती है और आपको अपनी दिनचर्या को आसानी से पूरा करने से रोक सकती है । स्पेशल मालिश तेल आपको जोड़ों के दर्द से तत्काल और लंबे समय तक चलने वाली राहत देता है ।',
+    description: 'दर्दनाक जोड़ों बहुत परेशानी हो सकती है और आपको अपनी दिनचर्या को आसानी से पूरा करने से रोक सकती है । स्पेशल मालिश तेल आपको जोड़ों के दर्द से तत्काल और लंबे समय तक चलने वाली राहत देता है जिससे आपको अपने रोजमर्रा के कार्यों को सक्रिय रूप से बनाए रखने में मदद मिलती है ।',
     specifications: { 'Ingredients': 'Mustard Oil, Gandhak, Nilgiri Oil, Kapoor', 'Dosage': 'Massage gently on painful joints.' },
     features: ['100% Natural and Pure Products', '100% Secure Payments', 'Efficient Price'],
     inventory: { inStock: true },
@@ -913,6 +913,48 @@ export const PRODUCTS: Product[] = [
     inventory: { inStock: true },
     ratings: { average: 4.8, count: 200 },
     returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+  },
+
+  // Ayurvedic Products - Skin Care
+  {
+    id: 'P_AYUR_SC_01',
+    slug: 'palash-natural-colours',
+    name: 'Palash Natural Colours',
+    brand: 'AyurArogya',
+    category: 'Ayurvedic',
+    subcategory: 'Ayurvedic Medicine',
+    tertiaryCategory: 'Skin Care',
+    image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/ayrvedic%20medicines/Skin%20Care/palash-300x300.webp?updatedAt=1756360975227',
+    quantity: 100,
+    price: { original: 10, currency: '₹' },
+    shortDescription: 'Natural color made from Palash flowers for Holi.',
+    description: 'वसंत ऋतु में पलाश लाल फूलों से लद जाता है। इन फूलों को पानी में उबालकर केसरी रंग बनायें। यह रंग पानी में मिलाकर स्नान करने से आने वाली ग्रीष्म ऋतु की तपन से रक्षा होती है, कई प्रकार के चर्मरोग भी दूर होते हैं।',
+    specifications: {},
+    features: ['100% Natural', 'Safe for Skin', 'Eco-friendly'],
+    inventory: { inStock: true },
+    ratings: { average: 4.9, count: 50 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
+  },
+  {
+    id: 'P_AYUR_SC_02',
+    slug: 'daad-khaj-khujli-malham',
+    name: 'Daad Khaj Khujli Ka Malham [Ayurvedic Itching Cream]',
+    brand: 'Achyutaya',
+    category: 'Ayurvedic',
+    subcategory: 'Ayurvedic Medicine',
+    tertiaryCategory: 'Skin Care',
+    image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/ayrvedic%20medicines/Skin%20Care/malham-300x300.jpg?updatedAt=1756360975008',
+    quantity: 100,
+    price: { original: 30, currency: '₹' },
+    shortDescription: 'Useful for all types of skin diseases, itching, and ringworm.',
+    description: 'मलहम सभी प्रकार के चर्मरोग, खाज-खुजली पर लगाने के लिए उपयोगी है । पैर के छाले, पैर की चमड़ी का कटना इत्यादि में मलहम बहुत लाभदायक है ।',
+    specifications: {'Ingredients': 'Neem, Borax, Sulphur, Oil Base'},
+    features: ['Heals wounds quickly', 'Effective on cracked heels', 'Treats fungal infections'],
+    inventory: { inStock: true },
+    ratings: { average: 4.8, count: 120 },
+    returnPolicy: { eligible: false },
     codAvailable: true,
   },
 
@@ -1007,3 +1049,5 @@ export const PRODUCTS: Product[] = [
     tags: ['apple', 'iphone', 'ios', 'smartphone']
   },
 ];
+
+    
