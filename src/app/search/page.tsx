@@ -204,7 +204,7 @@ function SearchContent() {
                     categories={[
                         { name: 'Tech', href: '/search?category=Tech', image: techCategories[0].image, dataAiHint: 'latest gadgets' },
                         { name: 'Fashion', href: '/search?category=Fashion', image: fashionCategories[0].image, dataAiHint: 'stylish apparel' },
-                        { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[0].image, dataAiHint: 'natural remedies' },
+                        { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[1].image, dataAiHint: 'natural remedies' },
                         { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
                         { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || '', dataAiHint: 'fresh groceries' },
                         { name: 'Pooja Items', href: '/search?category=Pooja', image: ayurvedicSubCategories.find(c => c.name === 'Pooja Items')?.image || '', dataAiHint: 'holy items' },
