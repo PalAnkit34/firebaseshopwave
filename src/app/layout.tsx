@@ -8,6 +8,9 @@ import { OrdersProvider } from '@/lib/ordersStore';
 import OfferPopup from '@/components/OfferPopup';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toast';
+import { usePathname } from 'next/navigation';
+import AdminLayout from './admin/layout';
+import RootContent from './RootContent';
 
 
 export const metadata: Metadata = {
@@ -38,14 +41,7 @@ export default function RootLayout({
       <body className="font-body antialiased bg-background" suppressHydrationWarning>
         <OrdersProvider>
           <AddressProvider>
-            <div className="flex flex-col min-h-screen">
-              <TopBar />
-              <main className="container py-4 pb-24 md:pb-8 flex-grow">{children}</main>
-              <Footer />
-            </div>
-            <BottomNav />
-            <OfferPopup />
-            <Toaster />
+            <RootContent>{children}</RootContent>
           </AddressProvider>
         </OrdersProvider>
       </body>
