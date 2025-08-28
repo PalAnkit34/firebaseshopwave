@@ -3,6 +3,7 @@ import type { Product } from './types'
 
 // A tiny catalog to start. Replace with API later.
 export const PRODUCTS: Product[] = [
+  // Ayurvedic Products
   {
     id: 'P_AYUR_T_01',
     slug: 'alfalfa-1x-weakness-medicine',
@@ -211,7 +212,95 @@ export const PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 95 },
     returnPolicy: { eligible: false },
     codAvailable: true,
-  }
-]
+  },
 
-    
+  // Fashion Products
+  {
+    id: 'P_FASH_M_01',
+    slug: 'mens-ethnic-cotton-kurta',
+    name: 'Men\'s Ethnic Cotton Kurta',
+    brand: 'DesiWear',
+    category: 'Fashion',
+    subcategory: 'Men-Ethnic',
+    image: 'https://images.unsplash.com/photo-1593032228653-25cb157b70a8?q=80&w=800&auto=format&fit=crop',
+    extraImages: [
+        'https://images.unsplash.com/photo-1617137968423-c6e4e242343a?q=80&w=800&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1617137968447-160aa2b7f032?q=80&w=800&auto=format&fit=crop'
+    ],
+    quantity: 150,
+    price: { original: 1499, discounted: 799, currency: '₹' },
+    description: 'A comfortable and stylish cotton kurta for men, perfect for festive occasions and casual wear. Made from high-quality fabric for a soft feel and elegant look.',
+    shortDescription: 'Stylish & comfy cotton kurta for festive or casual wear.',
+    features: ['100% premium cotton', 'Hand-stitched detailing', 'Breathable fabric'],
+    specifications: { Fit: 'Regular', 'Sleeve Type': 'Full Sleeve', Care: 'Machine Wash' },
+    ratings: { average: 4.5, count: 120 },
+    codAvailable: true,
+    returnPolicy: { eligible: true, duration: 10 },
+    warranty: 'No Warranty',
+    tags: ['kurta', 'ethnic wear', 'men fashion', 'desiwear']
+  },
+  {
+    id: 'P_FASH_W_01',
+    slug: 'womens-anarkali-kurta-set',
+    name: 'Women\'s Anarkali Kurta Set',
+    brand: 'DesiWear',
+    category: 'Fashion',
+    subcategory: 'Women-Ethnic',
+    image: 'https://images.unsplash.com/photo-1622354223106-24c01798835d?q=80&w=800&auto=format&fit=crop',
+    quantity: 80,
+    price: { original: 2999, discounted: 1499, currency: '₹' },
+    description: 'Elegant Anarkali kurta set for women, crafted from fine rayon fabric. Comes with a matching dupatta and churidar. Perfect for weddings and parties.',
+    shortDescription: 'Elegant rayon Anarkali set with dupatta and churidar.',
+    features: ['Soft rayon fabric', 'Intricate embroidery', 'Comes as a complete set'],
+    specifications: { Fabric: 'Rayon', Style: 'Anarkali', 'Occasion': 'Festive' },
+    ratings: { average: 4.8, count: 250 },
+    codAvailable: true,
+    returnPolicy: { eligible: true, duration: 10 },
+    warranty: 'No Warranty',
+    tags: ['anarkali', 'ethnic wear', 'women fashion', 'desiwear']
+  },
+  {
+    id: 'P_TECH_M_01',
+    slug: 'galaxy-a54-5g',
+    name: 'Samsung Galaxy A54 5G (Awesome Violet, 8GB, 128GB Storage)',
+    brand: 'Samsung',
+    category: 'Tech',
+    subcategory: 'Mobiles',
+    image: 'https://images.unsplash.com/photo-1678830440338-467537a6a422?q=80&w=800&auto=format&fit=crop',
+    extraImages: [
+        'https://images.unsplash.com/photo-1678830440375-816783f289b4?q=80&w=800&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1678830440330-801262d9894f?q=80&w=800&auto=format&fit=crop'
+    ],
+    quantity: 100,
+    price: { original: 41999, discounted: 35499, currency: '₹' },
+    description: 'A well-balanced 5G smartphone with a vibrant AMOLED display, capable OIS camera, and a long-lasting battery. Features IP67 water resistance for added durability.',
+    shortDescription: 'Bright AMOLED, OIS camera, all-day battery.',
+    features: ['6.4" FHD+ Super AMOLED Display', '50MP OIS Main Camera', '5000mAh Battery', 'IP67 Water Resistant'],
+    specifications: { RAM: '8 GB', ROM: '128 GB', 'Processor': 'Exynos 1380' },
+    ratings: { average: 4.3, count: 4500 },
+    codAvailable: true,
+    returnPolicy: { eligible: true, duration: 7 },
+    warranty: '1 Year Manufacturer Warranty',
+    tags: ['samsung', 'galaxy', '5g', 'smartphone', 'android']
+  },
+  {
+    id: 'P_TECH_M_02',
+    slug: 'apple-iphone-15',
+    name: 'Apple iPhone 15 (128 GB) - Blue',
+    brand: 'Apple',
+    category: 'Tech',
+    subcategory: 'Mobiles',
+    image: 'https://images.unsplash.com/photo-1700216223237-859c9a239af4?q=80&w=800&auto=format&fit=crop',
+    quantity: 75,
+    price: { original: 79900, currency: '₹' },
+    description: 'The iPhone 15 brings you the Dynamic Island, a 48MP Main camera, and USB-C — all in a durable color-infused glass and aluminum design.',
+    shortDescription: 'Dynamic Island, 48MP camera, USB-C.',
+    features: ['6.1-inch Super Retina XDR display', 'Dynamic Island', 'A16 Bionic chip', 'USB-C connector'],
+    specifications: { 'Display Size': '6.1 inches', 'Chip': 'A16 Bionic', 'Camera': '48MP Main' },
+    ratings: { average: 4.7, count: 12000 },
+    codAvailable: false,
+    returnPolicy: { eligible: true, duration: 7 },
+    warranty: '1 Year Apple Warranty',
+    tags: ['apple', 'iphone', 'ios', 'smartphone']
+  },
+];
