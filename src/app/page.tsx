@@ -1,4 +1,6 @@
+'use client';
 
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import BannerSlider from '@/components/BannerSlider';
@@ -12,13 +14,36 @@ const categories = [
   { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
 ];
 
-const latestProducts = PRODUCTS.slice(0, 8);
 const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted).slice(0, 8);
 const fashionDeals = PRODUCTS.filter(p => p.category === 'Fashion' && p.price.discounted).slice(0, 8);
 const ayurvedicDeals = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted).slice(0, 8);
-
+const filterCategories = ['All', 'Tech', 'Fashion', 'Ayurvedic'];
+const PRODUCTS_TO_SHOW = 8;
 
 export default function Home() {
+  const [visibleCount, setVisibleCount] = useState(PRODUCTS_TO_SHOW);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  const filteredProducts = useMemo(() => {
+    if (selectedCategory === 'All') {
+      return PRODUCTS;
+    }
+    return PRODUCTS.filter(p => p.category === selectedCategory);
+  }, [selectedCategory]);
+
+  const visibleProducts = useMemo(() => {
+    return filteredProducts.slice(0, visibleCount);
+  }, [filteredProducts, visibleCount]);
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+    setVisibleCount(PRODUCTS_TO_SHOW);
+  };
+  
+  const handleViewMore = () => {
+    setVisibleCount(prevCount => prevCount + PRODUCTS_TO_SHOW);
+  };
+
   return (
     <div className="space-y-8">
       <BannerSlider />
@@ -61,11 +86,37 @@ export default function Home() {
 
       <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Featured Products</h2>
+        
+        <div className="flex justify-center mb-4">
+          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 bg-gray-100 rounded-full p-1">
+            {filterCategories.map(c => (
+              <button 
+                key={c} 
+                onClick={() => handleCategoryClick(c)} 
+                className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${selectedCategory === c ? 'bg-brand text-white shadow' : 'text-gray-700 hover:bg-gray-200'}`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+        
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-           {latestProducts.map(p => (
+           {visibleProducts.map(p => (
             <ProductCard key={p.id} p={p} />
           ))}
         </div>
+        
+        {visibleCount < filteredProducts.length && (
+          <div className="text-center mt-8">
+            <button
+              onClick={handleViewMore}
+              className="rounded-xl bg-brand/90 px-8 py-3 font-semibold text-white transition-colors hover:bg-brand"
+            >
+              View More
+            </button>
+          </div>
+        )}
       </section>
       
     </div>
