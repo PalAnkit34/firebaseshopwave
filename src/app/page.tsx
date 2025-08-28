@@ -4,6 +4,7 @@ import Image from 'next/image';
 import BannerSlider from '@/components/BannerSlider';
 import { PRODUCTS } from '@/lib/sampleData';
 import ProductCard from '@/components/ProductCard';
+import ProductSlider from '@/components/ProductSlider';
 
 const categories = [
   { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
@@ -12,6 +13,7 @@ const categories = [
 ];
 
 const latestProducts = PRODUCTS.slice(0, 8);
+const dealProducts = PRODUCTS.filter(p => p.price.discounted).slice(0, 10);
 
 export default function Home() {
   return (
@@ -43,6 +45,11 @@ export default function Home() {
             </Link>
           ))}
         </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-bold mb-4 text-center">Top Deals</h2>
+        <ProductSlider products={dealProducts} />
       </section>
 
       <section>
