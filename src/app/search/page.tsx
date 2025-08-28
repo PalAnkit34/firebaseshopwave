@@ -25,12 +25,18 @@ const ayurvedicSubCategories = [
   { name: 'Groceries', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
 ];
 
-const ayurvedicTertiaryCategories = [
-    { name: 'Ark', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Ark', image: 'https://plus.unsplash.com/premium_photo-1678737104381-37466967733a?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal extract' },
-    { name: 'Tablets', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Tablets', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
-    { name: 'Oil', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Oil', image: 'https://images.unsplash.com/photo-1572455324483-c359ae4878a2?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal oil' },
-    { name: 'Skin Care', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Skin Care', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=60', dataAiHint: 'natural cosmetics' },
-]
+const ayurvedicTertiaryCategories: Record<string, any[]> = {
+    'Ayurvedic Medicine': [
+        { name: 'Ark', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Ark', image: 'https://plus.unsplash.com/premium_photo-1678737104381-37466967733a?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal extract' },
+        { name: 'Tablets', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Tablets', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+        { name: 'Oil', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Oil', image: 'https://images.unsplash.com/photo-1572455324483-c359ae4878a2?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal oil' },
+        { name: 'Skin Care', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Skin Care', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=60', dataAiHint: 'natural cosmetics' },
+    ],
+    'Healthy Juice': [
+        { name: 'Amla Juice', href: '/search?category=Ayurvedic&subcategory=Healthy Juice&tertiaryCategory=Amla Juice', image: 'https://images.unsplash.com/photo-1620573674482-a704b90740a3?w=800&auto=format&fit=crop&q=60', dataAiHint: 'amla fruit' },
+        { name: 'Aloe Vera Juice', href: '/search?category=Ayurvedic&subcategory=Healthy Juice&tertiaryCategory=Aloe Vera Juice', image: 'https://images.unsplash.com/photo-1597361788544-a6b57d86411e?w=800&auto=format&fit=crop&q=60', dataAiHint: 'aloe vera' },
+    ]
+}
 
 
 const techCategories = [
@@ -192,16 +198,21 @@ function SearchContent() {
   }
 
   const renderTertiaryCategoryHeader = () => {
-      if (opts.category !== 'Ayurvedic' || opts.subcategory !== 'Ayurvedic Medicine' || opts.tertiaryCategory) return null;
+      const sub = opts.subcategory;
+      if (opts.category !== 'Ayurvedic' || !sub || opts.tertiaryCategory) return null;
+      
+      const tertiaryCategories = ayurvedicTertiaryCategories[sub];
+      if (!tertiaryCategories || tertiaryCategories.length === 0) return null;
+      
       return <CategoryHeader 
-                title="Ayurvedic Medicine"
+                title={sub.replace(/-/g, ' ')}
                 description="Traditional and effective remedies for your health and well-being."
-                linkText="Explore Medicines"
+                linkText="Explore Now"
                 bannerImages={[
                      "https://images.unsplash.com/photo-1581075379766-c1316f1a892b?w=800&auto=format&fit=crop&q=60",
                      "https://images.unsplash.com/photo-1584308666744-8480404b63ae?w=800&auto=format&fit=crop&q=60",
                 ]}
-                categories={ayurvedicTertiaryCategories}
+                categories={tertiaryCategories}
                 bannerColor="bg-emerald-50"
                 buttonColor="bg-emerald-700 hover:bg-emerald-800"
             />
