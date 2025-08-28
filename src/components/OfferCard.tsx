@@ -20,8 +20,10 @@ const useProductCycler = (products: Product[], count: number, interval: number) 
   }, [products.length, count, interval]);
 
   const getVisibleProducts = () => {
+    if (products.length === 0) return [];
     const visible: Product[] = [];
     for (let i = 0; i < count; i++) {
+        // Loop back to the start if we run out of products
         visible.push(products[(startIndex + i) % products.length]);
     }
     return visible;
@@ -31,23 +33,28 @@ const useProductCycler = (products: Product[], count: number, interval: number) 
 };
 
 export default function OfferCard({ title, products, href }: { title: string; products: Product[]; href: string }) {
-  const visibleProducts = useProductCycler(products, 4, 3000);
+  // We need 4 products for a 2x2 grid. Cycle every 5 seconds.
+  const visibleProducts = useProductCycler(products, 4, 5000);
+
+  // A unique key for the AnimatePresence component based on the visible products
+  const animationKey = visibleProducts.map(p => p.id).join('-');
 
   return (
     <div className="card p-4 shrink-0 w-[calc(100%-2rem)] md:w-[320px]">
         <h3 className="font-bold text-lg">{title}</h3>
         <p className="text-sm text-gray-500 mb-3">Top picks for you</p>
         <div className="relative grid grid-cols-2 grid-rows-2 gap-2 aspect-square">
-             <AnimatePresence>
-                {visibleProducts.map((p, index) => (
-                    <motion.div
-                        key={p.id}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <Link href={`/product/${p.slug}`} className="block w-full h-full relative rounded-lg overflow-hidden group">
+             <AnimatePresence initial={false}>
+                <motion.div
+                    key={animationKey} // Key changes when products cycle
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8, ease: 'easeInOut' }}
+                    className="grid grid-cols-2 grid-rows-2 gap-2 absolute inset-0"
+                >
+                    {visibleProducts.map((p) => (
+                        <Link key={p.id} href={`/product/${p.slug}`} className="block w-full h-full relative rounded-lg overflow-hidden group">
                             <Image
                                 src={p.image}
                                 alt={p.name}
@@ -57,8 +64,8 @@ export default function OfferCard({ title, products, href }: { title: string; pr
                             />
                             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
                         </Link>
-                    </motion.div>
-                ))}
+                    ))}
+                </motion.div>
              </AnimatePresence>
         </div>
         <Link href={href} className="block mt-4 text-center text-sm font-semibold text-brand hover:underline">
