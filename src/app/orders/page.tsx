@@ -4,15 +4,21 @@ import { useOrders } from '@/lib/ordersStore'
 import { PRODUCTS } from '@/lib/sampleData'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function OrdersPage(){
   const { orders, clearNewOrderStatus } = useOrders()
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    setIsClient(true)
     // When the user visits this page, clear the new order notification
     clearNewOrderStatus();
   }, [clearNewOrderStatus]);
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
 
   return (
     <div>

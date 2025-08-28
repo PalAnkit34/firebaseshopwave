@@ -5,17 +5,23 @@ import { PRODUCTS } from '@/lib/sampleData'
 import ProductCard from '@/components/ProductCard'
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function WishlistPage() {
   const { ids, clearNewItemStatus } = useWishlist()
   const wishedProducts = PRODUCTS.filter(p => ids.includes(p.id))
+  const [isClient, setIsClient] = useState(false)
+
 
   useEffect(() => {
+    setIsClient(true)
     // When the user visits this page, clear the new item notification
     clearNewItemStatus();
   }, [clearNewItemStatus]);
 
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
 
   return (
     <div>
