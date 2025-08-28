@@ -30,6 +30,7 @@ export default function Checkout(){
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
   const [paymentMethod, setPaymentMethod] = useState('UPI')
   const [isProcessing, setIsProcessing] = useState(false)
+  const [upiId, setUpiId] = useState('');
 
   useEffect(() => {
     if (items.length === 0) {
@@ -86,8 +87,6 @@ export default function Checkout(){
         description: 'E-Commerce Transaction',
         order_id: order.id,
         handler: async function (response: any) {
-          // Here you would typically verify the payment signature on the backend
-          // For this demo, we'll assume it's successful
           handlePlaceOrder();
         },
         prefill: {
@@ -208,14 +207,32 @@ export default function Checkout(){
               <h3 className="text-md font-semibold mb-2">Payment Method</h3>
               <div className="space-y-2">
                   {paymentOptions.map(opt => (
-                      <label key={opt.id} className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`}>
-                          <input type="radio" name="paymentMethod" value={opt.id} checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="h-4 w-4 text-brand focus:ring-brand" />
-                          <opt.icon className="h-6 w-6 text-gray-600" />
-                          <div>
-                              <div className="font-semibold text-sm">{opt.title}</div>
-                              <div className="text-xs text-gray-500">{opt.description}</div>
-                          </div>
-                      </label>
+                      <div key={opt.id}>
+                          <label className={`flex items-center gap-3 rounded-xl border p-3 cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-brand ring-2 ring-brand/30' : 'border-gray-200 hover:border-gray-400'}`}>
+                              <input type="radio" name="paymentMethod" value={opt.id} checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="h-4 w-4 text-brand focus:ring-brand" />
+                              <opt.icon className="h-6 w-6 text-gray-600" />
+                              <div>
+                                  <div className="font-semibold text-sm">{opt.title}</div>
+                                  <div className="text-xs text-gray-500">{opt.description}</div>
+                              </div>
+                          </label>
+                          {paymentMethod === 'UPI' && opt.id === 'UPI' && (
+                              <div className="p-3 bg-gray-50 rounded-b-xl border border-t-0">
+                                  <div className="flex flex-col items-center">
+                                      <Image src="https://storage.googleapis.com/stabl-media/pro-101/qr-code.png" alt="QR Code for UPI payment" width={150} height={150} className="rounded-lg"/>
+                                      <p className="text-sm my-2">OR</p>
+                                      <input 
+                                        type="text" 
+                                        value={upiId}
+                                        onChange={(e) => setUpiId(e.target.value)}
+                                        placeholder="Enter your UPI ID" 
+                                        className="w-full rounded-lg border px-3 py-2 text-sm" 
+                                      />
+                                      <button onClick={handleOnlinePayment} className="mt-2 w-full rounded-lg bg-brand/10 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand/20">Verify & Pay</button>
+                                  </div>
+                              </div>
+                          )}
+                      </div>
                   ))}
               </div>
           </div>
@@ -223,7 +240,7 @@ export default function Checkout(){
           <button 
               onClick={handleAction} 
               className="mt-4 w-full rounded-xl bg-brand py-2.5 font-semibold text-white transition-colors hover:bg-brand/90 disabled:opacity-50" 
-              disabled={isProcessing}
+              disabled={isProcessing || (paymentMethod === 'UPI')}
           >
               {isProcessing ? 'Processing...' : (paymentMethod === 'COD' ? 'Place Order' : `Pay ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)}
           </button>
