@@ -74,7 +74,7 @@ const foodAndDrinksCategories = [
 ];
 
 
-function CategoryHeader({ title, description, linkText, bannerImages, categories, bannerColor = "bg-gray-100", buttonColor = "bg-primary" }: { title: string, description: string, linkText: string, bannerImages: string[], categories: any[], bannerColor?: string, buttonColor?:string }) {
+function CategoryHeader({ title, description, linkText, bannerImages, categories, bannerColor = "bg-gray-100", buttonColor = "bg-primary" }: { title: string, description: string, linkText: string, bannerImages: string[], categories?: any[], bannerColor?: string, buttonColor?:string }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
@@ -122,7 +122,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
                 </div>
             </section>
             
-            <CategoryGrid categories={categories} buttonColor={buttonColor} />
+            {categories && <CategoryGrid categories={categories} buttonColor={buttonColor} />}
         </div>
     );
 }
@@ -177,7 +177,6 @@ function SearchContent() {
                           "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1200&auto=format&fit=crop",
                           "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1200&auto=format&fit=crop",
                       ]}
-                      categories={techCategories}
                       bannerColor="bg-blue-50"
                       buttonColor="bg-blue-600 hover:bg-blue-700"
                   />
@@ -426,6 +425,11 @@ function SearchContent() {
           </section>
         </div>
       </div>
+      {opts.category === 'Tech' && !opts.subcategory && !opts.tertiaryCategory && (
+        <div className="mt-12">
+            <CategoryGrid categories={techCategories} buttonColor="bg-blue-600 hover:bg-blue-700" />
+        </div>
+      )}
     </>
   )
 }
