@@ -1,19 +1,22 @@
+
 'use client'
 import Link from 'next/link'
-import { Home, Search, ShoppingBag, Package, User } from 'lucide-react'
+import { Home, Search, ShoppingBag, Heart, User } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useCart } from '@/lib/cartStore'
+import { useWishlist } from '@/lib/wishlistStore'
 
 export default function BottomNav(){
   const path = usePathname();
   const { items } = useCart();
+  const { ids: wishlistIds } = useWishlist();
   const cartItemCount = items.reduce((acc, item) => acc + item.qty, 0);
 
   const navItems = [
     { href: "/", icon: Home, label: "Home" },
     { href: "/search", icon: Search, label: "Search" },
     { href: "/cart", icon: ShoppingBag, label: "Cart", count: cartItemCount },
-    { href: "/orders", icon: Package, label: "Orders" },
+    { href: "/wishlist", icon: Heart, label: "Wishlist", count: wishlistIds.length },
     { href: "/account", icon: User, label: "Account" },
   ];
   

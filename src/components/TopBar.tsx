@@ -1,11 +1,14 @@
+
 'use client'
-import { ShoppingCart, User } from 'lucide-react'
+import { ShoppingCart, User, Heart } from 'lucide-react'
 import Link from 'next/link'
 import SearchBar from './SearchBar'
 import { useCart } from '@/lib/cartStore'
+import { useWishlist } from '@/lib/wishlistStore'
 
 export default function TopBar() {
   const { items } = useCart();
+  const { ids: wishlistIds } = useWishlist();
   const cartItemCount = items.reduce((acc, item) => acc + item.qty, 0);
 
   return (
@@ -18,6 +21,14 @@ export default function TopBar() {
         <nav className="ml-auto flex items-center gap-1 sm:gap-3">
           <Link href="/account" className="rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Account">
             <User className="h-5 w-5" />
+          </Link>
+          <Link href="/wishlist" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Wishlist">
+            <Heart className="h-5 w-5" />
+            {wishlistIds.length > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand text-xs text-white">
+                {wishlistIds.length}
+              </span>
+            )}
           </Link>
           <Link href="/cart" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Cart">
             <ShoppingCart className="h-5 w-5" />
