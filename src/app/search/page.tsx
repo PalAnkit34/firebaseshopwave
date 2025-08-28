@@ -18,11 +18,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import CategoryGrid from '@/components/CategoryGrid';
 
 const ayurvedicSubCategories = [
+  { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
   { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
-  { name: 'Homeopathic', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1631049354023-866d3a95f50f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
+  { name: 'Homeopathic Medicines', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1631049354023-866d3a95f50f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
   { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Churna', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
   { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1604580862942-5340152a7813?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
-  { name: 'Groceries', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
+  { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
 ];
 
 const ayurvedicTertiaryCategories: Record<string, any[]> = {
@@ -205,7 +206,7 @@ function SearchContent() {
                         { name: 'Fashion', href: '/search?category=Fashion', image: fashionCategories[0].image, dataAiHint: 'stylish apparel' },
                         { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[0].image, dataAiHint: 'natural remedies' },
                         { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
-                        { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Groceries')?.image || '', dataAiHint: 'fresh groceries' },
+                        { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || '', dataAiHint: 'fresh groceries' },
                         { name: 'Pooja Items', href: '/search?category=Pooja', image: ayurvedicSubCategories.find(c => c.name === 'Pooja Items')?.image || '', dataAiHint: 'holy items' },
                     ]}
                 />
