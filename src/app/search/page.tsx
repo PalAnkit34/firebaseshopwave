@@ -19,7 +19,6 @@ import CategoryGrid from '@/components/CategoryGrid';
 
 const ayurvedicSubCategories = [
   { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
-  { name: 'Healthy Juice', href: '/search?category=Ayurvedic&subcategory=Healthy Juice', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
   { name: 'Homeopathic', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1631049354023-866d3a95f50f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
   { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Churna', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
   { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1604580862942-5340152a7813?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
@@ -33,10 +32,6 @@ const ayurvedicTertiaryCategories: Record<string, any[]> = {
         { name: 'Oil', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Oil', image: 'https://images.unsplash.com/photo-1572455324483-c359ae4878a2?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal oil' },
         { name: 'Skin Care', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Skin Care', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=60', dataAiHint: 'natural cosmetics' },
     ],
-    'Healthy Juice': [
-        { name: 'Amla Juice', href: '/search?category=Ayurvedic&subcategory=Healthy Juice&tertiaryCategory=Amla Juice', image: 'https://images.unsplash.com/photo-1620573674482-a704b90740a3?w=800&auto=format&fit=crop&q=60', dataAiHint: 'amla fruit' },
-        { name: 'Aloe Vera Juice', href: '/search?category=Ayurvedic&subcategory=Healthy Juice&tertiaryCategory=Aloe Vera Juice', image: 'https://images.unsplash.com/photo-1597361788544-a6b57d86411e?w=800&auto=format&fit=crop&q=60', dataAiHint: 'aloe vera' },
-    ]
 }
 
 
@@ -61,6 +56,7 @@ const fashionCategories = [
 const foodAndDrinksCategories = [
   { name: 'Beverages', href: '/search?category=Food%20%26%20Drinks&subcategory=Beverages', image: 'https://images.unsplash.com/photo-1551024709-8f232a510e52?q=80&w=800&auto=format&fit=crop', dataAiHint: 'cold beverages' },
   { name: 'Dry Fruits', href: '/search?category=Food%20%26%20Drinks&subcategory=Dry%20Fruits', image: 'https://images.unsplash.com/photo-1595425126622-db139b5523f0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'assorted nuts' },
+  { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
 ];
 
 
