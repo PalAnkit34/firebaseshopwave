@@ -5,11 +5,16 @@ import Link from 'next/link'
 import SearchBar from './SearchBar'
 import { useCart } from '@/lib/cartStore'
 import { useWishlist } from '@/lib/wishlistStore'
+import { useSearchParams } from 'next/navigation'
+
+const mainCategories = ['Tech', 'Fashion', 'Ayurvedic'];
 
 export default function TopBar() {
   const { items } = useCart();
   const { ids: wishlistIds } = useWishlist();
   const cartItemCount = items.reduce((acc, item) => acc + item.qty, 0);
+  const searchParams = useSearchParams();
+  const currentCategory = searchParams.get('category');
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md">
@@ -18,6 +23,13 @@ export default function TopBar() {
         <div className="hidden flex-1 md:block md:px-8 lg:px-16">
           <SearchBar />
         </div>
+        
+        <div className="hidden md:flex items-center gap-4">
+            {mainCategories.filter(c => c !== currentCategory).map(c => (
+                <Link key={c} href={`/search?category=${c}`} className="text-sm font-medium text-gray-600 hover:text-brand transition-colors">{c}</Link>
+            ))}
+        </div>
+
         <nav className="ml-auto flex items-center gap-1 sm:gap-3">
           <Link href="/account" className="rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Account">
             <User className="h-5 w-5" />
