@@ -155,11 +155,6 @@ function ProductDetailContent() {
         <CustomerReviews product={p} />
       </div>
 
-      <div className="mt-8 border-t pt-4">
-        <h3 className="font-semibold text-lg mb-2">Ready to order?</h3>
-        <ActionButtons />
-      </div>
-
     </div>
   )
 }
