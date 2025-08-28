@@ -8,7 +8,7 @@ import ProductCard from '@/components/ProductCard';
 const categories = [
   { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
   { name: 'Fashion', href: '/search?category=Fashion', image: 'https://images.unsplash.com/photo-1593032228653-25cb157b70a8?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ethnic wear' },
-  { name: 'Home', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=800&auto=format&fit=crop', dataAiHint: 'modern kitchen' },
+  { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
 ];
 
 const latestProducts = PRODUCTS.slice(0, 8);
