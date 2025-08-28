@@ -15,9 +15,9 @@ const categories = [
   { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: 'https://images.unsplash.com/photo-1749752010108-cce0f32bb7fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxheXVydmVkaWMlMjBoZXJic3xlbnwwfHx8fDE3NTYzNzg5Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'ayurvedic herbs' },
 ];
 
-const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted).slice(0, 8);
-const fashionDeals = PRODUCTS.filter(p => p.category === 'Fashion' && p.price.discounted).slice(0, 8);
-const ayurvedicDeals = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted).slice(0, 8);
+const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted && p.quantity > 0).slice(0, 8);
+const fashionDeals = PRODUCTS.filter(p => p.category === 'Fashion' && p.price.discounted && p.quantity > 0).slice(0, 8);
+const ayurvedicDeals = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted && p.quantity > 0).slice(0, 8);
 const filterCategories = ['All', 'Tech', 'Fashion', 'Ayurvedic'];
 const PRODUCTS_TO_SHOW = 10;
 
@@ -26,10 +26,11 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredProducts = useMemo(() => {
+    const inStockProducts = PRODUCTS.filter(p => p.quantity > 0);
     if (selectedCategory === 'All') {
-      return PRODUCTS;
+      return inStockProducts;
     }
-    return PRODUCTS.filter(p => p.category === selectedCategory);
+    return inStockProducts.filter(p => p.category === selectedCategory);
   }, [selectedCategory]);
 
   const visibleProducts = useMemo(() => {
