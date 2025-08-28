@@ -257,7 +257,7 @@ function SearchContent() {
     return null;
   }
 
-  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && ['Ayurvedic', 'Tech', 'Fashion', 'Food & Drinks'].some(c => !opts.category?.includes(c))));
+  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && !['Ayurvedic', 'Tech', 'Fashion', 'Food & Drinks'].includes(opts.category)));
 
 
   return (
