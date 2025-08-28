@@ -219,10 +219,38 @@ function SearchContent() {
 
   const renderTertiaryCategoryHeader = () => {
       const sub = opts.subcategory;
-      if (opts.category !== 'Ayurvedic' || !sub || opts.tertiaryCategory) return null;
+      if (!sub || opts.tertiaryCategory) return null;
       
-      const tertiaryCategories = ayurvedicTertiaryCategories[sub];
-      if (!tertiaryCategories || tertiaryCategories.length === 0) return null;
+      const tertiaryCategoriesList = Object.values(ayurvedicTertiaryCategories).flat();
+      const tertiaryCategories = tertiaryCategoriesList.filter(tc => tc.href.includes(`subcategory=${sub}`));
+      
+      if (!tertiaryCategories || tertiaryCategories.length === 0) {
+        // Attempt to find it in the main product list if not in the predefined map
+          const dynamicTertiary = [...new Set(PRODUCTS
+              .filter(p => p.subcategory === sub && p.tertiaryCategory)
+              .map(p => p.tertiaryCategory!)
+          )].map(tc => ({
+              name: tc.replace(/-/g, ' '),
+              href: `/search?category=${opts.category}&subcategory=${sub}&tertiaryCategory=${tc}`,
+              image: PRODUCTS.find(p => p.tertiaryCategory === tc)?.image || 'https://picsum.photos/400/300',
+              dataAiHint: tc.toLowerCase()
+          }));
+
+          if(dynamicTertiary.length === 0) return null;
+
+          return <CategoryHeader 
+                title={sub.replace(/-/g, ' ')}
+                description="Traditional and effective remedies for your health and well-being."
+                linkText="Explore Now"
+                bannerImages={[
+                     "https://images.unsplash.com/photo-1581075379766-c1316f1a892b?w=800&auto=format&fit=crop&q=60",
+                     "https://images.unsplash.com/photo-1584308666744-8480404b63ae?w=800&auto=format&fit=crop&q=60",
+                ]}
+                categories={dynamicTertiary}
+                bannerColor="bg-emerald-50"
+                buttonColor="bg-emerald-700 hover:bg-emerald-800"
+            />
+      }
       
       return <CategoryHeader 
                 title={sub.replace(/-/g, ' ')}
