@@ -13,6 +13,7 @@ import { ChevronLeft, Share2, ShieldCheck, Truck, RotateCw } from 'lucide-react'
 import CustomerReviews from '@/components/CustomerReviews'
 import ProductGrid from '@/components/ProductGrid'
 import { useToast } from '@/hooks/use-toast'
+import { Button } from '@/components/ui/button'
 
 function ProductDetailContent() {
   const router = useRouter()
@@ -113,19 +114,27 @@ function ProductDetailContent() {
             )}
           </div>
 
-          <div className="mt-4">
-            <div className="text-sm font-medium mb-1">Quantity</div>
-            <QtyCounter value={qty} onChange={n => setQty(Math.max(1, Math.min(10, n)))} />
-          </div>
-          
-          <div className="hidden md:flex gap-3 mt-4">
-             <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
-             <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
-          </div>
+          {p.quantity > 0 ? (
+            <>
+              <div className="mt-4">
+                <div className="text-sm font-medium mb-1">Quantity</div>
+                <QtyCounter value={qty} onChange={n => setQty(Math.max(1, Math.min(10, n)))} />
+              </div>
+              
+              <div className="hidden md:flex gap-3 mt-4">
+                <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
+                <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
+              </div>
+            </>
+          ) : (
+            <div className="mt-6">
+                <Button variant="outline" className="w-full" disabled>Out of Stock</Button>
+            </div>
+          )}
           
           <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border p-3">
              {p.returnPolicy?.eligible && <ProductInfo icon={RotateCw} title={`${p.returnPolicy.duration} Day Return`} subtitle="If defective or wrong item" />}
-             {p.codAvailable && <ProductInfo icon={Truck} title="Cash on Delivery" subtitle="Available for this product" />}
+             {p.codAvailable && p.category === 'Fashion' && <ProductInfo icon={Truck} title="Cash on Delivery" subtitle="Available for this product" />}
              {p.warranty && <ProductInfo icon={ShieldCheck} title={p.warranty} subtitle="Brand warranty included" />}
           </div>
 
@@ -164,12 +173,18 @@ function ProductDetailContent() {
       )}
 
       {/* Sticky Action Bar for Mobile */}
-      <div className="sticky-cta p-3 md:hidden">
-        <div className="flex gap-3">
-          <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
-          <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
+      {p.quantity > 0 ? (
+        <div className="sticky-cta p-3 md:hidden">
+          <div className="flex gap-3">
+            <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
+            <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="sticky-cta p-3 md:hidden">
+            <Button variant="outline" className="w-full" disabled>Out of Stock</Button>
+        </div>
+      )}
     </div>
   )
 }
