@@ -16,14 +16,22 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Filter } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const ayurvedicCategories = [
-  { name: 'Tablets', href: '/search?category=Ayurvedic&subcategory=Tablets', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
-  { name: 'Supplements', href: '/search?category=Ayurvedic&subcategory=Supplements', image: 'https://images.unsplash.com/photo-1631049354023-866d3a95f50f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
-  { name: 'Herbal Powders', href: '/search?category=Ayurvedic&subcategory=Herbal-Powders', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
-  { name: 'Beverages', href: '/search?category=Ayurvedic&subcategory=Beverages', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
+const ayurvedicSubCategories = [
+  { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+  { name: 'Healthy Juice', href: '/search?category=Ayurvedic&subcategory=Healthy Juice', image: 'https://images.unsplash.com/photo-1578852632225-17a4c48a472c?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
+  { name: 'Homeopathic', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1631049354023-866d3a95f50f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
+  { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Churna', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
   { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1604580862942-5340152a7813?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
   { name: 'Groceries', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
 ];
+
+const ayurvedicTertiaryCategories = [
+    { name: 'Ark', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Ark', image: 'https://plus.unsplash.com/premium_photo-1678737104381-37466967733a?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal extract' },
+    { name: 'Tablets', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Tablets', image: 'https://images.unsplash.com/photo-1598870783995-62955132c389?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+    { name: 'Oil', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Oil', image: 'https://images.unsplash.com/photo-1572455324483-c359ae4878a2?w=800&auto=format&fit=crop&q=60', dataAiHint: 'herbal oil' },
+    { name: 'Skin Care', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Skin Care', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=60', dataAiHint: 'natural cosmetics' },
+]
+
 
 const techCategories = [
   { name: 'Mobiles', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
@@ -121,6 +129,7 @@ function SearchContent() {
     q: sp.get('query') || undefined,
     category: sp.get('category') || undefined,
     subcategory: sp.get('subcategory') || undefined,
+    tertiaryCategory: sp.get('tertiaryCategory') || undefined,
     min: sp.get('min') ? Number(sp.get('min')) : undefined,
     max: sp.get('max') ? Number(sp.get('max')) : undefined,
     brand: sp.get('brand') || undefined,
@@ -145,7 +154,7 @@ function SearchContent() {
                     "https://images.unsplash.com/photo-1591185854599-0734914c814b?q=80&w=1200&auto=format&fit=crop",
                     "https://images.unsplash.com/photo-1558642144-3c82255d6b38?q=80&w=1200&auto=format&fit=crop",
                 ]}
-                categories={ayurvedicCategories}
+                categories={ayurvedicSubCategories}
                 bannerColor="bg-green-50"
                 buttonColor="bg-green-700 hover:bg-green-800"
             />
@@ -182,9 +191,28 @@ function SearchContent() {
     }
   }
 
+  const renderTertiaryCategoryHeader = () => {
+      if (opts.category !== 'Ayurvedic' || opts.subcategory !== 'Ayurvedic Medicine' || opts.tertiaryCategory) return null;
+      return <CategoryHeader 
+                title="Ayurvedic Medicine"
+                description="Traditional and effective remedies for your health and well-being."
+                linkText="Explore Medicines"
+                bannerImages={[
+                     "https://images.unsplash.com/photo-1581075379766-c1316f1a892b?w=800&auto=format&fit=crop&q=60",
+                     "https://images.unsplash.com/photo-1584308666744-8480404b63ae?w=800&auto=format&fit=crop&q=60",
+                ]}
+                categories={ayurvedicTertiaryCategories}
+                bannerColor="bg-emerald-50"
+                buttonColor="bg-emerald-700 hover:bg-emerald-800"
+            />
+  }
+
   const PageTitle = () => {
-    if (opts.category && opts.subcategory) {
-      return <h1 className="text-2xl font-bold mb-4">{opts.category} / <span className="text-brand">{opts.subcategory.replace('-', ' ')}</span></h1>
+    if (opts.tertiaryCategory) {
+        return <h1 className="text-2xl font-bold mb-4">{opts.subcategory?.replace(/-/g, ' ')} / <span className="text-brand">{opts.tertiaryCategory.replace(/-/g, ' ')}</span></h1>
+    }
+    if (opts.subcategory) {
+        return <h1 className="text-2xl font-bold mb-4">{opts.category} / <span className="text-brand">{opts.subcategory.replace(/-/g, ' ')}</span></h1>
     }
     if (opts.q) {
       return <h1 className="text-2xl font-bold mb-4">Search results for &quot;{opts.q}&quot;</h1>
@@ -195,6 +223,7 @@ function SearchContent() {
   return (
     <>
       {renderCategoryHeader()}
+      {renderTertiaryCategoryHeader()}
       
       <div id="product-grid" className="scroll-mt-20">
         <div className="md:hidden">
@@ -256,5 +285,3 @@ export default function SearchPage() {
     </Suspense>
   )
 }
-
-    

@@ -1,3 +1,4 @@
+
 'use client'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useMemo } from 'react';
@@ -20,44 +21,74 @@ export default function Filters(){
     router.replace(`${path}?${url.toString()}`);
   }
 
-  const { availableSubcategories, activeSubcategory } = useMemo(() => {
+  const { availableSubcategories, activeSubcategory, availableTertiaryCategories, activeTertiaryCategory } = useMemo(() => {
     const currentCategory = sp.get('category');
-    if (!currentCategory) return { availableSubcategories: [], activeSubcategory: null };
+    const currentSubcategory = sp.get('subcategory');
+
+    if (!currentCategory) return { availableSubcategories: [], activeSubcategory: null, availableTertiaryCategories: [], activeTertiaryCategory: null };
     
     const subcategories = [...new Set(PRODUCTS
       .filter(p => p.category === currentCategory && p.subcategory)
       .map(p => p.subcategory!)
     )];
 
+    const tertiaryCategories = currentSubcategory ? [...new Set(PRODUCTS
+      .filter(p => p.subcategory === currentSubcategory && p.tertiaryCategory)
+      .map(p => p.tertiaryCategory!)
+    )] : [];
+
     return { 
       availableSubcategories: subcategories,
-      activeSubcategory: sp.get('subcategory')
+      activeSubcategory: currentSubcategory,
+      availableTertiaryCategories: tertiaryCategories,
+      activeTertiaryCategory: sp.get('tertiaryCategory')
     };
   }, [sp]);
 
   const handleSubcategoryChange = (subcategory: string, checked: boolean) => {
-    if (checked) {
-      set({ subcategory });
-    } else {
-      set({ subcategory: null });
-    }
+    set({ subcategory: checked ? subcategory : null, tertiaryCategory: null }); // Reset tertiary on subcategory change
+  };
+
+  const handleTertiaryCategoryChange = (tertiaryCategory: string, checked: boolean) => {
+    set({ tertiaryCategory: checked ? tertiaryCategory : null });
   };
 
   return (
     <div className="space-y-4">
       {availableSubcategories.length > 0 && (
         <div className="rounded-xl border p-3">
-          <div className="mb-2 text-sm font-medium">Category</div>
+          <div className="mb-2 text-sm font-medium">Subcategory</div>
           <div className="space-y-2">
             {availableSubcategories.map(sub => (
               <label key={sub} className="flex items-center gap-2 text-sm">
                 <input 
-                  type="checkbox" 
-                  className="h-4 w-4 rounded border-gray-300 text-brand focus:ring-brand"
+                  type="radio" 
+                  name="subcategory"
+                  className="h-4 w-4 rounded-full border-gray-300 text-brand focus:ring-brand"
                   checked={activeSubcategory === sub}
                   onChange={(e) => handleSubcategoryChange(sub, e.target.checked)}
                 />
-                {sub.replace('-', ' ')}
+                {sub.replace(/-/g, ' ')}
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {availableTertiaryCategories.length > 0 && (
+        <div className="rounded-xl border p-3">
+          <div className="mb-2 text-sm font-medium">Type</div>
+          <div className="space-y-2">
+            {availableTertiaryCategories.map(sub => (
+              <label key={sub} className="flex items-center gap-2 text-sm">
+                <input 
+                  type="radio" 
+                  name="tertiaryCategory"
+                  className="h-4 w-4 rounded-full border-gray-300 text-brand focus:ring-brand"
+                  checked={activeTertiaryCategory === sub}
+                  onChange={(e) => handleTertiaryCategoryChange(sub, e.target.checked)}
+                />
+                {sub.replace(/-/g, ' ')}
               </label>
             ))}
           </div>
@@ -77,6 +108,8 @@ export default function Filters(){
         <div className="mb-2 text-sm font-medium">Brand</div>
         <select className="w-full rounded-lg border px-2 py-1 text-sm" defaultValue={sp.get('brand')||''} onChange={e=>set({ brand: e.target.value||undefined })}>
           <option value="">All</option>
+          <option>AyurArogya</option>
+          <option>Achyutaya</option>
           <option>Samsung</option>
           <option>DesiWear</option>
           <option>HerbCare</option>

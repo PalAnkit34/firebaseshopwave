@@ -93,22 +93,24 @@ function ProductDetailContent() {
               <WishlistButton id={p.id} />
             </div>
           </div>
-          <div className="mt-1 text-sm text-gray-500">by {p.brand}</div>
-          <div className="mt-2"><RatingStars value={p.ratings?.average ?? 0} /></div>
+          {p.brand && <div className="mt-1 text-sm text-gray-500">by {p.brand}</div>}
+          {p.ratings && <div className="mt-2"><RatingStars value={p.ratings?.average ?? 0} /></div>}
           <div className="mt-3"><PriceTag original={p.price.original} discounted={p.price.discounted} /></div>
           
-          <div className="mt-4 text-sm text-gray-700">
+          {p.shortDescription && <div className="mt-4 text-sm text-gray-700">
             <p>{p.shortDescription}</p>
-          </div>
+          </div>}
 
           <div className="mt-4 text-sm text-gray-700 space-y-4">
-            <p>{p.description}</p>
-            <div>
-              <h3 className="text-sm font-semibold mb-1">Highlights</h3>
-              <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
-                {(p.features||[]).map((f,i)=> <li key={i}>{f}</li>)}
-              </ul>
-            </div>
+            {p.description && <p>{p.description}</p>}
+            {p.features && p.features.length > 0 && (
+              <div>
+                <h3 className="text-sm font-semibold mb-1">Highlights</h3>
+                <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
+                  {p.features.map((f,i)=> <li key={i}>{f}</li>)}
+                </ul>
+              </div>
+            )}
           </div>
 
           <div className="mt-4">
@@ -127,21 +129,23 @@ function ProductDetailContent() {
              {p.warranty && <ProductInfo icon={ShieldCheck} title={p.warranty} subtitle="Brand warranty included" />}
           </div>
 
-          <div className="mt-6 space-y-6">
-            <div>
-              <h3 className="text-sm font-semibold">Specifications</h3>
-              <table className="mt-2 w-full text-sm">
-                <tbody>
-                  {Object.entries(p.specifications||{}).map(([k,v]) => (
-                    <tr key={k} className="border-b last:border-0">
-                      <td className="w-1/3 py-2 text-gray-500">{k}</td>
-                      <td className="py-2 text-gray-800">{v}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {p.specifications && Object.keys(p.specifications).length > 0 && (
+            <div className="mt-6 space-y-6">
+                <div>
+                <h3 className="text-sm font-semibold">Specifications</h3>
+                <table className="mt-2 w-full text-sm">
+                    <tbody>
+                    {Object.entries(p.specifications||{}).map(([k,v]) => (
+                        <tr key={k} className="border-b last:border-0">
+                        <td className="w-1/3 py-2 text-gray-500">{k}</td>
+                        <td className="py-2 text-gray-800">{v}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+                </div>
             </div>
-          </div>
+           )}
 
         </div>
       </div>
@@ -153,9 +157,11 @@ function ProductDetailContent() {
         </div>
       )}
 
-      <div className="mt-12">
-        <CustomerReviews product={p} />
-      </div>
+      {p.ratings && (
+        <div className="mt-12">
+            <CustomerReviews product={p} />
+        </div>
+      )}
 
       {/* Sticky Action Bar for Mobile */}
       <div className="sticky-cta p-3 md:hidden">

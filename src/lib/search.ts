@@ -1,3 +1,4 @@
+
 import Fuse from 'fuse.js'
 import type { Product } from './types'
 
@@ -7,7 +8,7 @@ export const liveSearch = (q: string, products: Product[]) => {
   return fuse.search(q).slice(0, 8).map(r => r.item)
 }
 
-export const filterProducts = (products: Product[], opts: { q?: string; category?: string; subcategory?:string; min?: number; max?: number; brand?: string; rating?: number; sort?: 'new'|'priceAsc'|'priceDesc'|'popular' }) => {
+export const filterProducts = (products: Product[], opts: { q?: string; category?: string; subcategory?:string; tertiaryCategory?:string; min?: number; max?: number; brand?: string; rating?: number; sort?: 'new'|'priceAsc'|'priceDesc'|'popular' }) => {
   let list = [...products]
   if (opts.q) {
     const fuse = new Fuse(products, { keys: ['name','brand','category','tags'], threshold: 0.4 });
@@ -15,6 +16,7 @@ export const filterProducts = (products: Product[], opts: { q?: string; category
   }
   if (opts.category && opts.category !== 'All') list = list.filter(p => p.category === opts.category)
   if (opts.subcategory) list = list.filter(p => p.subcategory === opts.subcategory)
+  if (opts.tertiaryCategory) list = list.filter(p => p.tertiaryCategory === opts.tertiaryCategory)
   if (opts.brand) list = list.filter(p => p.brand === opts.brand)
   if (opts.rating) list = list.filter(p => (p.ratings?.average ?? 0) >= opts.rating!)
   if (typeof opts.min === 'number') list = list.filter(p => (p.price.discounted ?? p.price.original) >= opts.min!)

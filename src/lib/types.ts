@@ -10,6 +10,7 @@ export type Product = {
   brand: string
   category: string
   subcategory?: string
+  tertiaryCategory?: string
   image: string
   extraImages?: string[]
   video?: string
