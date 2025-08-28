@@ -5,10 +5,17 @@ import { PRODUCTS } from '@/lib/sampleData'
 import ProductCard from '@/components/ProductCard'
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
+import { useEffect } from 'react'
 
 export default function WishlistPage() {
-  const { ids } = useWishlist()
+  const { ids, clearNewItemStatus } = useWishlist()
   const wishedProducts = PRODUCTS.filter(p => ids.includes(p.id))
+
+  useEffect(() => {
+    // When the user visits this page, clear the new item notification
+    clearNewItemStatus();
+  }, [clearNewItemStatus]);
+
 
   return (
     <div>

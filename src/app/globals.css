@@ -33,3 +33,11 @@ body {
 .sticky-cta {
   @apply fixed bottom-14 inset-x-0 z-40 border-t bg-white/95 backdrop-blur-sm md:hidden;
 }
+
+@keyframes blink {
+  50% { opacity: 0.5; }
+}
+
+.blinking-dot {
+  animation: blink 1.5s infinite step-end;
+}

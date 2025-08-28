@@ -29,7 +29,7 @@ export default function AccountPage() {
     phone: '+91 98765 43210',
   })
   const { hasNewOrder } = useOrders()
-  const { ids: wishlistIds } = useWishlist()
+  const { hasNewItem } = useWishlist()
 
   // Load user from local storage on mount
   useEffect(() => {
@@ -94,7 +94,7 @@ export default function AccountPage() {
 
             <div className="grid grid-cols-2 gap-4 mb-6">
                 <DashboardCard icon={Package} title="My Orders" href="/orders" hasNotification={hasNewOrder} />
-                <DashboardCard icon={Heart} title="Wishlist" href="/wishlist" hasNotification={wishlistIds.length > 0} />
+                <DashboardCard icon={Heart} title="Wishlist" href="/wishlist" hasNotification={hasNewItem} />
                 <DashboardCard icon={MapPin} title="My Addresses" onClick={() => setActiveSection(accountSections.ADDRESSES)} />
                 <DashboardCard icon={LifeBuoy} title="Help Center" href="#" />
             </div>
@@ -124,7 +124,7 @@ export default function AccountPage() {
 const DashboardCard = ({ icon: Icon, title, href, onClick, hasNotification }: { icon: React.ElementType, title: string, href?: string, onClick?: () => void, hasNotification?: boolean }) => {
   const content = (
       <div className="card p-4 text-center flex flex-col items-center justify-center h-full relative">
-          {hasNotification && <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full"></div>}
+          {hasNotification && <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full blinking-dot"></div>}
           <Icon className="w-8 h-8 mb-2 text-brand" />
           <h3 className="font-semibold">{title}</h3>
       </div>
