@@ -61,7 +61,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
                         <div className="text-center md:text-left z-10">
                             <h1 className="text-3xl md:text-5xl font-bold text-gray-800">{title}</h1>
                             <p className="mt-4 text-gray-600">{description}</p>
-                            <Link href="/search?category=Ayurvedic" className={`mt-6 inline-block text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors ${buttonColor}`}>
+                            <Link href="#product-grid" className={`mt-6 inline-block text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors ${buttonColor}`}>
                                 {linkText}
                             </Link>
                         </div>
@@ -196,55 +196,56 @@ function SearchContent() {
     <>
       {renderCategoryHeader()}
       
-      {/* Product Grid and Filters Section */}
-      <div className="md:hidden">
-        <CategoryPills />
-      </div>
-      <div className="grid gap-6 md:grid-cols-[240px_1fr]">
-        <aside className="hidden md:block">
-          <Filters />
-        </aside>
-        <section>
-          <PageTitle />
-          <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-            <div className="flex-grow">
-                <div className="flex items-center gap-4">
-                     <div className="md:hidden">
-                        <Sheet open={isFilterOpen} onOpenChange={setFilterOpen}>
-                            <SheetTrigger asChild>
-                                <Button variant="outline" size="icon">
-                                    <Filter className="h-4 w-4" />
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                                <div className="p-4">
-                                     <h3 className="text-lg font-semibold mb-4">Filters</h3>
-                                    <Filters />
-                                </div>
-                            </SheetContent>
-                        </Sheet>
-                    </div>
-                    <div>
-                      <div className="text-sm text-gray-600">Showing {list.length} result{list.length === 1 ? '' : 's'}</div>
-                      {opts.q && !opts.subcategory && <div className="text-xs text-gray-500">for &quot;{opts.q}&quot;</div>}
-                    </div>
-                </div>
+      <div id="product-grid" className="scroll-mt-20">
+        <div className="md:hidden">
+          <CategoryPills />
+        </div>
+        <div className="grid gap-6 md:grid-cols-[240px_1fr]">
+          <aside className="hidden md:block">
+            <Filters />
+          </aside>
+          <section>
+            <PageTitle />
+            <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+              <div className="flex-grow">
+                  <div className="flex items-center gap-4">
+                      <div className="md:hidden">
+                          <Sheet open={isFilterOpen} onOpenChange={setFilterOpen}>
+                              <SheetTrigger asChild>
+                                  <Button variant="outline" size="icon">
+                                      <Filter className="h-4 w-4" />
+                                  </Button>
+                              </SheetTrigger>
+                              <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                                  <div className="p-4">
+                                      <h3 className="text-lg font-semibold mb-4">Filters</h3>
+                                      <Filters />
+                                  </div>
+                              </SheetContent>
+                          </Sheet>
+                      </div>
+                      <div>
+                        <div className="text-sm text-gray-600">Showing {list.length} result{list.length === 1 ? '' : 's'}</div>
+                        {opts.q && !opts.subcategory && <div className="text-xs text-gray-500">for &quot;{opts.q}&quot;</div>}
+                      </div>
+                  </div>
+              </div>
+              <SortBar />
             </div>
-            <SortBar />
-          </div>
-          {list.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-              {list.map(p => (
-                <ProductCard key={p.id} p={p} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-10 rounded-xl border bg-white">
-                <p className="text-gray-600">No products found.</p>
-                <p className="text-sm text-gray-500">Try adjusting your filters.</p>
-            </div>
-          )}
-        </section>
+            {list.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+                {list.map(p => (
+                  <ProductCard key={p.id} p={p} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10 rounded-xl border bg-white">
+                  <p className="text-gray-600">No products found.</p>
+                  <p className="text-sm text-gray-500">Try adjusting your filters.</p>
+              </div>
+            )}
+          </section>
+        </div>
       </div>
     </>
   )
