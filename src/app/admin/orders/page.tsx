@@ -1,0 +1,71 @@
+
+'use client'
+import { useOrders } from '@/lib/ordersStore'
+import { useEffect, useState } from 'react'
+
+export default function AdminOrdersPage() {
+    const { orders } = useOrders()
+    const [isClient, setIsClient] = useState(false)
+
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
+
+    if (!isClient) {
+        return (
+            <div className="text-center py-10">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading Orders...</p>
+            </div>
+        )
+    }
+
+    return (
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-bold">All Orders</h1>
+            </div>
+
+            <div className="card p-4">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                        <thead className="bg-gray-50 text-gray-600">
+                            <tr>
+                                <th className="p-3">Order ID</th>
+                                <th className="p-3">Customer</th>
+                                <th className="p-3">Date</th>
+                                <th className="p-3">Amount</th>
+                                <th className="p-3">Payment</th>
+                                <th className="p-3">Status</th>
+                                <th className="p-3">Items</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map(order => (
+                                <tr key={order.id} className="border-b hover:bg-gray-50">
+                                    <td className="p-3 font-medium text-brand">#{order.id}</td>
+                                    <td className="p-3">
+                                        <div>{order.address.fullName}</div>
+                                        <div className="text-xs text-gray-500">{order.address.phone}</div>
+                                    </td>
+                                    <td className="p-3">{new Date(order.createdAt).toLocaleDateString('en-IN')}</td>
+                                    <td className="p-3 font-medium">₹{order.total.toLocaleString('en-IN')}</td>
+                                    <td className="p-3">{order.payment}</td>
+                                    <td className="p-3">
+                                        <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-800">{order.status}</span>
+                                    </td>
+                                    <td className="p-3">{order.items.length}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                 {orders.length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                        No orders have been placed yet.
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
