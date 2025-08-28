@@ -19,12 +19,14 @@ export const PRODUCTS: Product[] = [
     price: { original: 34999, discounted: 29999, currency: '₹' },
     specifications: { RAM: '8 GB', Storage: '128 GB', Color: 'Awesome Graphite' },
     shortDescription: 'Bright AMOLED, OIS camera, all‑day battery.',
-    description: 'A balanced 5G phone with vibrant display, OIS camera, and reliable performance for daily tasks.',
+    description: 'A balanced 5G phone with vibrant display, OIS camera, and reliable performance for daily tasks. IP67 water resistance for peace of mind.',
     features: ['IP67 water resistance', '120Hz display', 'Stereo speakers'],
     tags: ['phone','samsung','android','5g'],
     inventory: { inStock: true, lowStockThreshold: 5 },
     ratings: { average: 4.3, count: 1821 },
     returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year Warranty',
   },
   {
     id: 'P1002',
@@ -44,6 +46,9 @@ export const PRODUCTS: Product[] = [
     tags: ['headphones', 'audio', 'sony', 'noise-cancelling'],
     inventory: { inStock: true },
     ratings: { average: 4.8, count: 5320 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year Warranty',
   },
   {
     id: 'P1003',
@@ -63,6 +68,9 @@ export const PRODUCTS: Product[] = [
     tags: ['laptop', 'ultrabook', 'dell', 'windows'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 890 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: false,
+    warranty: '2 Years Onsite Warranty',
   },
     {
     id: 'P1004',
@@ -82,6 +90,9 @@ export const PRODUCTS: Product[] = [
     tags: ['laptop', 'gaming', 'asus', 'rog'],
     inventory: { inStock: true },
     ratings: { average: 4.9, count: 1250 },
+    returnPolicy: { eligible: true, duration: 10 },
+    codAvailable: false,
+    warranty: '1 Year International Warranty',
   },
   {
     id: 'P2001',
@@ -96,11 +107,13 @@ export const PRODUCTS: Product[] = [
     price: { original: 1499, discounted: 999, currency: '₹' },
     specifications: { Material: '100% Cotton', Color: 'Ivory', Size: 'S-XXL' },
     shortDescription: 'Breathable daily‑wear kurta with classic fit.',
-    description: 'Soft cotton kurta for festivals and daily wear. Pairs well with pajamas or jeans.',
+    description: 'Soft cotton kurta for festivals and daily wear. Pairs well with pajamas or jeans. Made from lightweight, machine washable fabric for all-day comfort.',
     features: ['Machine washable', 'Lightweight', 'Comfort fit'],
     tags: ['kurta','men','ethnic','fashion'],
     inventory: { inStock: true, lowStockThreshold: 10 },
     ratings: { average: 4.5, count: 640 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P2002',
@@ -120,6 +133,8 @@ export const PRODUCTS: Product[] = [
     tags: ['anarkali', 'kurta', 'women', 'ethnic', 'fashion'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 980 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
     {
     id: 'P2003',
@@ -139,6 +154,8 @@ export const PRODUCTS: Product[] = [
     tags: ['shirt', 'denim', 'men', 'casual', 'fashion'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 1500 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P3001',
@@ -153,11 +170,13 @@ export const PRODUCTS: Product[] = [
     price: { original: 699, discounted: 499, currency: '₹' },
     specifications: { Dose: '1/day', Form: 'Veg capsules' },
     shortDescription: 'Adaptogen for stress support and vitality.',
-    description: 'Premium Ashwagandha extract to support stress reduction, energy, and overall well‑being.',
+    description: 'Premium Ashwagandha extract to support stress reduction, energy, and overall well‑being. Vegan and gluten-free with no added sugar.',
     features: ['No added sugar', 'Gluten‑free', 'Vegan'],
     tags: ['ashwagandha','ayurvedic','supplement'],
     inventory: { inStock: true },
     ratings: { average: 4.1, count: 213 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
    {
     id: 'P3002',
@@ -177,6 +196,8 @@ export const PRODUCTS: Product[] = [
     tags: ['triphala', 'churna', 'ayurvedic', 'digestion'],
     inventory: { inStock: true },
     ratings: { average: 4.4, count: 450 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P1005',
@@ -195,6 +216,9 @@ export const PRODUCTS: Product[] = [
     tags: ['phone', 'apple', 'iphone', 'ios'],
     inventory: { inStock: true },
     ratings: { average: 4.9, count: 2500 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: false,
+    warranty: '1 Year Apple Warranty',
   },
   {
     id: 'P1006',
@@ -213,6 +237,9 @@ export const PRODUCTS: Product[] = [
     tags: ['phone', 'google', 'pixel', 'android'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 1980 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year Warranty',
   },
   {
     id: 'P1007',
@@ -231,6 +258,9 @@ export const PRODUCTS: Product[] = [
     tags: ['laptop', 'apple', 'macbook', 'macos'],
     inventory: { inStock: true },
     ratings: { average: 4.9, count: 3100 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: false,
+    warranty: '1 Year Apple Warranty',
   },
   {
     id: 'P1008',
@@ -249,6 +279,9 @@ export const PRODUCTS: Product[] = [
     tags: ['smartwatch', 'wearable', 'samsung', 'android'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 1400 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year Warranty',
   },
   {
     id: 'P1009',
@@ -267,6 +300,9 @@ export const PRODUCTS: Product[] = [
     tags: ['earbuds', 'audio', 'bose', 'noise-cancelling'],
     inventory: { inStock: true },
     ratings: { average: 4.8, count: 2800 },
+    returnPolicy: { eligible: true, duration: 10 },
+    codAvailable: true,
+    warranty: '1 Year Warranty',
   },
   {
     id: 'P1010',
@@ -285,6 +321,9 @@ export const PRODUCTS: Product[] = [
     tags: ['mouse', 'accessory', 'logitech', 'productivity'],
     inventory: { inStock: true },
     ratings: { average: 4.9, count: 4200 },
+    returnPolicy: { eligible: true, duration: 15 },
+    codAvailable: true,
+    warranty: '2 Years Limited Warranty',
   },
   {
     id: 'P2004',
@@ -303,6 +342,8 @@ export const PRODUCTS: Product[] = [
     tags: ['jeans', 'denim', 'men', 'levis', 'fashion'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 8500 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P2005',
@@ -321,6 +362,8 @@ export const PRODUCTS: Product[] = [
     tags: ['dress', 'floral', 'women', 'zara', 'fashion'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 750 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P2006',
@@ -339,6 +382,8 @@ export const PRODUCTS: Product[] = [
     tags: ['sneakers', 'shoes', 'running', 'adidas', 'fashion'],
     inventory: { inStock: true },
     ratings: { average: 4.8, count: 6200 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P2007',
@@ -357,6 +402,8 @@ export const PRODUCTS: Product[] = [
     tags: ['sunglasses', 'accessory', 'ray-ban', 'fashion'],
     inventory: { inStock: true },
     ratings: { average: 4.9, count: 9800 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P3003',
@@ -375,6 +422,8 @@ export const PRODUCTS: Product[] = [
     tags: ['facewash', 'neem', 'himalaya', 'ayurvedic', 'skincare'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 15000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P3004',
@@ -393,6 +442,8 @@ export const PRODUCTS: Product[] = [
     tags: ['chyawanprash', 'immunity', 'dabur', 'ayurvedic'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 12500 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P4001',
@@ -411,6 +462,9 @@ export const PRODUCTS: Product[] = [
     tags: ['kitchen', 'cookware', 'prestige', 'home'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 18000 },
+    returnPolicy: { eligible: true, duration: 10 },
+    codAvailable: true,
+    warranty: '5 Years Warranty',
   },
   {
     id: 'P4002',
@@ -429,6 +483,9 @@ export const PRODUCTS: Product[] = [
     tags: ['iron', 'appliance', 'philips', 'home'],
     inventory: { inStock: true },
     ratings: { average: 4.4, count: 9500 },
+    returnPolicy: { eligible: true, duration: 10 },
+    codAvailable: true,
+    warranty: '2 Years Warranty',
   },
   {
     id: 'P4003',
@@ -447,6 +504,9 @@ export const PRODUCTS: Product[] = [
     tags: ['smart-bulb', 'led', 'wipro', 'home'],
     inventory: { inStock: true },
     ratings: { average: 4.3, count: 7800 },
+    returnPolicy: { eligible: true, duration: 15 },
+    codAvailable: true,
+    warranty: '2 Years Warranty',
   },
   {
     id: 'P5001',
@@ -465,6 +525,8 @@ export const PRODUCTS: Product[] = [
     tags: ['kajal', 'eyeliner', 'lakme', 'beauty', 'makeup'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 25000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P5002',
@@ -483,6 +545,8 @@ export const PRODUCTS: Product[] = [
     tags: ['sunscreen', 'skincare', 'neutrogena', 'beauty'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 11000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P6001',
@@ -501,6 +565,8 @@ export const PRODUCTS: Product[] = [
     tags: ['salt', 'staple', 'tata', 'groceries'],
     inventory: { inStock: true },
     ratings: { average: 4.8, count: 35000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P6002',
@@ -519,6 +585,8 @@ export const PRODUCTS: Product[] = [
     tags: ['atta', 'flour', 'staple', 'aashirvaad', 'groceries'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 28000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P6003',
@@ -537,6 +605,8 @@ export const PRODUCTS: Product[] = [
     tags: ['noodles', 'maggi', 'snack', 'groceries'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 45000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P1011',
@@ -555,6 +625,9 @@ export const PRODUCTS: Product[] = [
     tags: ['laptop', 'gaming', 'hp', 'tech'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 2300 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year Onsite Warranty',
   },
   {
     id: 'P1012',
@@ -573,6 +646,9 @@ export const PRODUCTS: Product[] = [
     tags: ['speaker', 'bluetooth', 'jbl', 'audio'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 8800 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year Warranty',
   },
   {
     id: 'P2008',
@@ -591,6 +667,8 @@ export const PRODUCTS: Product[] = [
     tags: ['sneakers', 'shoes', 'puma', 'fashion'],
     inventory: { inStock: true },
     ratings: { average: 4.4, count: 3200 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P3005',
@@ -609,6 +687,8 @@ export const PRODUCTS: Product[] = [
     tags: ['tea', 'green-tea', 'tulsi', 'ayurvedic', 'organic'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 6700 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P4004',
@@ -627,6 +707,9 @@ export const PRODUCTS: Product[] = [
     tags: ['flask', 'thermos', 'milton', 'home', 'kitchen'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 21000 },
+    returnPolicy: { eligible: true, duration: 10 },
+    codAvailable: true,
+    warranty: '1 Year Warranty',
   },
   {
     id: 'P5003',
@@ -645,6 +728,8 @@ export const PRODUCTS: Product[] = [
     tags: ['shampoo', 'hair-care', 'loreal', 'beauty'],
     inventory: { inStock: true },
     ratings: { average: 4.4, count: 19000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P6004',
@@ -663,6 +748,8 @@ export const PRODUCTS: Product[] = [
     tags: ['cookies', 'biscuits', 'britannia', 'groceries', 'snack'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 22000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P1013',
@@ -681,6 +768,9 @@ export const PRODUCTS: Product[] = [
     tags: ['tablet', 'ipad', 'apple', 'tech'],
     inventory: { inStock: true },
     ratings: { average: 4.8, count: 1800 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: false,
+    warranty: '1 Year Apple Warranty',
   },
   {
     id: 'P2009',
@@ -699,6 +789,8 @@ export const PRODUCTS: Product[] = [
     tags: ['saree', 'banarasi', 'ethnic', 'fashion', 'women'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 1250 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P3006',
@@ -717,6 +809,8 @@ export const PRODUCTS: Product[] = [
     tags: ['honey', 'patanjali', 'ayurvedic', 'supplement'],
     inventory: { inStock: true },
     ratings: { average: 4.4, count: 9800 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P4005',
@@ -735,6 +829,9 @@ export const PRODUCTS: Product[] = [
     tags: ['vacuum', 'dyson', 'appliance', 'home'],
     inventory: { inStock: true },
     ratings: { average: 4.9, count: 3200 },
+    returnPolicy: { eligible: true, duration: 15 },
+    codAvailable: false,
+    warranty: '2 Years Comprehensive Warranty',
   },
   {
     id: 'P5004',
@@ -753,6 +850,8 @@ export const PRODUCTS: Product[] = [
     tags: ['body-lotion', 'skincare', 'nivea', 'beauty'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 17000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P6005',
@@ -771,6 +870,8 @@ export const PRODUCTS: Product[] = [
     tags: ['coffee', 'bru', 'beverage', 'groceries'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 14000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
    {
     id: 'P1014',
@@ -789,6 +890,9 @@ export const PRODUCTS: Product[] = [
     tags: ['camera', 'dslr', 'canon', 'tech'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 5600 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '2 Years Manufacturer Warranty',
   },
   {
     id: 'P2010',
@@ -807,6 +911,8 @@ export const PRODUCTS: Product[] = [
     tags: ['shirt', 'formal', 'peter-england', 'fashion', 'men'],
     inventory: { inStock: true },
     ratings: { average: 4.4, count: 4800 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P4006',
@@ -825,6 +931,9 @@ export const PRODUCTS: Product[] = [
     tags: ['smart-speaker', 'alexa', 'amazon', 'home'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 35000 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year Limited Warranty',
   },
   {
     id: 'P6006',
@@ -843,6 +952,8 @@ export const PRODUCTS: Product[] = [
     tags: ['oil', 'cooking-oil', 'fortune', 'groceries'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 12000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P2011',
@@ -861,6 +972,9 @@ export const PRODUCTS: Product[] = [
     tags: ['smart-band', 'fitness-tracker', 'fastrack', 'tech', 'wearable'],
     inventory: { inStock: true },
     ratings: { average: 4.2, count: 6500 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year Warranty',
   },
   {
     id: 'P4007',
@@ -879,6 +993,9 @@ export const PRODUCTS: Product[] = [
     tags: ['water-purifier', 'kent', 'appliance', 'home'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 11500 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '1 Year + 3 Years Free Service',
   },
   {
     id: 'P6007',
@@ -897,6 +1014,8 @@ export const PRODUCTS: Product[] = [
     tags: ['chocolate', 'cadbury', 'silk', 'groceries', 'snack'],
     inventory: { inStock: true },
     ratings: { average: 4.8, count: 32000 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   },
   {
     id: 'P1015',
@@ -915,6 +1034,9 @@ export const PRODUCTS: Product[] = [
     tags: ['memory-card', 'microsd', 'sandisk', 'tech', 'accessory'],
     inventory: { inStock: true },
     ratings: { average: 4.7, count: 45000 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
+    warranty: '10 Years Limited Warranty',
   },
   {
     id: 'P2012',
@@ -933,6 +1055,8 @@ export const PRODUCTS: Product[] = [
     tags: ['boots', 'leather', 'woodland', 'fashion', 'men'],
     inventory: { inStock: true },
     ratings: { average: 4.6, count: 7800 },
+    returnPolicy: { eligible: true, duration: 7 },
+    codAvailable: true,
   },
   {
     id: 'P3007',
@@ -951,5 +1075,7 @@ export const PRODUCTS: Product[] = [
     tags: ['giloy', 'juice', 'baidyanath', 'ayurvedic', 'immunity'],
     inventory: { inStock: true },
     ratings: { average: 4.5, count: 5400 },
+    returnPolicy: { eligible: false },
+    codAvailable: true,
   }
 ]

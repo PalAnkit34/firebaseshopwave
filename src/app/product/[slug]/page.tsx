@@ -55,12 +55,12 @@ function ProductDetailContent() {
     }
   };
   
-  const ProductInfo = ({ icon: Icon, title, subtitle }: { icon: React.ElementType, title: string, subtitle: string }) => (
+  const ProductInfo = ({ icon: Icon, title, subtitle }: { icon: React.ElementType, title: string, subtitle?: string }) => (
     <div className="flex items-center gap-3">
         <Icon className="h-8 w-8 text-gray-500" />
         <div>
             <div className="font-semibold text-sm">{title}</div>
-            <div className="text-xs text-gray-500">{subtitle}</div>
+            {subtitle && <div className="text-xs text-gray-500">{subtitle}</div>}
         </div>
     </div>
   )
@@ -99,7 +99,17 @@ function ProductDetailContent() {
           <div className="mt-1 text-sm text-gray-500">by {p.brand}</div>
           <div className="mt-2"><RatingStars value={p.ratings?.average ?? 0} /></div>
           <div className="mt-3"><PriceTag original={p.price.original} discounted={p.price.discounted} /></div>
-          <p className="mt-4 text-sm text-gray-700">{p.shortDescription}</p>
+          
+          <div className="mt-4 text-sm text-gray-700 space-y-4">
+            <p>{p.description}</p>
+            <div>
+              <h3 className="text-sm font-semibold mb-1">Highlights</h3>
+              <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
+                {(p.features||[]).map((f,i)=> <li key={i}>{f}</li>)}
+              </ul>
+            </div>
+          </div>
+
           <div className="mt-4">
             <div className="text-sm font-medium mb-1">Quantity</div>
             <QtyCounter value={qty} onChange={n => setQty(Math.max(1, Math.min(10, n)))} />
@@ -110,18 +120,12 @@ function ProductDetailContent() {
           </div>
           
           <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border p-3">
-             <ProductInfo icon={RotateCw} title="7 Day Return" subtitle="If defective or wrong item" />
-             <ProductInfo icon={Truck} title="Cash on Delivery" subtitle="Available for this product" />
-             <ProductInfo icon={ShieldCheck} title="1 Year Warranty" subtitle="Brand warranty included" />
+             {p.returnPolicy?.eligible && <ProductInfo icon={RotateCw} title={`${p.returnPolicy.duration} Day Return`} subtitle="If defective or wrong item" />}
+             {p.codAvailable && <ProductInfo icon={Truck} title="Cash on Delivery" subtitle="Available for this product" />}
+             {p.warranty && <ProductInfo icon={ShieldCheck} title={p.warranty} subtitle="Brand warranty included" />}
           </div>
 
           <div className="mt-6 space-y-6">
-            <div>
-              <h3 className="text-sm font-semibold">Highlights</h3>
-              <ul className="mt-1 list-disc pl-5 text-sm text-gray-700 space-y-1">
-                {(p.features||[]).map((f,i)=> <li key={i}>{f}</li>)}
-              </ul>
-            </div>
             <div>
               <h3 className="text-sm font-semibold">Specifications</h3>
               <table className="mt-2 w-full text-sm">

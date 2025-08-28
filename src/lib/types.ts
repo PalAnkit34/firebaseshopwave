@@ -27,6 +27,8 @@ export type Product = {
   ratings?: Rating
   status?: 'active'|'inactive'|'out_of_stock'|'discontinued'
   returnPolicy?: { eligible?: boolean; duration?: number }
+  codAvailable?: boolean
+  warranty?: string
 }
 
 export type Address = {
