@@ -4,7 +4,7 @@ import Image from 'next/image';
 import BannerSlider from '@/components/BannerSlider';
 import { PRODUCTS } from '@/lib/sampleData';
 import ProductCard from '@/components/ProductCard';
-import QuadProductCard from '@/components/QuadProductCard';
+import ProductSlider from '@/components/ProductSlider';
 
 const categories = [
   { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
@@ -13,9 +13,7 @@ const categories = [
 ];
 
 const latestProducts = PRODUCTS.slice(0, 8);
-const techDealProducts = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted).slice(0, 4);
-const fashionDealProducts = PRODUCTS.filter(p => p.category === 'Fashion' && p.price.discounted).slice(0, 4);
-const ayurvedicDealProducts = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted).slice(0, 4);
+const dealProducts = PRODUCTS.filter(p => p.price.discounted).slice(0, 10);
 
 
 export default function Home() {
@@ -52,11 +50,7 @@ export default function Home() {
 
       <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Top Deals</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          <QuadProductCard title="Top Tech Deals" products={techDealProducts} />
-          <QuadProductCard title="Latest in Fashion" products={fashionDealProducts} />
-          <QuadProductCard title="Ayurvedic Essentials" products={ayurvedicDealProducts} />
-        </div>
+        <ProductSlider products={dealProducts} />
       </section>
 
       <section>
