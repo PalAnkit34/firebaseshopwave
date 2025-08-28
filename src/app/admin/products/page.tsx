@@ -3,7 +3,7 @@
 import { PRODUCTS } from '@/lib/sampleData'
 import Image from 'next/image'
 import PriceTag from '@/components/PriceTag'
-import { Pencil } from 'lucide-react'
+import { Pencil, Trash2 } from 'lucide-react'
 
 export default function AdminProductsPage() {
     return (
@@ -40,9 +40,14 @@ export default function AdminProductsPage() {
                                     </td>
                                     <td className="p-3">{product.quantity} units</td>
                                     <td className="p-3">
-                                        <button className="p-1 text-gray-500 hover:text-brand">
-                                            <Pencil size={16} />
-                                        </button>
+                                        <div className="flex items-center gap-2">
+                                            <button className="p-1 text-gray-500 hover:text-brand" aria-label="Edit product">
+                                                <Pencil size={16} />
+                                            </button>
+                                            <button className="p-1 text-gray-500 hover:text-red-600" aria-label="Delete product">
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
