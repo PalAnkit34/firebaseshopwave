@@ -112,7 +112,10 @@ export default function Checkout(){
     } catch (error) {
       console.error(error);
       const errorMessage = error instanceof Error ? error.message : "Could not initiate payment. Please try again.";
-      toast({ title: "Error", description: errorMessage, variant: 'destructive' });
+      const displayMessage = errorMessage.includes("Amount must be at least")
+        ? "Order total must be at least ₹1 to proceed with online payment."
+        : errorMessage;
+      toast({ title: "Error", description: displayMessage, variant: 'destructive' });
       setIsProcessing(false);
     }
   }
