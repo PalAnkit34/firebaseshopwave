@@ -2,7 +2,7 @@
 
 'use client'
 import { useMemo, Suspense, useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link';
 import Image from 'next/image';
 import { PRODUCTS } from '@/lib/sampleData'
@@ -13,7 +13,7 @@ import ProductCard from '@/components/ProductCard'
 import CategoryPills from '@/components/CategoryPills'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { Filter } from 'lucide-react'
+import { Filter, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CategoryGrid from '@/components/CategoryGrid';
 
@@ -116,6 +116,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
 
 function SearchContent() {
   const sp = useSearchParams()
+  const router = useRouter()
   const [isFilterOpen, setFilterOpen] = useState(false)
   const opts = {
     q: sp.get('query') || undefined,
@@ -241,22 +242,56 @@ function SearchContent() {
             buttonColor="bg-emerald-700 hover:bg-emerald-800"
         />
   }
-
+  
   const PageTitle = () => {
-    if (opts.tertiaryCategory) {
-        return <h1 className="text-2xl font-bold mb-4">{opts.subcategory?.replace(/-/g, ' ')} / <span className="text-brand">{opts.tertiaryCategory.replace(/-/g, ' ')}</span></h1>
-    }
-    if (opts.subcategory) {
-        return <h1 className="text-2xl font-bold mb-4">{opts.category} / <span className="text-brand">{opts.subcategory.replace(/-/g, ' ')}</span></h1>
-    }
     if (opts.q) {
       return <h1 className="text-2xl font-bold mb-4">Search results for &quot;{opts.q}&quot;</h1>
     }
+    
     if (!opts.category) {
-        return null; // The main category grid is shown, so no title needed here
+        return null;
     }
-    return null;
+
+    const Breadcrumb = () => (
+      <nav className="flex items-center text-sm text-gray-500 mb-4">
+        <Link href="/search" className="hover:text-brand">Home</Link>
+        {opts.category && (
+          <>
+            <ChevronRight size={16} className="mx-1" />
+            <Link href={`/search?category=${opts.category}`} className="hover:text-brand">
+              {opts.category}
+            </Link>
+          </>
+        )}
+        {opts.subcategory && (
+          <>
+            <ChevronRight size={16} className="mx-1" />
+            <Link href={`/search?category=${opts.category}&subcategory=${opts.subcategory}`} className="hover:text-brand">
+              {opts.subcategory.replace(/-/g, ' ')}
+            </Link>
+          </>
+        )}
+        {opts.tertiaryCategory && (
+          <>
+            <ChevronRight size={16} className="mx-1" />
+            <span className="font-semibold text-gray-700">
+                {opts.tertiaryCategory.replace(/-/g, ' ')}
+            </span>
+          </>
+        )}
+      </nav>
+    );
+
+    return (
+        <div className="flex items-center gap-2">
+            <button onClick={() => router.back()} className="md:hidden flex items-center justify-center p-2 rounded-full hover:bg-gray-100">
+                <ChevronLeft size={20} />
+            </button>
+            <Breadcrumb />
+        </div>
+    );
   }
+
 
   const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && !['Ayurvedic', 'Tech', 'Fashion', 'Food & Drinks'].includes(opts.category)));
 
