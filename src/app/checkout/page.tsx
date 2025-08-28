@@ -30,7 +30,6 @@ export default function Checkout(){
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
   const [paymentMethod, setPaymentMethod] = useState('UPI')
   const [isProcessing, setIsProcessing] = useState(false)
-  const [upiId, setUpiId] = useState('');
 
   useEffect(() => {
     if (items.length === 0) {
@@ -212,22 +211,6 @@ export default function Checkout(){
                                   <div className="text-xs text-gray-500">{opt.description}</div>
                               </div>
                           </label>
-                          {paymentMethod === 'UPI' && opt.id === 'UPI' && (
-                              <div className="p-3 bg-gray-50 rounded-b-lg border border-t-0">
-                                  <div className="flex flex-col items-center">
-                                      <Image src="https://storage.googleapis.com/stabl-media/pro-101/qr-code.png" alt="QR Code for UPI payment" width={150} height={150} className="rounded-lg"/>
-                                      <p className="text-sm my-2">OR</p>
-                                      <input 
-                                        type="text" 
-                                        value={upiId}
-                                        onChange={(e) => setUpiId(e.target.value)}
-                                        placeholder="Enter your UPI ID" 
-                                        className="w-full rounded-lg border px-3 py-2 text-sm" 
-                                      />
-                                      <Button onClick={handleOnlinePayment} className="mt-2 w-full" variant="outline" size="sm">Verify & Pay</Button>
-                                  </div>
-                              </div>
-                          )}
                       </div>
                   ))}
               </div>
@@ -236,7 +219,7 @@ export default function Checkout(){
           <Button 
               onClick={handleAction} 
               className="mt-4 w-full" 
-              disabled={isProcessing || (paymentMethod === 'UPI')}
+              disabled={isProcessing}
           >
               {isProcessing ? 'Processing...' : `Pay ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           </Button>
