@@ -12,6 +12,14 @@ export async function POST(req: NextRequest) {
   try {
     const { amount } = await req.json()
 
+    // Razorpay requires the amount to be at least 1 INR
+    if (amount < 1) {
+      return NextResponse.json(
+        { error: 'Amount must be at least ₹1' },
+        { status: 400 }
+      )
+    }
+
     const options = {
       amount: amount * 100, // amount in the smallest currency unit
       currency: 'INR',
