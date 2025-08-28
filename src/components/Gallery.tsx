@@ -1,8 +1,8 @@
 
 'use client'
 import { useState } from 'react'
-import SafeImage from './SafeImage'
 import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Gallery({ images }: { images: string[] }) {
   const [active, setActive] = useState(0)
@@ -12,7 +12,26 @@ export default function Gallery({ images }: { images: string[] }) {
 
   return (
     <div>
-      <SafeImage src={images[active]} alt={`Product image ${active + 1}`} className="mb-3 aspect-square w-full rounded-2xl" />
+      <div className="relative mb-3 aspect-square w-full overflow-hidden rounded-2xl">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={active}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="absolute inset-0"
+          >
+            <Image 
+              src={images[active]} 
+              alt={`Product image ${active + 1}`} 
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover" 
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
       <div className="flex gap-2 overflow-x-auto pb-1">
         {images.map((src, i) => (
           <button 
