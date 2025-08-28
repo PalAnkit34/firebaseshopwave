@@ -9,7 +9,7 @@ import RatingStars from '@/components/RatingStars'
 import QtyCounter from '@/components/QtyCounter'
 import { useCart } from '@/lib/cartStore'
 import WishlistButton from '@/components/WishlistButton'
-import { ChevronLeft, Share2 } from 'lucide-react'
+import { ChevronLeft, Share2, ShieldCheck, Truck, RotateCw } from 'lucide-react'
 import CustomerReviews from '@/components/CustomerReviews'
 import ProductGrid from '@/components/ProductGrid'
 import { useToast } from '@/hooks/use-toast'
@@ -54,6 +54,24 @@ function ProductDetailContent() {
       toast({ title: "Link Copied!", description: "Product link copied to clipboard." });
     }
   };
+  
+  const ProductInfo = ({ icon: Icon, title, subtitle }: { icon: React.ElementType, title: string, subtitle: string }) => (
+    <div className="flex items-center gap-3">
+        <Icon className="h-8 w-8 text-gray-500" />
+        <div>
+            <div className="font-semibold text-sm">{title}</div>
+            <div className="text-xs text-gray-500">{subtitle}</div>
+        </div>
+    </div>
+  )
+
+  const ActionButtons = () => (
+     <div className="flex gap-3 py-3 md:p-0">
+        <button onClick={()=>add({ id:p.id, qty, price, name:p.name, image:p.image })} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
+        <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
+      </div>
+  )
+
 
   return (
     <div>
@@ -88,12 +106,15 @@ function ProductDetailContent() {
           </div>
           
           <div className="sticky-cta md:relative md:mt-4 md:border-0 md:p-0">
-            <div className="container flex gap-3 py-3 md:p-0">
-              <button onClick={()=>add({ id:p.id, qty, price, name:p.name, image:p.image })} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
-              <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
-            </div>
+            <ActionButtons />
           </div>
           
+          <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border p-3">
+             <ProductInfo icon={RotateCw} title="7 Day Return" subtitle="If defective or wrong item" />
+             <ProductInfo icon={Truck} title="Cash on Delivery" subtitle="Available for this product" />
+             <ProductInfo icon={ShieldCheck} title="1 Year Warranty" subtitle="Brand warranty included" />
+          </div>
+
           <div className="mt-6 space-y-6">
             <div>
               <h3 className="text-sm font-semibold">Highlights</h3>
@@ -116,10 +137,6 @@ function ProductDetailContent() {
             </div>
           </div>
 
-          <div className="mt-12">
-            <CustomerReviews product={p} />
-          </div>
-
         </div>
       </div>
       
@@ -129,6 +146,16 @@ function ProductDetailContent() {
           <ProductGrid products={related} />
         </div>
       )}
+
+      <div className="mt-12">
+        <CustomerReviews product={p} />
+      </div>
+
+      <div className="mt-8 border-t pt-4">
+        <h3 className="font-semibold text-lg mb-2">Ready to order?</h3>
+        <ActionButtons />
+      </div>
+
     </div>
   )
 }
