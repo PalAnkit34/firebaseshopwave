@@ -141,6 +141,15 @@ export default function Home() {
       <BannerSlider />
       
       <section>
+        <h2 className="text-2xl font-bold mb-4 text-center">Today's Best Offers</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <OfferCard title="Top Tech Deals" products={techDeals} href="/search?category=Tech"/>
+            <OfferCard title="Latest in Fashion" products={fashionDeals} href="/search?category=Fashion"/>
+            <OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/>
+        </div>
+      </section>
+
+      <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Top Categories</h2>
          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
           {topCategories.map((category) => (
@@ -161,15 +170,6 @@ export default function Home() {
               <h3 className="mt-2 text-sm font-semibold text-gray-700 group-hover:text-brand">{category.name}</h3>
             </Link>
           ))}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-bold mb-4 text-center">Today's Best Offers</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <OfferCard title="Top Tech Deals" products={techDeals} href="/search?category=Tech"/>
-            <OfferCard title="Latest in Fashion" products={fashionDeals} href="/search?category=Fashion"/>
-            <OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/>
         </div>
       </section>
 

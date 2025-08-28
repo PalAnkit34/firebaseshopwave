@@ -18,6 +18,21 @@ import { motion, AnimatePresence } from 'framer-motion'
 import CategoryGrid from '@/components/CategoryGrid';
 import { cn } from '@/lib/utils';
 
+const topCategories = [
+  { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=400&auto=format&fit=crop', dataAiHint: 'pooja items' },
+  { name: 'Best Selling', href: '/search?sort=popular', image: 'https://images.unsplash.com/photo-1572584642822-6f8de0243c93?q=80&w=400&auto=format&fit=crop', dataAiHint: 'sale offer' },
+  { name: 'New Arrivals', href: '/search?sort=new', image: 'https://images.unsplash.com/photo-1524678606370-a47625cb810c?q=80&w=400&auto=format&fit=crop', dataAiHint: 'new products' },
+  { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'corporate gifts' },
+  { name: 'Home & Kitchen', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=400&auto=format&fit=crop', dataAiHint: 'modern kitchen' },
+  { name: 'Toys & Games', href: '/search?category=Toys', image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop', dataAiHint: 'children toys' },
+  { name: 'Cleaning Supplies', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1582735773152-7935fbb1b41f?q=80&w=400&auto=format&fit=crop', dataAiHint: 'cleaning supplies' },
+  { name: 'Personal Care', href: '/search?category=Ayurvedic&subcategory=Personal-Care', image: 'https://images.unsplash.com/photo-1631777053082-a7459143992a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'personal care' },
+  { name: 'Electronics', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=400&auto=format&fit=crop', dataAiHint: 'electronic gadgets' },
+  { name: 'Home Improvement', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=400&auto=format&fit=crop', dataAiHint: 'modern home' },
+  { name: 'Mobile Cover', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=400&auto=format&fit=crop', dataAiHint: 'phone case' },
+  { name: 'Custom Print Products', href: '/search', image: 'https://images.unsplash.com/photo-1506784983877-45594efa4c85?q=80&w=400&auto=format&fit=crop', dataAiHint: 'custom printing' },
+];
+
 const ayurvedicSubCategories = [
   { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1652122788538-9aba111c550e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxqdWljZSUyMGJvdHRsZXN8ZW58MHx8fHwxNzU2Mzc5MTM3fDA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'juice bottles' },
   { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1705083649602-03c5fbae2e89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxheXVydmVkaWMlMjBoZXJic3xlbnwwfHx8fDE3NTYzNzg5Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'ayurvedic herbs' },
@@ -151,19 +166,46 @@ function SearchContent() {
                 buttonColor="bg-green-700 hover:bg-green-800"
             />
         case 'Tech':
-            return <CategoryHeader 
-                title="Latest in Tech"
-                description="Explore the newest gadgets and accessories to elevate your lifestyle."
-                linkText="Shop Tech"
-                bannerImages={[
-                    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1200&auto=format&fit=crop",
-                ]}
-                categories={techCategories}
-                bannerColor="bg-blue-50"
-                buttonColor="bg-blue-600 hover:bg-blue-700"
-            />
+            return (
+                <div className="mb-8">
+                  <CategoryHeader 
+                      title="Latest in Tech"
+                      description="Explore the newest gadgets and accessories to elevate your lifestyle."
+                      linkText="Shop Tech"
+                      bannerImages={[
+                          "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop",
+                          "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1200&auto=format&fit=crop",
+                          "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1200&auto=format&fit=crop",
+                      ]}
+                      categories={techCategories}
+                      bannerColor="bg-blue-50"
+                      buttonColor="bg-blue-600 hover:bg-blue-700"
+                  />
+                  <div className="mt-8">
+                      <h2 className="text-2xl font-bold mb-4 text-center">Top Categories</h2>
+                       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
+                        {topCategories.map((category) => (
+                          <Link key={category.name} href={category.href} className="group block text-center">
+                            <div className="relative aspect-square w-full mx-auto max-w-[150px]">
+                              <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-white rounded-b-lg shadow-md"></div>
+                              <div className="absolute inset-0 flex items-end justify-center pb-2">
+                                 <Image
+                                  src={category.image}
+                                  alt={category.name}
+                                  width={120}
+                                  height={120}
+                                  className="w-full h-auto object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-105"
+                                  data-ai-hint={category.dataAiHint}
+                                />
+                              </div>
+                            </div>
+                            <h3 className="mt-2 text-sm font-semibold text-gray-700 group-hover:text-brand">{category.name}</h3>
+                          </Link>
+                        ))}
+                      </div>
+                  </div>
+                </div>
+            );
         case 'Fashion':
              return <CategoryHeader 
                 title="Trendsetting Styles"
