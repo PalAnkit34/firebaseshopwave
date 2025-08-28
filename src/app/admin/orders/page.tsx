@@ -34,7 +34,7 @@ export default function AdminOrdersPage() {
         ].filter(Boolean).join('\n');
         
         navigator.clipboard.writeText(details);
-        toast({ title: "Details Copied!", description: "Customer shipping details copied to clipboard." });
+        toast({ title: "Address Copied!", description: "The customer's address has been copied." });
     }
 
     if (!isClient) {
