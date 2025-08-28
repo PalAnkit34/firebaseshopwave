@@ -31,5 +31,5 @@ body {
 
 /* Sticky bottom bar (mobile CTAs) */
 .sticky-cta {
-  @apply fixed bottom-0 inset-x-0 z-40 border-t bg-white;
+  @apply fixed bottom-14 inset-x-0 z-40 border-t bg-white/95 backdrop-blur-sm md:hidden;
 }

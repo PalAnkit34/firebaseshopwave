@@ -30,6 +30,11 @@ function ProductDetailContent() {
   const images = [p.image, ...(p.extraImages||[])]
   const related = PRODUCTS.filter(x => x.category===p.category && x.id!==p.id).slice(0,4)
 
+  const handleAddToCart = () => {
+    add({ id:p.id, qty, price, name:p.name, image:p.image });
+    toast({ title: "Added to Cart", description: `${p.name} has been added to your cart.` });
+  }
+
   const handleBuyNow = () => {
     add({ id:p.id, qty, price, name:p.name, image:p.image });
     router.push('/checkout');
@@ -65,14 +70,6 @@ function ProductDetailContent() {
     </div>
   )
 
-  const ActionButtons = () => (
-     <div className="flex gap-3 py-3 md:p-0">
-        <button onClick={()=>add({ id:p.id, qty, price, name:p.name, image:p.image })} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
-        <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
-      </div>
-  )
-
-
   return (
     <div>
       <button onClick={() => router.back()} className="md:hidden flex items-center gap-1 text-sm text-gray-600 mb-2">
@@ -100,6 +97,10 @@ function ProductDetailContent() {
           <div className="mt-2"><RatingStars value={p.ratings?.average ?? 0} /></div>
           <div className="mt-3"><PriceTag original={p.price.original} discounted={p.price.discounted} /></div>
           
+          <div className="mt-4 text-sm text-gray-700">
+            <p>{p.shortDescription}</p>
+          </div>
+
           <div className="mt-4 text-sm text-gray-700 space-y-4">
             <p>{p.description}</p>
             <div>
@@ -115,8 +116,9 @@ function ProductDetailContent() {
             <QtyCounter value={qty} onChange={n => setQty(Math.max(1, Math.min(10, n)))} />
           </div>
           
-          <div className="sticky-cta md:relative md:mt-4 md:border-0 md:p-0">
-            <ActionButtons />
+          <div className="hidden md:flex gap-3 mt-4">
+             <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
+             <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
           </div>
           
           <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border p-3">
@@ -155,6 +157,13 @@ function ProductDetailContent() {
         <CustomerReviews product={p} />
       </div>
 
+      {/* Sticky Action Bar for Mobile */}
+      <div className="sticky-cta p-3 md:hidden">
+        <div className="flex gap-3">
+          <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
+          <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
+        </div>
+      </div>
     </div>
   )
 }
