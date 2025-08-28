@@ -19,7 +19,7 @@ const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discount
 const fashionDeals = PRODUCTS.filter(p => p.category === 'Fashion' && p.price.discounted).slice(0, 8);
 const ayurvedicDeals = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted).slice(0, 8);
 const filterCategories = ['All', 'Tech', 'Fashion', 'Ayurvedic'];
-const PRODUCTS_TO_SHOW = 8;
+const PRODUCTS_TO_SHOW = 10;
 
 export default function Home() {
   const [visibleCount, setVisibleCount] = useState(PRODUCTS_TO_SHOW);
@@ -102,7 +102,7 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
            {visibleProducts.map(p => (
             <ProductCard key={p.id} p={p} />
           ))}
