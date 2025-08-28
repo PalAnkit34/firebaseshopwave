@@ -10,9 +10,9 @@ import ProductCard from '@/components/ProductCard';
 import OfferCard from '@/components/OfferCard';
 
 const categories = [
-  { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
-  { name: 'Fashion', href: '/search?category=Fashion', image: 'https://images.unsplash.com/photo-1593032228653-25cb157b70a8?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ethnic wear' },
-  { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: 'https://images.unsplash.com/photo-1545249390-6b7f2d0d4d1a?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+  { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1748636879951-f4a4a7a2b794?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzbWFydHBob25lcyUyMGdhZGdldHN8ZW58MHx8fHwxNzU2MzgwMTIwfDA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'smartphones gadgets' },
+  { name: 'Fashion', href: '/search?category=Fashion', image: 'https://images.unsplash.com/photo-1668371679302-a8ec781e876e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxldGhuaWMlMjB3ZWFyfGVufDB8fHx8MTc1NjM4MDExOXww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'ethnic wear' },
+  { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: 'https://images.unsplash.com/photo-1749752010108-cce0f32bb7fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxheXVydmVkaWMlMjBoZXJic3xlbnwwfHx8fDE3NTYzNzg5Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'ayurvedic herbs' },
 ];
 
 const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted).slice(0, 8);

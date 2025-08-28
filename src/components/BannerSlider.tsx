@@ -1,10 +1,11 @@
+
 'use client'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
 const BANNERS = [
-  { id:1, img:'https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1600&auto=format&fit=crop', title:'Big Tech Deals', link:'/search?category=Tech', dataAiHint: 'latest gadgets' },
+  { id:1, img:'https://images.unsplash.com/photo-1515940175183-6798529cb860?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsYXRlc3QlMjBnYWRnZXRzfGVufDB8fHx8MTc1NjM4MDEyMHww&ixlib=rb-4.1.0&q=80&w=1080', title:'Big Tech Deals', link:'/search?category=Tech', dataAiHint: 'latest gadgets' },
   { id:2, img:'https://images.unsplash.com/photo-1479064555552-3ef4979f8908?q=80&w=1600&auto=format&fit=crop', title:'Festive Fashion Sale', link:'/search?category=Fashion', dataAiHint: 'stylish apparel' },
   { id:3, img:'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1600&auto=format&fit=crop', title:'Ayurvedic Essentials', link:'/search?category=Ayurvedic', dataAiHint: 'natural remedies' },
 ]
