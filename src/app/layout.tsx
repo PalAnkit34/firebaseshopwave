@@ -35,7 +35,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased bg-background">
+      <body className="font-body antialiased bg-background" suppressHydrationWarning>
         <OrdersProvider>
           <AddressProvider>
             <div className="flex flex-col min-h-screen">
