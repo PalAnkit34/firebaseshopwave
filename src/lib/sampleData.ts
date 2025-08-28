@@ -365,7 +365,7 @@ export const PRODUCTS: Product[] = [
     brand: 'Himalaya',
     category: 'Ayurvedic',
     subcategory: 'Personal-Care',
-    image: 'https://images.unsplash.com/photo-1629198735660-e39ea79d5e38?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1629198735660-e9ac8faec7e4?q=80&w=800&auto=format&fit=crop',
     quantity: 200,
     price: { original: 170, currency: '₹' },
     specifications: { 'Key Ingredients': 'Neem, Turmeric', 'Skin Type': 'All Skin Types' },
