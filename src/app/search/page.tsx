@@ -13,9 +13,10 @@ import ProductCard from '@/components/ProductCard'
 import CategoryPills from '@/components/CategoryPills'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { Filter, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Filter, ChevronLeft, ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CategoryGrid from '@/components/CategoryGrid';
+import { cn } from '@/lib/utils';
 
 const ayurvedicSubCategories = [
   { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1652122788538-9aba111c550e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxqdWljZSUyMGJvdHRsZXN8ZW58MHx8fHwxNzU2Mzc5MTM3fDA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'juice bottles' },
@@ -118,6 +119,8 @@ function SearchContent() {
   const sp = useSearchParams()
   const router = useRouter()
   const [isFilterOpen, setFilterOpen] = useState(false)
+  const [isFilterVisible, setIsFilterVisible] = useState(true)
+
   const opts = {
     q: sp.get('query') || undefined,
     category: sp.get('category') || undefined,
@@ -305,14 +308,27 @@ function SearchContent() {
         <div className="md:hidden">
           <CategoryPills />
         </div>
-        <div className="grid gap-6 md:grid-cols-[240px_1fr]">
-          <aside className="hidden md:block">
-            <Filters />
-          </aside>
+        <div className="grid md:grid-cols-[auto_1fr] gap-6">
+          <AnimatePresence>
+            {isFilterVisible && (
+              <motion.aside 
+                className="hidden md:block w-[240px]"
+                initial={{ width: 0, opacity: 0, x: -100 }}
+                animate={{ width: 240, opacity: 1, x: 0 }}
+                exit={{ width: 0, opacity: 0, x: -100 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+              >
+                <div className="sticky top-24">
+                  <Filters />
+                </div>
+              </motion.aside>
+            )}
+          </AnimatePresence>
+
           <section>
             <PageTitle />
             <div className="mb-4 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                     <div className="md:hidden">
                         <Sheet open={isFilterOpen} onOpenChange={setFilterOpen}>
                             <SheetTrigger asChild>
@@ -328,6 +344,14 @@ function SearchContent() {
                             </SheetContent>
                         </Sheet>
                     </div>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      onClick={() => setIsFilterVisible(!isFilterVisible)}
+                      className="hidden md:inline-flex"
+                    >
+                      {isFilterVisible ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
+                    </Button>
                     <div className="hidden sm:block">
                       <div className="text-sm text-gray-600">Showing {list.length} result{list.length === 1 ? '' : 's'}</div>
                       {opts.q && !opts.subcategory && <div className="text-xs text-gray-500">for &quot;{opts.q}&quot;</div>}
@@ -361,3 +385,5 @@ export default function SearchPage() {
     </Suspense>
   )
 }
+
+    
