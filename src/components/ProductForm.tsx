@@ -9,7 +9,7 @@ const categories = ['Tech', 'Fashion', 'Ayurvedic', 'Home', 'Beauty', 'Groceries
 const subcategories: Record<string, string[]> = {
     Tech: ['Mobiles', 'Laptops', 'Audio', 'Cameras', 'Wearables', 'Accessories', 'Tablets'],
     Fashion: ['Men-Ethnic', 'Women-Ethnic', 'Men-Casual', 'Women-Western', 'Footwear', 'Accessories', 'Men-Formal'],
-    Ayurvedic: ['Supplements', 'Herbal-Powders', 'Personal-Care'],
+    Ayurvedic: ['Supplements', 'Herbal-Powders', 'Personal-Care', 'Beverages'],
     Home: ['Kitchenware', 'Appliances', 'Smart-Home'],
     Beauty: ['Makeup', 'Skincare', 'Hair-Care'],
     Groceries: ['Staples', 'Snacks', 'Beverages', 'Oils'],
@@ -24,37 +24,90 @@ interface ProductFormProps {
 export default function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
     const [formData, setFormData] = useState<Partial<Product>>({
         name: '',
+        slug: '',
         brand: '',
         category: 'Tech',
         subcategory: 'Mobiles',
         price: { original: 0, discounted: 0 },
         quantity: 0,
         image: 'https://picsum.photos/400/400',
+        extraImages: [],
+        video: '',
         description: '',
         shortDescription: '',
+        features: [],
+        specifications: {},
+        tags: [],
+        sku: '',
+        shippingCost: 0,
+        taxPercent: 18,
+        inventory: { inStock: true, lowStockThreshold: 5 },
+        codAvailable: true,
+        returnPolicy: { eligible: true, duration: 7 },
+        warranty: '1 Year Warranty',
+        status: 'active'
     })
 
     useEffect(() => {
         if (product) {
-            setFormData(product)
+            setFormData({
+                ...product,
+                extraImages: product.extraImages || [],
+                features: product.features || [],
+                tags: product.tags || [],
+                specifications: product.specifications || {},
+                inventory: product.inventory || { inStock: true, lowStockThreshold: 5 },
+                returnPolicy: product.returnPolicy || { eligible: true, duration: 7 },
+            })
         }
     }, [product])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        if (name === 'original' || name === 'discounted') {
-            setFormData(prev => ({
-                ...prev,
-                price: { ...prev.price!, [name]: Number(value) }
-            }))
-        } else if (name === 'quantity') {
-             setFormData(prev => ({ ...prev, quantity: Number(value) }))
-        }
-        else {
-            setFormData(prev => ({ ...prev, [name]: value }))
-        }
-    }
+        const { name, value, type } = e.target
+        const isCheckbox = type === 'checkbox';
+        const checked = (e.target as HTMLInputElement).checked;
 
+        const updateState = (prevState: Partial<Product>) => {
+             switch (name) {
+                case 'original':
+                case 'discounted':
+                    return { ...prevState, price: { ...prevState.price!, [name]: Number(value) } }
+                case 'quantity':
+                case 'shippingCost':
+                case 'taxPercent':
+                    return { ...prevState, [name]: Number(value) }
+                case 'inStock':
+                    return { ...prevState, inventory: { ...prevState.inventory!, inStock: checked } }
+                case 'lowStockThreshold':
+                    return { ...prevState, inventory: { ...prevState.inventory!, lowStockThreshold: Number(value) } }
+                case 'codAvailable':
+                case 'returnPolicy.eligible':
+                    const field = name.split('.')[0];
+                    const subField = name.split('.')[1];
+                    if (field === 'returnPolicy') {
+                         return { ...prevState, returnPolicy: { ...prevState.returnPolicy!, eligible: checked } };
+                    }
+                    return { ...prevState, [field]: checked };
+                case 'returnPolicy.duration':
+                    return { ...prevState, returnPolicy: { ...prevState.returnPolicy!, duration: Number(value) } }
+                case 'extraImages':
+                case 'features':
+                case 'tags':
+                    return { ...prevState, [name]: value.split(',').map(s => s.trim()).filter(Boolean) }
+                case 'specifications':
+                     const specs = value.split('\n').reduce((acc, line) => {
+                        const [key, val] = line.split(':');
+                        if (key && val) acc[key.trim()] = val.trim();
+                        return acc;
+                    }, {} as Record<string, string>);
+                    return { ...prevState, specifications: specs };
+                default:
+                    return { ...prevState, [name]: value }
+            }
+        }
+        setFormData(prev => updateState(prev));
+    }
+    
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const category = e.target.value;
         setFormData(prev => ({
@@ -66,7 +119,6 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        // Basic validation
         if (formData.name && formData.price?.original) {
             onSave(formData as Product)
         } else {
@@ -96,33 +148,88 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
             <textarea id={name} name={name} onChange={handleChange} {...props} className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand focus:ring-brand" />
         </div>
     )
+    
+    const Checkbox = ({ name, label, ...props }: any) => (
+        <div className="flex items-center gap-2">
+            <input id={name} name={name} type="checkbox" onChange={handleChange} {...props} className="h-4 w-4 rounded border-gray-300 text-brand focus:ring-brand" />
+            <label htmlFor={name} className="text-sm font-medium text-gray-700">{label}</label>
+        </div>
+    );
+    
+    const specificationsToString = (specs: Record<string, string> | undefined) => {
+        if (!specs) return '';
+        return Object.entries(specs).map(([key, value]) => `${key}: ${value}`).join('\n');
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto p-1 pr-4">
             <Input name="name" label="Product Name" value={formData.name} required />
+            <Input name="slug" label="Product Slug (URL)" value={formData.slug} placeholder="e.g., galaxy-a54-5g-128" required />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input name="brand" label="Brand" value={formData.brand} required />
-                <Input name="image" label="Image URL" value={formData.image} />
+                <Input name="sku" label="SKU (Stock Keeping Unit)" value={formData.sku} />
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input name="image" label="Main Image URL" value={formData.image} />
+                <Input name="video" label="Video URL (optional)" value={formData.video} />
+            </div>
+            
+            <TextArea name="extraImages" label="Extra Image URLs (comma-separated)" value={(formData.extraImages || []).join(', ')} rows={2} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select name="category" label="Category" value={formData.category} onChange={handleCategoryChange}>
                     {categories.map(c => <option key={c} value={c}>{c}</option>)}
                 </Select>
                 <Select name="subcategory" label="Subcategory" value={formData.subcategory}>
-                    {subcategories[formData.category || 'Tech']?.map(sc => <option key={sc} value={sc}>{sc.replace('-', ' ')}</option>)}
+                    {(subcategories[formData.category || 'Tech'] || []).map(sc => <option key={sc} value={sc}>{sc.replace('-', ' ')}</option>)}
                 </Select>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Input name="original" label="Original Price" type="number" value={formData.price?.original} required />
-                <Input name="discounted" label="Discounted Price" type="number" value={formData.price?.discounted} />
-                <Input name="quantity" label="Stock Quantity" type="number" value={formData.quantity} required />
+            <div className="rounded-md border p-3 space-y-3">
+                <h3 className="text-md font-medium">Pricing & Stock</h3>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Input name="original" label="Original Price" type="number" value={formData.price?.original} required />
+                    <Input name="discounted" label="Discounted Price" type="number" value={formData.price?.discounted || ''} />
+                    <Input name="quantity" label="Stock Quantity" type="number" value={formData.quantity} required />
+                </div>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Input name="shippingCost" label="Shipping Cost" type="number" value={formData.shippingCost || 0} />
+                    <Input name="taxPercent" label="Tax Percent" type="number" value={formData.taxPercent || 0} />
+                 </div>
             </div>
-            
+
             <TextArea name="shortDescription" label="Short Description (for product card)" value={formData.shortDescription} rows={2} />
             <TextArea name="description" label="Full Description (for product page)" value={formData.description} rows={4} />
+
+            <div className="rounded-md border p-3 space-y-3">
+                <h3 className="text-md font-medium">Details & SEO</h3>
+                <TextArea name="features" label="Features (comma-separated)" value={(formData.features || []).join(', ')} rows={2} />
+                <TextArea name="specifications" label="Specifications (one per line, e.g., RAM: 8 GB)" value={specificationsToString(formData.specifications)} rows={3} />
+                <TextArea name="tags" label="Tags for SEO (comma-separated)" value={(formData.tags || []).join(', ')} rows={2} />
+            </div>
+
+            <div className="rounded-md border p-3 space-y-3">
+                <h3 className="text-md font-medium">Policies & Inventory</h3>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Input name="warranty" label="Warranty" value={formData.warranty} />
+                     <Select name="status" label="Product Status" value={formData.status}>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="out_of_stock">Out of Stock</option>
+                        <option value="discontinued">Discontinued</option>
+                    </Select>
+                 </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <Checkbox name="codAvailable" label="Cash on Delivery Available" checked={formData.codAvailable || false} />
+                    <Checkbox name="returnPolicy.eligible" label="Return Eligible" checked={formData.returnPolicy?.eligible || false} />
+                 </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <Input name="returnPolicy.duration" label="Return Duration (Days)" type="number" value={formData.returnPolicy?.duration || 7} disabled={!formData.returnPolicy?.eligible}/>
+                    <Input name="lowStockThreshold" label="Low Stock Threshold" type="number" value={formData.inventory?.lowStockThreshold || 5} />
+                 </div>
+            </div>
             
             <div className="flex justify-end gap-2 pt-4 border-t sticky bottom-0 bg-white py-3">
                 <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
@@ -131,3 +238,5 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         </form>
     )
 }
+
+    
