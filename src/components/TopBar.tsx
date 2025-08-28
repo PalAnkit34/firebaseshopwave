@@ -8,7 +8,7 @@ import { useWishlist } from '@/lib/wishlistStore'
 import { useOrders } from '@/lib/ordersStore'
 import { useSearchParams } from 'next/navigation'
 
-const mainCategories = ['Tech', 'Fashion', 'Ayurvedic', 'Food & Drinks'];
+const mainCategories = ['Tech', 'Fashion', 'Ayurvedic'];
 
 export default function TopBar() {
   const { items } = useCart();
