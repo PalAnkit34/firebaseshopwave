@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react'
 import type { Product } from '@/lib/types'
 import { Button } from '@/components/ui/button'
+import { PlusCircle, Trash2 } from 'lucide-react'
 
 const categories = ['Tech', 'Fashion', 'Ayurvedic', 'Home', 'Beauty', 'Groceries']
 const subcategories: Record<string, string[]> = {
@@ -90,7 +91,6 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
                     return { ...prevState, [field]: checked };
                 case 'returnPolicy.duration':
                     return { ...prevState, returnPolicy: { ...prevState.returnPolicy!, duration: Number(value) } }
-                case 'extraImages':
                 case 'features':
                 case 'tags':
                     return { ...prevState, [name]: value.split(',').map(s => s.trim()).filter(Boolean) }
@@ -125,6 +125,28 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
             alert('Please fill in at least Name and Original Price.')
         }
     }
+
+    const handleExtraImageChange = (index: number, value: string) => {
+        setFormData(prev => {
+            const newImages = [...(prev.extraImages || [])];
+            newImages[index] = value;
+            return { ...prev, extraImages: newImages };
+        });
+    };
+
+    const addExtraImage = () => {
+        setFormData(prev => ({
+            ...prev,
+            extraImages: [...(prev.extraImages || []), '']
+        }));
+    };
+
+    const removeExtraImage = (index: number) => {
+        setFormData(prev => ({
+            ...prev,
+            extraImages: (prev.extraImages || []).filter((_, i) => i !== index)
+        }));
+    };
 
     const Input = ({ name, label, ...props }: any) => (
         <div>
@@ -176,7 +198,26 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
                 <Input name="video" label="Video URL (optional)" value={formData.video} />
             </div>
             
-            <TextArea name="extraImages" label="Extra Image URLs (comma-separated)" value={(formData.extraImages || []).join(', ')} rows={2} />
+             <div className="rounded-md border p-3 space-y-3">
+                <h3 className="text-md font-medium">Extra Images</h3>
+                {formData.extraImages?.map((imgUrl, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                        <input 
+                            value={imgUrl}
+                            onChange={(e) => handleExtraImageChange(index, e.target.value)}
+                            placeholder="https://example.com/image.jpg"
+                            className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand focus:ring-brand"
+                        />
+                        <Button type="button" variant="ghost" size="icon" onClick={() => removeExtraImage(index)} aria-label="Remove image">
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                        </Button>
+                    </div>
+                ))}
+                <Button type="button" variant="outline" size="sm" onClick={addExtraImage} className="flex items-center gap-2">
+                    <PlusCircle className="h-4 w-4" />
+                    Add Image
+                </Button>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Select name="category" label="Category" value={formData.category} onChange={handleCategoryChange}>
@@ -238,5 +279,3 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         </form>
     )
 }
-
-    
