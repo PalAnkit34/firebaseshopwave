@@ -2,12 +2,13 @@
 'use client'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useMemo } from 'react';
-import { PRODUCTS } from '@/lib/sampleData';
+import { useProductStore } from '@/lib/productStore';
 
 export default function Filters(){
   const router = useRouter(); 
   const sp = useSearchParams(); 
   const path = usePathname();
+  const { products } = useProductStore();
   
   const set = (patch: Record<string,string|number|undefined|null>) => {
     const url = new URLSearchParams(sp.toString())
@@ -27,12 +28,12 @@ export default function Filters(){
 
     if (!currentCategory) return { availableSubcategories: [], activeSubcategory: null, availableTertiaryCategories: [], activeTertiaryCategory: null };
     
-    const subcategories = [...new Set(PRODUCTS
+    const subcategories = [...new Set(products
       .filter(p => p.category === currentCategory && p.subcategory)
       .map(p => p.subcategory!)
     )];
 
-    const tertiaryCategories = currentSubcategory ? [...new Set(PRODUCTS
+    const tertiaryCategories = currentSubcategory ? [...new Set(products
       .filter(p => p.subcategory === currentSubcategory && p.tertiaryCategory)
       .map(p => p.tertiaryCategory!)
     )] : [];
@@ -43,7 +44,7 @@ export default function Filters(){
       availableTertiaryCategories: tertiaryCategories,
       activeTertiaryCategory: sp.get('tertiaryCategory')
     };
-  }, [sp]);
+  }, [sp, products]);
 
   const handleSubcategoryChange = (subcategory: string | null) => {
     set({ subcategory: subcategory, tertiaryCategory: null }); // Reset tertiary on subcategory change

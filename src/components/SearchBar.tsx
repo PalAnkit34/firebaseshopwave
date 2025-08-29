@@ -1,18 +1,20 @@
+
 'use client'
 import { useEffect, useMemo, useState, useRef } from 'react'
 import { liveSearch } from '@/lib/search'
 import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
 import SearchSuggestions from './SearchSuggestions'
-import { PRODUCTS } from '@/lib/sampleData'
+import { useProductStore } from '@/lib/productStore'
 
 export default function SearchBar(){
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(false)
   const router = useRouter()
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const { products } = useProductStore();
 
-  const items = useMemo(() => liveSearch(q, PRODUCTS).map(p => ({ id: p.id, slug:p.slug, name: p.name, image: p.image, price: p.price.discounted ?? p.price.original })), [q])
+  const items = useMemo(() => liveSearch(q, products).map(p => ({ id: p.id, slug:p.slug, name: p.name, image: p.image, price: p.price.discounted ?? p.price.original })), [q, products])
 
   useEffect(() => { 
     setOpen(!!q && items.length > 0) 

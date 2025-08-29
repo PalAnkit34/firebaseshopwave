@@ -1,7 +1,7 @@
 
 'use client'
 import { useOrders } from '@/lib/ordersStore'
-import { PRODUCTS } from '@/lib/sampleData'
+import { useProductStore } from '@/lib/productStore'
 import Link from 'next/link'
 import { useEffect, useState, useMemo } from 'react'
 import { IndianRupee, ShoppingCart, Users, Package } from 'lucide-react'
@@ -28,6 +28,7 @@ const StatCard = ({ icon: Icon, title, value, color, href }: { icon: React.Eleme
 
 export default function AdminPage() {
     const { orders } = useOrders()
+    const { products } = useProductStore()
     const [isClient, setIsClient] = useState(false)
 
     useEffect(() => {
@@ -61,7 +62,7 @@ export default function AdminPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <StatCard href="/admin/orders" icon={IndianRupee} title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString('en-IN')}`} color="bg-green-500" />
                 <StatCard href="/admin/orders" icon={ShoppingCart} title="Total Sales" value={stats.totalSales} color="bg-blue-500" />
-                <StatCard href="/admin/products" icon={Package} title="Total Products" value={PRODUCTS.length} color="bg-orange-500" />
+                <StatCard href="/admin/products" icon={Package} title="Total Products" value={products.length} color="bg-orange-500" />
                 <StatCard href="/admin/customers" icon={Users} title="Total Customers" value={stats.totalCustomers} color="bg-purple-500" />
             </div>
 

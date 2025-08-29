@@ -1,28 +1,29 @@
 
 'use client'
 import { useWishlist } from '@/lib/wishlistStore'
-import { PRODUCTS } from '@/lib/sampleData'
 import ProductCard from '@/components/ProductCard'
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
 import { useEffect, useState, useMemo } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import { useProductStore } from '@/lib/productStore'
 
 export default function WishlistPage() {
   const { user } = useAuth();
   const { ids, isLoading, clearNewItemStatus } = useWishlist()
+  const { products, isLoading: productsLoading } = useProductStore();
   
   // Memoize the wished products based on the ids from the store
   const wishedProducts = useMemo(() => {
-    return PRODUCTS.filter(p => ids.includes(p.id));
-  }, [ids]);
+    return products.filter(p => ids.includes(p.id));
+  }, [ids, products]);
 
   useEffect(() => {
     // When the user visits this page, clear the new item notification
     clearNewItemStatus();
   }, [clearNewItemStatus]);
 
-  if (isLoading) {
+  if (isLoading || productsLoading) {
     return <div className="text-center py-10">Loading Wishlist...</div>
   }
 

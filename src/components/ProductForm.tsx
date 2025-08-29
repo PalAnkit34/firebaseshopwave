@@ -20,21 +20,25 @@ const subcategories: Record<string, string[]> = {
 
 interface ProductFormProps {
     product?: Product
-    onSave: (product: Product) => void
+    onSave: (product: Omit<Product, 'id' | 'ratings'>) => void
     onCancel: () => void
 }
 
 const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
 const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
 
+type FormData = Omit<Product, 'id' | 'ratings' | 'price'> & {
+    price: { original: number | string, discounted: number | string, currency: string }
+};
+
 export default function ProductForm({ product, onSave, onCancel }: ProductFormProps) {
-    const [formData, setFormData] = useState<Partial<Product>>({
+    const [formData, setFormData] = useState<Partial<FormData>>({
         name: '',
         slug: '',
         brand: '',
         category: 'Tech',
         subcategory: 'Mobiles',
-        price: { original: 0, discounted: 0 },
+        price: { original: '', discounted: '', currency: '₹' },
         quantity: 0,
         image: '',
         extraImages: [],
@@ -59,6 +63,11 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         if (product) {
             setFormData({
                 ...product,
+                price: {
+                    original: product.price.original,
+                    discounted: product.price.discounted || '',
+                    currency: product.price.currency || '₹',
+                },
                 extraImages: product.extraImages || [],
                 features: product.features || [],
                 tags: product.tags || [],
@@ -74,25 +83,23 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         const isCheckbox = type === 'checkbox';
         const checked = (e.target as HTMLInputElement).checked;
 
-        const updateState = (prevState: Partial<Product>) => {
+        const updateState = (prevState: Partial<FormData>): Partial<FormData> => {
              switch (name) {
                 case 'original':
                 case 'discounted':
-                    return { ...prevState, price: { ...prevState.price!, [name]: Number(value) } }
+                    return { ...prevState, price: { ...(prevState.price!), [name]: value } }
                 case 'quantity':
                 case 'shippingCost':
                 case 'taxPercent':
+                case 'returnPolicy.duration':
+                case 'inventory.lowStockThreshold':
                     return { ...prevState, [name]: Number(value) }
-                case 'inStock':
-                    return { ...prevState, inventory: { ...prevState.inventory!, inStock: checked } }
-                case 'lowStockThreshold':
-                    return { ...prevState, inventory: { ...prevState.inventory!, lowStockThreshold: Number(value) } }
+                case 'inventory.inStock':
+                    return { ...prevState, inventory: { ...(prevState.inventory!), inStock: checked } }
                 case 'codAvailable':
                     return { ...prevState, codAvailable: checked };
                 case 'returnPolicy.eligible':
-                    return { ...prevState, returnPolicy: { ...prevState.returnPolicy!, eligible: checked } };
-                case 'returnPolicy.duration':
-                    return { ...prevState, returnPolicy: { ...prevState.returnPolicy!, duration: Number(value) } }
+                    return { ...prevState, returnPolicy: { ...(prevState.returnPolicy!), eligible: checked } };
                 case 'features':
                 case 'tags':
                     return { ...prevState, [name]: value.split(',').map(s => s.trim()).filter(Boolean) }
@@ -104,6 +111,13 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
                     }, {} as Record<string, string>);
                     return { ...prevState, specifications: specs };
                 default:
+                    const keys = name.split('.');
+                    if (keys.length > 1) {
+                        return {
+                            ...prevState,
+                            [keys[0]]: { ...(prevState as any)[keys[0]], [keys[1]]: value }
+                        }
+                    }
                     return { ...prevState, [name]: value }
             }
         }
@@ -122,9 +136,17 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (formData.name && formData.price?.original) {
-            onSave(formData as Product)
+            const finalData = {
+                ...formData,
+                price: {
+                    original: Number(formData.price.original),
+                    discounted: formData.price.discounted ? Number(formData.price.discounted) : undefined,
+                    currency: '₹'
+                }
+            }
+            onSave(finalData as Omit<Product, 'id' | 'ratings'>)
         } else {
-            alert('Please fill in at least Name and Original Price.')
+            toast({ title: "Missing Information", description: "Please fill in at least Name and Original Price.", variant: "destructive" });
         }
     }
 
@@ -180,11 +202,12 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
             <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
             <div className="flex items-center gap-2">
                 <input id={name} name={name} value={value} onChange={handleChange} {...props} className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand focus:ring-brand" />
-                <IKUpload 
+                <IKUpload
                     folder="/shopwave"
                     fileName={`product_${Date.now()}`}
-                    onSuccess={(res: any) => handleUploadSuccess(res, name)} 
+                    onSuccess={(res: any) => handleUploadSuccess(res, name)}
                     onError={handleUploadError}
+                    useUniqueFileName={true}
                 >
                     <Button type="button" variant="outline" size="icon" aria-label="Upload" className="flex-shrink-0">
                         <Upload className="h-4 w-4" />
@@ -316,7 +339,7 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
                      </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                          <Input name="returnPolicy.duration" label="Return Duration (Days)" type="number" value={formData.returnPolicy?.duration || 7} disabled={!formData.returnPolicy?.eligible}/>
-                        <Input name="lowStockThreshold" label="Low Stock Threshold" type="number" value={formData.inventory?.lowStockThreshold || 5} />
+                        <Input name="inventory.lowStockThreshold" label="Low Stock Threshold" type="number" value={formData.inventory?.lowStockThreshold || 5} />
                      </div>
                 </div>
                 

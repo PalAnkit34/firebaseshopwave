@@ -1,7 +1,7 @@
 
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { PRODUCTS } from '@/lib/sampleData'
+import { useProductStore } from '@/lib/productStore'
 import { useMemo } from 'react'
 
 const mainCategories = ['Tech', 'Home', 'Ayurvedic', 'Food & Drinks'];
@@ -9,6 +9,7 @@ const mainCategories = ['Tech', 'Home', 'Ayurvedic', 'Food & Drinks'];
 export default function CategoryPills() {
   const router = useRouter(); 
   const sp = useSearchParams(); 
+  const { products } = useProductStore();
   const activeCategory = sp.get('category');
   const activeSubcategory = sp.get('subcategory');
 
@@ -17,13 +18,13 @@ export default function CategoryPills() {
       return ['All', ...mainCategories];
     }
     
-    const subcategories = [...new Set(PRODUCTS
+    const subcategories = [...new Set(products
       .filter(p => p.category === activeCategory && p.subcategory)
       .map(p => p.subcategory!))
     ];
     return ['All', ...subcategories];
 
-  }, [activeCategory]);
+  }, [activeCategory, products]);
 
   const handleCategoryClick = (category: string) => {
     const params = new URLSearchParams(sp.toString());
@@ -71,5 +72,3 @@ export default function CategoryPills() {
     </div>
   )
 }
-
-    

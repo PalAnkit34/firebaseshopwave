@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { doc, onSnapshot, setDoc } from 'firebase/firestore'
 import { db } from './firebase'
 import type { Product } from './types'
-import { PRODUCTS } from './sampleData'
+import { useProductStore } from './productStore'
 
 export type CartItem = Pick<Product, 'id' | 'name' | 'image'> & {
   qty: number
@@ -25,6 +25,7 @@ type CartState = {
 }
 
 const calculateTotals = (items: CartItem[]) => {
+  const products = useProductStore.getState().products;
   const subtotal = items.reduce((s, i) => s + i.qty * i.price, 0)
   
   // Dynamic shipping cost logic
@@ -43,7 +44,7 @@ const calculateTotals = (items: CartItem[]) => {
   }
 
   const totalTax = items.reduce((acc, cartItem) => {
-    const product = PRODUCTS.find(p => p.id === cartItem.id)
+    const product = products.find(p => p.id === cartItem.id)
     const taxRate = product?.taxPercent || 0
     return acc + (cartItem.price * cartItem.qty * (taxRate / 100));
   }, 0)
@@ -99,8 +100,8 @@ export const useCart = create<CartState>()((set, get) => ({
     await setDoc(docRef, { items: newItems });
   },
   clear: () => {
+    // This function clears the local state. 
+    // The cart in firestore should be cleared explicitly after a successful order.
     set({ items: [], subtotal: 0, totalShipping: 0, totalTax: 0, total: 0 })
   },
 }))
-
-    

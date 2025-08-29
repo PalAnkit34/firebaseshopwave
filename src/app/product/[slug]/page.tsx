@@ -1,37 +1,59 @@
 
 'use client'
-import { useMemo, useState, Suspense } from 'react'
+import { useMemo, useState, Suspense, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { PRODUCTS } from '@/lib/sampleData'
 import Gallery from '@/components/Gallery'
 import PriceTag from '@/components/PriceTag'
 import RatingStars from '@/components/RatingStars'
 import QtyCounter from '@/components/QtyCounter'
 import { useCart } from '@/lib/cartStore'
 import WishlistButton from '@/components/WishlistButton'
-import { ChevronLeft, Share2, ShieldCheck, Truck, RotateCw } from 'lucide-react'
+import { ChevronLeft, Share2, ShieldCheck, RotateCw } from 'lucide-react'
 import CustomerReviews from '@/components/CustomerReviews'
 import ProductGrid from '@/components/ProductGrid'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/context/AuthContext'
+import { useProductStore } from '@/lib/productStore'
+import type { Product } from '@/lib/types'
 
 function ProductDetailContent() {
   const router = useRouter()
   const { user } = useAuth()
   const { slug } = useParams()
   const { toast } = useToast()
-  const p = useMemo(() => PRODUCTS.find(p => p.slug === slug), [slug])
+  const { products } = useProductStore()
+  
+  const [p, setP] = useState<Product | null | undefined>(undefined);
   const [qty, setQty] = useState(1)
   const { add } = useCart()
 
-  if (!p) {
+  useEffect(() => {
+    // Set to undefined initially to show loading state
+    setP(undefined); 
+    if (products.length > 0) {
+      const foundProduct = products.find(prod => prod.slug === slug);
+      // Set to the product if found, or null if not found
+      setP(foundProduct || null);
+    }
+  }, [slug, products]);
+
+  if (p === undefined) {
+    return (
+      <div className="text-center py-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading Product...</p>
+      </div>
+    )
+  }
+
+  if (p === null) {
     return <div>Product not found</div>
   }
 
   const price = p.price.discounted ?? p.price.original
   const images = [p.image, ...(p.extraImages||[])]
-  const related = PRODUCTS.filter(x => x.category===p.category && x.id!==p.id).slice(0,4)
+  const related = products.filter(x => x.category===p.category && x.id!==p.id).slice(0,4)
 
   const handleAddToCart = () => {
     if (!user) {
@@ -205,5 +227,3 @@ export default function ProductDetailPage() {
     </Suspense>
   )
 }
-
-    

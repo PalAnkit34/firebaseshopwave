@@ -5,7 +5,6 @@ import { useMemo, Suspense, useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link';
 import Image from 'next/image';
-import { PRODUCTS } from '@/lib/sampleData'
 import { filterProducts } from '@/lib/search'
 import Filters from '@/components/Filters'
 import SortBar from '@/components/SortBar'
@@ -17,6 +16,7 @@ import { Filter, ChevronLeft, ChevronRight, PanelLeftClose, PanelLeftOpen } from
 import { motion, AnimatePresence } from 'framer-motion'
 import CategoryGrid from '@/components/CategoryGrid';
 import { cn } from '@/lib/utils';
+import { useProductStore } from '@/lib/productStore';
 
 const topCategories = [
   { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=400&auto=format&fit=crop', dataAiHint: 'pooja items' },
@@ -130,6 +130,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
 function SearchContent() {
   const sp = useSearchParams()
   const router = useRouter()
+  const { products, isLoading } = useProductStore();
   const [isFilterOpen, setFilterOpen] = useState(false)
   const [isFilterVisible, setIsFilterVisible] = useState(true)
 
@@ -145,7 +146,7 @@ function SearchContent() {
     sort: (sp.get('sort') as any) || undefined,
   }
   
-  const list = useMemo(() => filterProducts(PRODUCTS, opts), [sp])
+  const list = useMemo(() => filterProducts(products, opts), [products, sp])
   
   const renderCategoryHeader = () => {
     if (opts.q || opts.subcategory || opts.tertiaryCategory) return null;
@@ -274,13 +275,13 @@ function SearchContent() {
       const sub = opts.subcategory;
       if (!sub || opts.tertiaryCategory) return null;
       
-      const subcategoryTertiary = [...new Set(PRODUCTS
+      const subcategoryTertiary = [...new Set(products
           .filter(p => p.subcategory === sub && p.tertiaryCategory)
           .map(p => p.tertiaryCategory!)
       )].map(tc => ({
           name: tc.replace(/-/g, ' '),
           href: `/search?category=${opts.category}&subcategory=${sub}&tertiaryCategory=${tc}`,
-          image: PRODUCTS.find(p => p.tertiaryCategory === tc)?.image || 'https://picsum.photos/400/300',
+          image: products.find(p => p.tertiaryCategory === tc)?.image || 'https://picsum.photos/400/300',
           dataAiHint: tc.toLowerCase()
       }));
 
@@ -348,7 +349,15 @@ function SearchContent() {
 
 
   const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && !['Ayurvedic', 'Tech', 'Home', 'Food & Drinks', 'Pooja'].includes(opts.category)));
-
+  
+  if (isLoading) {
+    return (
+      <div className="text-center py-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -441,5 +450,3 @@ export default function SearchPage() {
     </Suspense>
   )
 }
-
-    

@@ -1,20 +1,21 @@
 
 'use client'
 import { useOrders } from '@/lib/ordersStore'
-import { PRODUCTS } from '@/lib/sampleData'
+import { useProductStore } from '@/lib/productStore'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function OrdersPage(){
   const { orders, isLoading, clearNewOrderStatus } = useOrders()
+  const { products } = useProductStore()
 
   useEffect(() => {
     // When the user visits this page, clear the new order notification
     clearNewOrderStatus();
   }, [clearNewOrderStatus]);
 
-  if (isLoading) {
+  if (isLoading || products.length === 0) {
     return <div className="text-center py-10">Loading orders...</div>;
   }
 
@@ -40,7 +41,7 @@ export default function OrdersPage(){
 
             <div className="space-y-2 mb-3">
               {o.items.map(item => {
-                 const product = PRODUCTS.find(p => p.id === item.productId);
+                 const product = products.find(p => p.id === item.productId);
                  return (
                   <div key={item.productId} className="flex items-center gap-3 text-sm">
                     <div className="relative h-12 w-12 shrink-0">

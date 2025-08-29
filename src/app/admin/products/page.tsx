@@ -1,7 +1,6 @@
 
 'use client'
-import { useState } from 'react'
-import { PRODUCTS } from '@/lib/sampleData'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import PriceTag from '@/components/PriceTag'
 import { Pencil, Trash2 } from 'lucide-react'
@@ -19,13 +18,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { useProductStore } from '@/lib/productStore'
+import { useToast } from '@/hooks/use-toast'
 
 export default function AdminProductsPage() {
-    const [products, setProducts] = useState<Product[]>(PRODUCTS)
+    const { products, addProduct, updateProduct, deleteProduct, isLoading } = useProductStore()
     const [isFormOpen, setFormOpen] = useState(false)
     const [isAlertOpen, setAlertOpen] = useState(false)
     const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined)
     const [productToDelete, setProductToDelete] = useState<string | null>(null)
+    const { toast } = useToast()
 
     const handleAddProduct = () => {
         setSelectedProduct(undefined)
@@ -37,17 +39,24 @@ export default function AdminProductsPage() {
         setFormOpen(true)
     }
 
-    const handleSaveProduct = (product: Product) => {
-        setProducts(prev => {
-            if (product.id) {
+    const handleSaveProduct = async (productData: Omit<Product, 'id' | 'ratings'>) => {
+        try {
+            if (selectedProduct?.id) {
                 // Editing existing product
-                return prev.map(p => p.id === product.id ? product : p)
+                await updateProduct(selectedProduct.id, productData);
+                toast({ title: "Product Updated", description: `${productData.name} has been updated.` });
             } else {
                 // Adding new product
-                return [{ ...product, id: `P${Date.now()}` }, ...prev]
+                await addProduct(productData);
+                 toast({ title: "Product Added", description: `${productData.name} has been added.` });
             }
-        })
-        setFormOpen(false)
+            setFormOpen(false)
+            setSelectedProduct(undefined)
+        } catch (error) {
+            console.error("Failed to save product:", error)
+            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+            toast({ title: "Save Failed", description: errorMessage, variant: 'destructive' });
+        }
     }
 
     const confirmDelete = (productId: string) => {
@@ -55,19 +64,36 @@ export default function AdminProductsPage() {
         setAlertOpen(true)
     }
 
-    const handleDeleteProduct = () => {
+    const handleDeleteProduct = async () => {
         if (productToDelete) {
-            setProducts(prev => prev.filter(p => p.id !== productToDelete))
-            setAlertOpen(false)
-            setProductToDelete(null)
+            try {
+                await deleteProduct(productToDelete);
+                toast({ title: "Product Deleted", description: "The product has been permanently deleted." });
+            } catch (error) {
+                console.error("Failed to delete product:", error);
+                const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+                toast({ title: "Delete Failed", description: errorMessage, variant: 'destructive' });
+            } finally {
+                setAlertOpen(false)
+                setProductToDelete(null)
+            }
         }
+    }
+
+    if (isLoading) {
+      return (
+          <div className="text-center py-10">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
+              <p className="mt-4 text-gray-600">Loading Products...</p>
+          </div>
+      )
     }
 
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold">Manage Products</h1>
-                <Dialog open={isFormOpen} onOpenChange={setFormOpen}>
+                <Dialog open={isFormOpen} onOpenChange={(isOpen) => { setFormOpen(isOpen); if (!isOpen) setSelectedProduct(undefined); }}>
                     <DialogTrigger asChild>
                         <Button onClick={handleAddProduct}>+ Add New Product</Button>
                     </DialogTrigger>
@@ -78,7 +104,7 @@ export default function AdminProductsPage() {
                         <ProductForm 
                             product={selectedProduct} 
                             onSave={handleSaveProduct}
-                            onCancel={() => setFormOpen(false)}
+                            onCancel={() => { setFormOpen(false); setSelectedProduct(undefined); }}
                         />
                     </DialogContent>
                 </Dialog>

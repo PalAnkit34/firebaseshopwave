@@ -5,7 +5,6 @@ import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import BannerSlider from '@/components/BannerSlider';
-import { PRODUCTS } from '@/lib/sampleData';
 import ProductCard from '@/components/ProductCard';
 import {
   Carousel,
@@ -17,6 +16,7 @@ import {
 import PriceTag from '@/components/PriceTag';
 import type { Product } from '@/lib/types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useProductStore } from '@/lib/productStore';
 
 
 const topCategories = [
@@ -35,9 +35,6 @@ const topCategories = [
 ];
 
 
-const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted && p.quantity > 0).slice(0, 8);
-const homeDeals = PRODUCTS.filter(p => p.category === 'Home' && p.price.discounted && p.quantity > 0).slice(0, 8);
-const ayurvedicDeals = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted && p.quantity > 0).slice(0, 8);
 const filterCategories = ['All', 'Tech', 'Home', 'Ayurvedic'];
 const PRODUCTS_TO_SHOW = 10;
 
@@ -112,16 +109,21 @@ function OfferCard({ title, products, href }: { title: string; products: Product
 
 
 export default function Home() {
+  const { products, isLoading } = useProductStore();
   const [visibleCount, setVisibleCount] = useState(PRODUCTS_TO_SHOW);
   const [selectedCategory, setSelectedCategory] = useState('All');
 
+  const techDeals = useMemo(() => products.filter(p => p.category === 'Tech' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
+  const homeDeals = useMemo(() => products.filter(p => p.category === 'Home' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
+  const ayurvedicDeals = useMemo(() => products.filter(p => p.category === 'Ayurvedic' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
+
   const filteredProducts = useMemo(() => {
-    const inStockProducts = PRODUCTS.filter(p => p.quantity > 0);
+    const inStockProducts = products.filter(p => p.quantity > 0);
     if (selectedCategory === 'All') {
       return inStockProducts;
     }
     return inStockProducts.filter(p => p.category === selectedCategory);
-  }, [selectedCategory]);
+  }, [selectedCategory, products]);
 
   const visibleProducts = useMemo(() => {
     return filteredProducts.slice(0, visibleCount);
@@ -135,6 +137,15 @@ export default function Home() {
   const handleViewMore = () => {
     setVisibleCount(prevCount => prevCount + PRODUCTS_TO_SHOW);
   };
+
+  if (isLoading) {
+    return (
+      <div className="text-center py-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading Products...</p>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8">
