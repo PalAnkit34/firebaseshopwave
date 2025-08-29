@@ -6,9 +6,24 @@ import PriceTag from '@/components/PriceTag'
 import Image from 'next/image'
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/context/AuthContext'
 
 export default function CartPage(){
+  const { user } = useAuth()
   const { items, setQty, remove, subtotal, totalShipping, totalTax, total } = useCart()
+  
+  const handleRemove = (itemId: string) => {
+    if (user) {
+      remove(user.id, itemId)
+    }
+  }
+
+  const handleSetQty = (itemId: string, newQty: number) => {
+    if (user) {
+      setQty(user.id, itemId, newQty)
+    }
+  }
+  
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold">Your Cart</h1>
@@ -32,9 +47,9 @@ export default function CartPage(){
                 <div className="flex-1">
                   <div className="line-clamp-2 font-medium text-sm">{it.name}</div>
                   <div className="mt-1"><PriceTag original={it.price} /></div>
-                  <div className="mt-2"><QtyCounter value={it.qty} onChange={n=>setQty(it.id, n)} /></div>
+                  <div className="mt-2"><QtyCounter value={it.qty} onChange={n=>handleSetQty(it.id, n)} /></div>
                 </div>
-                <button onClick={()=>remove(it.id)} className="rounded-lg border p-2 text-gray-500 hover:bg-red-50 hover:text-red-600 hover:border-red-200" aria-label="Remove item">
+                <button onClick={()=>handleRemove(it.id)} className="rounded-lg border p-2 text-gray-500 hover:bg-red-50 hover:text-red-600 hover:border-red-200" aria-label="Remove item">
                     <Trash2 size={18} />
                 </button>
               </div>

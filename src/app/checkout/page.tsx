@@ -13,6 +13,7 @@ import Image from 'next/image'
 import Script from 'next/script'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/context/AuthContext'
 
 const paymentOptions = [
   { id: 'UPI', icon: QrCode, title: 'UPI / QR Code', description: 'Pay with any UPI app' },
@@ -21,7 +22,8 @@ const paymentOptions = [
 ]
 
 export default function Checkout(){
-  const { items, subtotal, totalShipping, totalTax, total, clear } = useCart()
+  const { user } = useAuth()
+  const { items, subtotal, totalShipping, totalTax, total, clear: clearCart } = useCart()
   const { addresses, save, setDefault } = useAddressBook()
   const { placeOrder } = useOrders()
   const router = useRouter()
@@ -32,10 +34,14 @@ export default function Checkout(){
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
+    if (!user) {
+        router.replace('/account');
+        return;
+    }
     if (items.length === 0) {
       router.replace('/');
     }
-  }, [items, router]);
+  }, [items, router, user]);
 
   useEffect(() => {
     setShowForm(addresses.length === 0);
@@ -43,13 +49,12 @@ export default function Checkout(){
 
   const handleSuccessfulPayment = () => {
     const addr = addresses.find(a => a.default) || addresses[0]
-    if (!addr) {
-      // This should ideally not happen if checked before payment
-      toast({ title: "Error", description: "Could not find address to place order.", variant: 'destructive' });
+    if (!addr || !user) {
+      toast({ title: "Error", description: "Could not find address or user to place order.", variant: 'destructive' });
       return;
     }
-    placeOrder(items, addr, total, paymentMethod as any)
-    clear()
+    placeOrder(user.id, items, addr, total, paymentMethod as any)
+    clearCart() // This now just clears the local state
     router.push('/orders')
     toast({ title: "Order Placed!", description: "Thank you for your purchase." });
   }
@@ -118,12 +123,26 @@ export default function Checkout(){
     }
   }
   
-  if (items.length === 0) {
+  if (items.length === 0 || !user) {
     return null;
   }
 
   const handleAction = () => {
     handleOnlinePayment()
+  }
+
+  const handleSaveAddress = (addr: Address) => {
+    if (user) {
+      save(user.id, { ...addr, default: addresses.length === 0 || addr.default });
+      setShowForm(false);
+      setEditingAddress(undefined);
+    }
+  }
+
+  const handleSetDefault = (addressId: string) => {
+    if (user) {
+        setDefault(user.id, addressId);
+    }
   }
 
   return (
@@ -144,7 +163,7 @@ export default function Checkout(){
             {!showForm ? (
               <div className="space-y-3">
                 {addresses.map((a) => (
-                  <div key={a.id} className={`rounded-lg border p-3 cursor-pointer transition-all ${a.default ? 'border-brand ring-2 ring-brand/20' : 'border-gray-200 hover:border-gray-400'}`} onClick={() => a.id && setDefault(a.id)}>
+                  <div key={a.id} className={`rounded-lg border p-3 cursor-pointer transition-all ${a.default ? 'border-brand ring-2 ring-brand/20' : 'border-gray-200 hover:border-gray-400'}`} onClick={() => a.id && handleSetDefault(a.id)}>
                     <div className="font-semibold text-sm">{a.fullName} — {a.phone}</div>
                     <div className="text-sm text-gray-600">{a.line1}{a.line2 ? `, ${a.line2}` : ''}, {a.city}, {a.state} - {a.pincode}</div>
                     {a.landmark && <div className="text-xs text-gray-500">Landmark: {a.landmark}</div>}
@@ -155,7 +174,7 @@ export default function Checkout(){
             ) : (
               <div className="mt-3">
                 <AddressForm 
-                  onSubmit={(addr) => { save({ ...addr, default: addresses.length === 0 || addr.default }); setShowForm(false); setEditingAddress(undefined); }} 
+                  onSubmit={handleSaveAddress}
                   initial={editingAddress} 
                   onCancel={() => { setShowForm(false); setEditingAddress(undefined); }} 
                 />

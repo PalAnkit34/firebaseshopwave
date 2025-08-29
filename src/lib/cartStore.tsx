@@ -1,7 +1,8 @@
 
 'use client'
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { doc, onSnapshot, setDoc } from 'firebase/firestore'
+import { db } from './firebase'
 import type { Product } from './types'
 import { PRODUCTS } from './sampleData'
 
@@ -12,14 +13,15 @@ export type CartItem = Pick<Product, 'id' | 'name' | 'image'> & {
 
 type CartState = {
   items: CartItem[]
-  add: (item: CartItem) => void
-  remove: (id: string) => void
-  setQty: (id: string, qty: number) => void
-  clear: () => void
   subtotal: number
   totalShipping: number
   totalTax: number
   total: number
+  init: (userId: string) => () => void
+  add: (userId: string, item: CartItem) => Promise<void>
+  remove: (userId: string, id: string) => Promise<void>
+  setQty: (userId: string, id: string, qty: number) => Promise<void>
+  clear: () => void
 }
 
 const calculateTotals = (items: CartItem[]) => {
@@ -37,57 +39,54 @@ const calculateTotals = (items: CartItem[]) => {
   return { subtotal, totalShipping, totalTax, total }
 }
 
-export const useCart = create<CartState>()(
-  persist(
-    (set, get) => ({
-      items: [],
-      subtotal: 0,
-      totalShipping: 0,
-      totalTax: 0,
-      total: 0,
-      add: (item) => {
-        set((state) => {
-          const existing = state.items.find((p) => p.id === item.id)
-          let newItems;
-          if (existing) {
-            newItems = state.items.map((p) =>
-              p.id === item.id ? { ...p, qty: Math.min(99, p.qty + item.qty) } : p
-            )
-          } else {
-            newItems = [...state.items, { ...item, qty: Math.max(1, item.qty) }]
-          }
-          return { items: newItems, ...calculateTotals(newItems) };
-        })
-      },
-      remove: (id) => {
-        set((state) => {
-          const newItems = state.items.filter((p) => p.id !== id);
-          return { items: newItems, ...calculateTotals(newItems) };
-        })
-      },
-      setQty: (id, qty) => {
-        set((state) => {
-          const newItems = state.items.map((p) =>
-            p.id === id ? { ...p, qty: Math.max(1, Math.min(99, qty)) } : p
-          );
-          return { items: newItems, ...calculateTotals(newItems) };
-        })
-      },
-      clear: () => {
-        set({ items: [], subtotal: 0, totalShipping: 0, totalTax: 0, total: 0 })
-      },
-    }),
-    { 
-      name: 'cart-storage',
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          const newTotals = calculateTotals(state.items);
-          state.subtotal = newTotals.subtotal;
-          state.totalShipping = newTotals.totalShipping;
-          state.totalTax = newTotals.totalTax;
-          state.total = newTotals.total;
-        }
+export const useCart = create<CartState>()((set, get) => ({
+  items: [],
+  subtotal: 0,
+  totalShipping: 0,
+  totalTax: 0,
+  total: 0,
+  init: (userId: string) => {
+    const docRef = doc(db, 'carts', userId);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const items = docSnap.data().items || [];
+        set({ items, ...calculateTotals(items) });
+      } else {
+        setDoc(docRef, { items: [] });
+        set({ items: [], ...calculateTotals([]) });
       }
+    });
+    return unsubscribe;
+  },
+  add: async (userId: string, item: CartItem) => {
+    const docRef = doc(db, 'carts', userId);
+    const state = get();
+    const existing = state.items.find((p) => p.id === item.id)
+    let newItems;
+    if (existing) {
+      newItems = state.items.map((p) =>
+        p.id === item.id ? { ...p, qty: Math.min(99, p.qty + item.qty) } : p
+      )
+    } else {
+      newItems = [...state.items, { ...item, qty: Math.max(1, item.qty) }]
     }
-  )
-)
+    await setDoc(docRef, { items: newItems });
+  },
+  remove: async (userId: string, id: string) => {
+    const docRef = doc(db, 'carts', userId);
+    const state = get();
+    const newItems = state.items.filter((p) => p.id !== id);
+    await setDoc(docRef, { items: newItems });
+  },
+  setQty: async (userId: string, id: string, qty: number) => {
+    const docRef = doc(db, 'carts', userId);
+    const state = get();
+    const newItems = state.items.map((p) =>
+      p.id === id ? { ...p, qty: Math.max(1, Math.min(99, qty)) } : p
+    );
+    await setDoc(docRef, { items: newItems });
+  },
+  clear: () => {
+    set({ items: [], subtotal: 0, totalShipping: 0, totalTax: 0, total: 0 })
+  },
+}))

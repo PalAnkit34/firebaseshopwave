@@ -4,16 +4,32 @@ import { useState } from 'react'
 import { useAddressBook } from '@/lib/addressStore'
 import type { Address } from '@/lib/types'
 import AddressForm from './AddressForm'
+import { useAuth } from '@/context/AuthContext'
 
 export default function AddressManager({ onBack }: { onBack: () => void }) {
+  const { user } = useAuth()
   const { addresses, save, setDefault, remove } = useAddressBook()
   const [showForm, setShowForm] = useState(addresses.length === 0)
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
 
   const handleSaveAddress = (addr: Address) => {
-    save({ ...addr, default: addresses.length === 0 || addr.default });
-    setShowForm(false);
-    setEditingAddress(undefined);
+    if (user) {
+      save(user.id, { ...addr, default: addresses.length === 0 || addr.default });
+      setShowForm(false);
+      setEditingAddress(undefined);
+    }
+  }
+  
+  const handleSetDefault = (addressId: string) => {
+    if (user) {
+        setDefault(user.id, addressId);
+    }
+  }
+
+  const handleRemove = (addressId: string) => {
+    if (user) {
+        remove(user.id, addressId);
+    }
   }
 
   const handleEdit = (addr: Address) => {
@@ -40,9 +56,9 @@ export default function AddressManager({ onBack }: { onBack: () => void }) {
                             {a.landmark && <div className="text-xs text-gray-500">Landmark: {a.landmark}</div>}
                         </div>
                         <div className="flex items-center gap-2">
-                             {!a.default && <button onClick={() => a.id && setDefault(a.id)} className="text-xs font-semibold text-gray-500 hover:text-brand">Set Default</button>}
+                             {!a.default && <button onClick={() => a.id && handleSetDefault(a.id)} className="text-xs font-semibold text-gray-500 hover:text-brand">Set Default</button>}
                              <button onClick={() => handleEdit(a)} className="text-xs font-semibold text-blue-600 hover:underline">Edit</button>
-                             <button onClick={() => a.id && remove(a.id)} className="text-xs font-semibold text-red-600 hover:underline">Delete</button>
+                             <button onClick={() => a.id && handleRemove(a.id)} className="text-xs font-semibold text-red-600 hover:underline">Delete</button>
                         </div>
                     </div>
 

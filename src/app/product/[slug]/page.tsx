@@ -14,9 +14,11 @@ import CustomerReviews from '@/components/CustomerReviews'
 import ProductGrid from '@/components/ProductGrid'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/context/AuthContext'
 
 function ProductDetailContent() {
   const router = useRouter()
+  const { user } = useAuth()
   const { slug } = useParams()
   const { toast } = useToast()
   const p = useMemo(() => PRODUCTS.find(p => p.slug === slug), [slug])
@@ -32,12 +34,20 @@ function ProductDetailContent() {
   const related = PRODUCTS.filter(x => x.category===p.category && x.id!==p.id).slice(0,4)
 
   const handleAddToCart = () => {
-    add({ id:p.id, qty, price, name:p.name, image:p.image });
+    if (!user) {
+      toast({ title: "Please Login", description: "You need to be logged in to add items to your cart.", variant: "destructive" });
+      return;
+    }
+    add(user.id, { id:p.id, qty, price, name:p.name, image:p.image });
     toast({ title: "Added to Cart", description: `${p.name} has been added to your cart.` });
   }
 
   const handleBuyNow = () => {
-    add({ id:p.id, qty, price, name:p.name, image:p.image });
+    if (!user) {
+      toast({ title: "Please Login", description: "You need to be logged in to buy items.", variant: "destructive" });
+      return;
+    }
+    add(user.id, { id:p.id, qty, price, name:p.name, image:p.image });
     router.push('/checkout');
   }
 
