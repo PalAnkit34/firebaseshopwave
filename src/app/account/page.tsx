@@ -51,8 +51,8 @@ export default function AccountPage() {
   }, [loading, user, toast]);
 
   const handleSendOtp = async () => {
-    if (!phoneNumber || !/^\+?[1-9]\d{1,14}$/.test(phoneNumber)) {
-        toast({ title: "Invalid Phone Number", description: "Please enter a valid phone number with country code.", variant: "destructive" });
+    if (!phoneNumber || !/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
+        toast({ title: "Invalid Phone Number", description: "Please enter a valid phone number including the country code (e.g., +91).", variant: "destructive" });
         return;
     }
     try {
