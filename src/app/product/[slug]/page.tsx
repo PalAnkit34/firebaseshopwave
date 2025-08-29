@@ -144,7 +144,6 @@ function ProductDetailContent() {
           
           <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border p-3">
              {p.returnPolicy?.eligible && <ProductInfo icon={RotateCw} title={`${p.returnPolicy.duration} Day Return`} subtitle="If defective or wrong item" />}
-             {p.codAvailable && p.category === 'Fashion' && <ProductInfo icon={Truck} title="Cash on Delivery" subtitle="Available for this product" />}
              {p.warranty && <ProductInfo icon={ShieldCheck} title={p.warranty} subtitle="Brand warranty included" />}
           </div>
 
@@ -206,3 +205,5 @@ export default function ProductDetailPage() {
     </Suspense>
   )
 }
+
+    

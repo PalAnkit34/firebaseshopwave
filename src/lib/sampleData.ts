@@ -3,6 +3,92 @@ import type { Product } from './types'
 
 // A tiny catalog to start. Replace with API later.
 export const PRODUCTS: Product[] = [
+  // Home Products
+  {
+    id: 'P_HOME_01',
+    slug: 'ceramic-planter-pot-set',
+    name: 'Bohemian Ceramic Planter Pot Set (Set of 3)',
+    brand: 'CasaDecor',
+    category: 'Home',
+    subcategory: 'Decor',
+    image: 'https://images.unsplash.com/photo-1592205830484-75d3513a53c9?q=80&w=800&auto=format&fit=crop',
+    extraImages: [
+        'https://images.unsplash.com/photo-1587843400783-745a7a72d73f?q=80&w=800&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1614036125435-5b4a0a1a45b3?q=80&w=800&auto=format&fit=crop'
+    ],
+    quantity: 60,
+    price: { original: 1999, discounted: 1299, currency: '₹' },
+    description: 'Add a touch of bohemian chic to your space with this set of three ceramic planters. Each pot features a unique, handcrafted design, perfect for succulents, herbs, or small plants. Includes drainage holes and matching saucers.',
+    shortDescription: 'Set of 3 handcrafted ceramic pots for a bohemian vibe.',
+    features: ['Handcrafted ceramic', 'Unique textured patterns', 'Includes drainage hole and saucer'],
+    specifications: { Material: 'Ceramic', 'Set Includes': '3 pots, 3 saucers', 'Dimensions': '4", 5", and 6" diameter' },
+    ratings: { average: 4.8, count: 155 },
+    codAvailable: false,
+    returnPolicy: { eligible: true, duration: 10 },
+    warranty: 'No Warranty',
+    tags: ['planter', 'pot', 'ceramic', 'home decor', 'bohemian']
+  },
+  {
+    id: 'P_HOME_02',
+    slug: 'modern-led-table-lamp',
+    name: 'Minimalist LED Table Lamp with Wireless Charger',
+    brand: 'Lumina',
+    category: 'Home',
+    subcategory: 'Lighting',
+    image: 'https://images.unsplash.com/photo-1543198126-a83e953684a3?q=80&w=800&auto=format&fit=crop',
+    quantity: 45,
+    price: { original: 3499, discounted: 2499, currency: '₹' },
+    description: 'Illuminate your workspace with this sleek, minimalist LED table lamp. It features adjustable brightness, three color temperatures, and a built-in wireless charging pad for your phone. The flexible arm allows for perfect positioning.',
+    shortDescription: 'Sleek LED lamp with 3 light modes & wireless charging.',
+    features: ['Adjustable brightness (5 levels)', '3 color temperatures (Warm, Neutral, Cool)', 'Built-in 10W wireless charger', 'Flicker-free LED light'],
+    specifications: { Material: 'Aluminum Alloy, ABS', 'Power': '12W', 'Luminous Flux': '400 lm' },
+    ratings: { average: 4.7, count: 210 },
+    codAvailable: false,
+    returnPolicy: { eligible: true, duration: 15 },
+    warranty: '1 Year Warranty',
+    tags: ['lamp', 'led', 'lighting', 'home office', 'decor']
+  },
+  {
+    id: 'P_HOME_03',
+    slug: 'digital-alarm-clock-wood',
+    name: 'Wooden Digital Alarm Clock with Temp & Humidity',
+    brand: 'TimeWood',
+    category: 'Home',
+    subcategory: 'Decor',
+    image: 'https://images.unsplash.com/photo-1542848148-c4d36d675765?q=80&w=800&auto=format&fit=crop',
+    quantity: 110,
+    price: { original: 1599, discounted: 899, currency: '₹' },
+    description: 'Wake up in style with this modern wooden digital alarm clock. It displays time, date, temperature, and humidity on a clean LED screen. Features sound control mode to save power.',
+    shortDescription: 'Modern wood clock shows time, temp & humidity.',
+    features: ['Displays time, date, temp, humidity', '3 alarm settings', 'Sound control display', 'USB or battery powered'],
+    specifications: { Material: 'MDF + Wood Veneer', 'Power': 'USB (cable included) or 4xAAA batteries' },
+    ratings: { average: 4.4, count: 88 },
+    codAvailable: false,
+    returnPolicy: { eligible: true, duration: 7 },
+    warranty: '6 Month Warranty',
+    tags: ['clock', 'digital', 'wood', 'home decor', 'alarm']
+  },
+  {
+    id: 'P_HOME_04',
+    slug: 'abstract-canvas-wall-art',
+    name: 'Abstract Canvas Wall Art Print (Set of 2)',
+    brand: 'Artisan Walls',
+    category: 'Home',
+    subcategory: 'Wall Decor',
+    image: 'https://images.unsplash.com/photo-1579541620958-c6996119565e?q=80&w=800&auto=format&fit=crop',
+    quantity: 30,
+    price: { original: 4999, discounted: 2999, currency: '₹' },
+    description: 'Elevate your living room with this stunning set of two abstract canvas prints. Featuring a modern blend of colors and textures, these pieces add a sophisticated and artistic touch to any wall.',
+    shortDescription: 'Set of 2 modern abstract canvas prints for living room.',
+    features: ['High-quality canvas print', 'Vivid, fade-resistant ink', 'Comes framed and ready to hang'],
+    specifications: { 'Size': '24x36 inches each', 'Frame': 'Wood', 'Medium': 'Giclée Print' },
+    ratings: { average: 4.9, count: 45 },
+    codAvailable: false,
+    returnPolicy: { eligible: true, duration: 7 },
+    warranty: 'No Warranty',
+    tags: ['art', 'wall art', 'canvas', 'decor', 'abstract']
+  },
+
   // Ayurvedic Products - Tablets
   {
     id: 'P_AYUR_T_01',
@@ -2205,53 +2291,6 @@ export const PRODUCTS: Product[] = [
     inventory: { inStock: true, lowStockThreshold: 10 },
     codAvailable: true,
   },
-
-
-  // Fashion Products
-  {
-    id: 'P_FASH_M_01',
-    slug: 'mens-ethnic-cotton-kurta',
-    name: 'Men\'s Ethnic Cotton Kurta',
-    brand: 'DesiWear',
-    category: 'Fashion',
-    subcategory: 'Men-Ethnic',
-    image: 'https://images.unsplash.com/photo-1593032228653-25cb157b70a8?q=80&w=800&auto=format&fit=crop',
-    extraImages: [
-        'https://images.unsplash.com/photo-1617137968423-c6e4e242343a?q=80&w=800&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1617137968447-160aa2b7f032?q=80&w=800&auto=format&fit=crop'
-    ],
-    quantity: 150,
-    price: { original: 1499, discounted: 799, currency: '₹' },
-    description: 'A comfortable and stylish cotton kurta for men, perfect for festive occasions and casual wear. Made from high-quality fabric for a soft feel and elegant look.',
-    shortDescription: 'Stylish & comfy cotton kurta for festive or casual wear.',
-    features: ['100% premium cotton', 'Hand-stitched detailing', 'Breathable fabric'],
-    specifications: { Fit: 'Regular', 'Sleeve Type': 'Full Sleeve', Care: 'Machine Wash' },
-    ratings: { average: 4.5, count: 120 },
-    codAvailable: true,
-    returnPolicy: { eligible: true, duration: 10 },
-    warranty: 'No Warranty',
-    tags: ['kurta', 'ethnic wear', 'men fashion', 'desiwear']
-  },
-  {
-    id: 'P_FASH_W_01',
-    slug: 'womens-anarkali-kurta-set',
-    name: 'Women\'s Anarkali Kurta Set',
-    brand: 'DesiWear',
-    category: 'Fashion',
-    subcategory: 'Women-Ethnic',
-    image: 'https://images.unsplash.com/photo-1622354223106-24c01798835d?q=80&w=800&auto=format&fit=crop',
-    quantity: 80,
-    price: { original: 2999, discounted: 1499, currency: '₹' },
-    description: 'Elegant Anarkali kurta set for women, crafted from fine rayon fabric. Comes with a matching dupatta and churidar. Perfect for weddings and parties.',
-    shortDescription: 'Elegant rayon Anarkali set with dupatta and churidar.',
-    features: ['Soft rayon fabric', 'Intricate embroidery', 'Comes as a complete set'],
-    specifications: { Fabric: 'Rayon', Style: 'Anarkali', 'Occasion': 'Festive' },
-    ratings: { average: 4.8, count: 250 },
-    codAvailable: true,
-    returnPolicy: { eligible: true, duration: 10 },
-    warranty: 'No Warranty',
-    tags: ['anarkali', 'ethnic wear', 'women fashion', 'desiwear']
-  },
   // Tech Products
   {
     id: 'P_TECH_M_01',
@@ -2298,3 +2337,5 @@ export const PRODUCTS: Product[] = [
     tags: ['apple', 'iphone', 'ios', 'smartphone']
   },
 ];
+
+    

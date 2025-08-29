@@ -1,9 +1,10 @@
+
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { PRODUCTS } from '@/lib/sampleData'
 import { useMemo } from 'react'
 
-const mainCategories = ['Tech', 'Fashion', 'Ayurvedic', 'Food & Drinks'];
+const mainCategories = ['Tech', 'Home', 'Ayurvedic', 'Food & Drinks'];
 
 export default function CategoryPills() {
   const router = useRouter(); 
@@ -70,3 +71,5 @@ export default function CategoryPills() {
     </div>
   )
 }
+
+    

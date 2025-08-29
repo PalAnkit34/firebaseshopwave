@@ -36,9 +36,9 @@ const topCategories = [
 
 
 const techDeals = PRODUCTS.filter(p => p.category === 'Tech' && p.price.discounted && p.quantity > 0).slice(0, 8);
-const fashionDeals = PRODUCTS.filter(p => p.category === 'Fashion' && p.price.discounted && p.quantity > 0).slice(0, 8);
+const homeDeals = PRODUCTS.filter(p => p.category === 'Home' && p.price.discounted && p.quantity > 0).slice(0, 8);
 const ayurvedicDeals = PRODUCTS.filter(p => p.category === 'Ayurvedic' && p.price.discounted && p.quantity > 0).slice(0, 8);
-const filterCategories = ['All', 'Tech', 'Fashion', 'Ayurvedic'];
+const filterCategories = ['All', 'Tech', 'Home', 'Ayurvedic'];
 const PRODUCTS_TO_SHOW = 10;
 
 const useProductCycler = (products: Product[], count: number, interval: number) => {
@@ -68,12 +68,10 @@ const useProductCycler = (products: Product[], count: number, interval: number) 
 };
 
 function OfferCard({ title, products, href }: { title: string; products: Product[]; href: string }) {
-  // We need 4 products for a 2x2 grid. Cycle every 5 seconds.
   const visibleProducts = useProductCycler(products, 4, 5000);
 
   if (!products || products.length === 0) return null;
   
-  // A unique key for the AnimatePresence component based on the visible products
   const animationKey = visibleProducts.map(p => p.id).join('-');
 
   return (
@@ -83,7 +81,7 @@ function OfferCard({ title, products, href }: { title: string; products: Product
         <div className="relative flex-grow aspect-square">
              <AnimatePresence initial={false}>
                 <motion.div
-                    key={animationKey} // Key changes when products cycle
+                    key={animationKey}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -143,10 +141,10 @@ export default function Home() {
       <BannerSlider />
       
       <section>
-        <h2 className="text-2xl font-bold mb-4 text-center">Today's Best Offers</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Top Offers</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <OfferCard title="Top Tech Deals" products={techDeals} href="/search?category=Tech"/>
-            <OfferCard title="Latest in Fashion" products={fashionDeals} href="/search?category=Fashion"/>
+            <OfferCard title="Tech Accessories" products={techDeals} href="/search?category=Tech"/>
+            <OfferCard title="Home Accessories" products={homeDeals} href="/search?category=Home"/>
             <OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/>
         </div>
       </section>
@@ -213,3 +211,5 @@ export default function Home() {
     </div>
   );
 }
+
+    

@@ -26,10 +26,22 @@ type CartState = {
 
 const calculateTotals = (items: CartItem[]) => {
   const subtotal = items.reduce((s, i) => s + i.qty * i.price, 0)
-  const totalShipping = items.reduce((acc, cartItem) => {
-    const product = PRODUCTS.find(p => p.id === cartItem.id)
-    return acc + (product?.shippingCost || 0) * cartItem.qty;
-  }, 0)
+  
+  // Dynamic shipping cost logic
+  const totalItems = items.reduce((acc, item) => acc + item.qty, 0);
+  let totalShipping = 0;
+  if (totalItems > 0) {
+    if (totalItems <= 2) {
+      totalShipping = 45;
+    } else if (totalItems <= 8) {
+      totalShipping = 65;
+    } else {
+      totalShipping = 100;
+      const remainingItems = totalItems - 8;
+      totalShipping += Math.ceil(remainingItems / 5) * 35;
+    }
+  }
+
   const totalTax = items.reduce((acc, cartItem) => {
     const product = PRODUCTS.find(p => p.id === cartItem.id)
     const taxRate = product?.taxPercent || 0
@@ -90,3 +102,5 @@ export const useCart = create<CartState>()((set, get) => ({
     set({ items: [], subtotal: 0, totalShipping: 0, totalTax: 0, total: 0 })
   },
 }))
+
+    

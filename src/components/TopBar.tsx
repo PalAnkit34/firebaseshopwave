@@ -8,7 +8,7 @@ import { useWishlist } from '@/lib/wishlistStore'
 import { useOrders } from '@/lib/ordersStore'
 import { useSearchParams } from 'next/navigation'
 
-const mainCategories = ['Tech', 'Fashion', 'Ayurvedic'];
+const mainCategories = ['Tech', 'Home', 'Ayurvedic'];
 
 export default function TopBar() {
   const { items } = useCart();
@@ -28,7 +28,7 @@ export default function TopBar() {
         
         <div className="hidden md:flex items-center gap-4">
             {mainCategories.filter(c => c !== currentCategory).map(c => (
-                <Link key={c} href={`/search?category=${c}`} className="text-sm font-medium text-gray-600 hover:text-brand transition-colors">{c}</Link>
+                <Link key={c} href={`/search?category=${c}`} className="text-sm font-medium text-gray-600 hover:text-brand transition-colors">{c === 'Home' ? 'Home Decor' : c}</Link>
             ))}
         </div>
 
@@ -61,3 +61,5 @@ export default function TopBar() {
     </header>
   )
 }
+
+    

@@ -8,14 +8,14 @@ import { PlusCircle, Trash2, Upload } from 'lucide-react'
 import { IKContext, IKUpload } from 'imagekitio-react';
 import { useToast } from '@/hooks/use-toast'
 
-const categories = ['Tech', 'Fashion', 'Ayurvedic', 'Home', 'Beauty', 'Groceries']
+const categories = ['Tech', 'Home', 'Ayurvedic', 'Beauty', 'Groceries', 'Pooja']
 const subcategories: Record<string, string[]> = {
     Tech: ['Mobiles', 'Laptops', 'Audio', 'Cameras', 'Wearables', 'Accessories', 'Tablets'],
-    Fashion: ['Men-Ethnic', 'Women-Ethnic', 'Men-Casual', 'Women-Western', 'Footwear', 'Accessories', 'Men-Formal'],
-    Ayurvedic: ['Supplements', 'Herbal-Powders', 'Personal-Care', 'Beverages'],
-    Home: ['Kitchenware', 'Appliances', 'Smart-Home'],
+    Home: ['Decor', 'Lighting', 'Kitchenware', 'Wall Decor', 'Appliances', 'Smart-Home'],
+    Ayurvedic: ['Ayurvedic Medicine', 'Homeopathic Medicines', 'Personal-Care', 'Beverages'],
     Beauty: ['Makeup', 'Skincare', 'Hair-Care'],
     Groceries: ['Staples', 'Snacks', 'Beverages', 'Oils'],
+    Pooja: ['Dhoop', 'Agarbatti', 'Aasan and Mala', 'Photo Frame'],
 }
 
 interface ProductFormProps {
@@ -48,7 +48,7 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         shippingCost: 0,
         taxPercent: 18,
         inventory: { inStock: true, lowStockThreshold: 5 },
-        codAvailable: true,
+        codAvailable: false,
         returnPolicy: { eligible: true, duration: 7 },
         warranty: '1 Year Warranty',
         status: 'active'
@@ -88,12 +88,9 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
                 case 'lowStockThreshold':
                     return { ...prevState, inventory: { ...prevState.inventory!, lowStockThreshold: Number(value) } }
                 case 'codAvailable':
+                    return { ...prevState, codAvailable: checked };
                 case 'returnPolicy.eligible':
-                    const field = name.split('.')[0];
-                    if (field === 'returnPolicy') {
-                         return { ...prevState, returnPolicy: { ...prevState.returnPolicy!, eligible: checked } };
-                    }
-                    return { ...prevState, [name.split('.')[0]]: checked };
+                    return { ...prevState, returnPolicy: { ...prevState.returnPolicy!, eligible: checked } };
                 case 'returnPolicy.duration':
                     return { ...prevState, returnPolicy: { ...prevState.returnPolicy!, duration: Number(value) } }
                 case 'features':
@@ -332,3 +329,5 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         </IKContext>
     )
 }
+
+    

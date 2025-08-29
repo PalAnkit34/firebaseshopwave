@@ -58,13 +58,13 @@ const techCategories = [
   { name: 'Accessories', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1615663245642-9904791cd90f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'computer mouse' },
 ];
 
-const fashionCategories = [
-    { name: 'Men\'s Casual', href: '/search?category=Fashion&subcategory=Men-Casual', image: 'https://images.unsplash.com/photo-1602293589922-3a5682d3809d?q=80&w=800&auto=format&fit=crop', dataAiHint: 'denim shirt' },
-    { name: 'Women\'s Ethnic', href: '/search?category=Fashion&subcategory=Women-Ethnic', image: 'https://images.unsplash.com/photo-1622354223106-24c01798835d?q=80&w=800&auto=format&fit=crop', dataAiHint: 'anarkali kurta' },
-    { name: 'Footwear', href: '/search?category=Fashion&subcategory=Footwear', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=800&auto=format&fit=crop', dataAiHint: 'stylish sneakers' },
-    { name: 'Men\'s Ethnic', href: '/search?category=Fashion&subcategory=Men-Ethnic', image: 'https://images.unsplash.com/photo-1593032228653-25cb157b70a8?q=80&w=800&auto=format&fit=crop', dataAiHint: 'cotton kurta' },
-    { name: 'Women\'s Western', href: '/search?category=Fashion&subcategory=Women-Western', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=800&auto=format&fit=crop', dataAiHint: 'floral dress' },
-    { name: 'Accessories', href: '/search?category=Fashion&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=800&auto=format&fit=crop', dataAiHint: 'sunglasses fashion' },
+const homeCategories = [
+    { name: 'Decor', href: '/search?category=Home&subcategory=Decor', image: 'https://images.unsplash.com/photo-1534349762230-e09968411995?q=80&w=800&auto=format&fit=crop', dataAiHint: 'home decor' },
+    { name: 'Lighting', href: '/search?category=Home&subcategory=Lighting', image: 'https://images.unsplash.com/photo-1617013685142-df02ca451390?q=80&w=800&auto=format&fit=crop', dataAiHint: 'modern lighting' },
+    { name: 'Kitchenware', href: '/search?category=Home&subcategory=Kitchenware', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=800&auto=format&fit=crop', dataAiHint: 'kitchenware set' },
+    { name: 'Wall Decor', href: '/search?category=Home&subcategory=Wall%20Decor', image: 'https://images.unsplash.com/photo-1579541620958-c6996119565e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'wall art' },
+    { name: 'Appliances', href: '/search?category=Home&subcategory=Appliances', image: 'https://images.unsplash.com/photo-1626806819282-2c1dc0165453?q=80&w=800&auto=format&fit=crop', dataAiHint: 'kitchen appliances' },
+    { name: 'Smart Home', href: '/search?category=Home&subcategory=Smart-Home', image: 'https://images.unsplash.com/photo-1659024492834-c7b4c6a8f1b2?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smart home' },
 ];
 
 const foodAndDrinksCategories = [
@@ -205,17 +205,17 @@ function SearchContent() {
                   </div>
                 </div>
             );
-        case 'Fashion':
+        case 'Home':
              return <CategoryHeader 
-                title="Trendsetting Styles"
-                description="Update your wardrobe with the latest trends in fashion. Unbeatable prices."
-                linkText="Shop Fashion"
+                title="Beautiful Home Decor"
+                description="Elevate your living space with our curated collection of home accessories."
+                linkText="Shop Home"
                 bannerImages={[
-                    "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1532323544230-7191fd51bc1b?q=80&w=1200&auto=format&fit=crop",
                 ]}
-                categories={fashionCategories}
+                categories={homeCategories}
                 bannerColor="bg-pink-50"
                 buttonColor="bg-pink-500 hover:bg-pink-600"
             />
@@ -258,7 +258,7 @@ function SearchContent() {
                     ]}
                     categories={[
                         { name: 'Tech', href: '/search?category=Tech', image: techCategories[0].image, dataAiHint: 'latest gadgets' },
-                        { name: 'Fashion', href: '/search?category=Fashion', image: fashionCategories[0].image, dataAiHint: 'stylish apparel' },
+                        { name: 'Home', href: '/search?category=Home', image: homeCategories[0].image, dataAiHint: 'stylish apparel' },
                         { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[1].image, dataAiHint: 'natural remedies' },
                         { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
                         { name: 'Pooja', href: '/search?category=Pooja', image: poojaSubCategories[0].image, dataAiHint: 'pooja items' },
@@ -347,7 +347,7 @@ function SearchContent() {
   }
 
 
-  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && !['Ayurvedic', 'Tech', 'Fashion', 'Food & Drinks', 'Pooja'].includes(opts.category)));
+  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && !['Ayurvedic', 'Tech', 'Home', 'Food & Drinks', 'Pooja'].includes(opts.category)));
 
 
   return (
@@ -441,3 +441,5 @@ export default function SearchPage() {
     </Suspense>
   )
 }
+
+    
