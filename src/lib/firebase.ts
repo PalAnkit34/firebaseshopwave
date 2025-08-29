@@ -3,14 +3,14 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-// IMPORTANT: REPLACE WITH YOUR FIREBASE PROJECT CONFIG
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBOGh0ExzbyuCzZrorT2_zlIMs_5LXnzsg",
+  authDomain: "cultivated-pen-437311-m1.firebaseapp.com",
+  projectId: "cultivated-pen-437311-m1",
+  storageBucket: "cultivated-pen-437311-m1.appspot.com",
+  messagingSenderId: "627366191718",
+  appId: "1:627366191718:web:f08ca5fff847c13a5643a7"
 };
 
 // Initialize Firebase
