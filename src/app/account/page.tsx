@@ -1,130 +1,114 @@
 
 'use client'
-import { useState, useEffect } from 'react'
-import { User, Package, Heart, MapPin, LifeBuoy, LogOut, ChevronRight, Phone } from 'lucide-react'
+import { useState } from 'react'
+import { User, Package, Heart, MapPin, LifeBuoy, LogOut, ChevronRight, Mail } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import AddressManager from '@/components/AddressManager'
 import { useOrders } from '@/lib/ordersStore'
 import { useWishlist } from '@/lib/wishlistStore'
 import { useAuth } from '@/context/AuthContext'
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
-import { auth } from '@/lib/firebase'
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signInWithPopup 
+} from 'firebase/auth'
+import { auth, googleProvider } from '@/lib/firebase'
 import { useToast } from '@/hooks/use-toast'
+import { Button } from '@/components/ui/button'
 
 const accountSections = {
   DASHBOARD: 'DASHBOARD',
   ADDRESSES: 'ADDRESSES',
 }
 
+const AuthForm = () => {
+    const [isLogin, setIsLogin] = useState(true);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { toast } = useToast();
+
+    const handleAuthAction = async () => {
+        try {
+            if (isLogin) {
+                await signInWithEmailAndPassword(auth, email, password);
+                toast({ title: "Login Successful!", description: "Welcome back." });
+            } else {
+                await createUserWithEmailAndPassword(auth, email, password);
+                toast({ title: "Signup Successful!", description: "Your account has been created." });
+            }
+        } catch (error: any) {
+            console.error("Auth Error:", error);
+            toast({ title: "Authentication Error", description: error.message, variant: "destructive" });
+        }
+    };
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await signInWithPopup(auth, googleProvider);
+            toast({ title: "Login Successful!", description: "Welcome!" });
+        } catch (error: any) {
+            console.error("Google Sign-In Error:", error);
+            toast({ title: "Google Sign-In Error", description: error.message, variant: "destructive" });
+        }
+    };
+
+    return (
+        <div className="mx-auto max-w-sm card p-6 text-center">
+            <h1 className="text-2xl font-bold mb-4">{isLogin ? 'Login' : 'Sign Up'}</h1>
+            <div className="space-y-4">
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email Address"
+                    className="w-full rounded-lg border px-3 py-2 text-sm"
+                />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    className="w-full rounded-lg border px-3 py-2 text-sm"
+                />
+                <Button onClick={handleAuthAction} className="w-full">
+                    {isLogin ? 'Login' : 'Sign Up'}
+                </Button>
+                 <div className="relative my-4">
+                    <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t"></span>
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-card px-2 text-gray-500">Or continue with</span>
+                    </div>
+                </div>
+                <Button onClick={handleGoogleSignIn} variant="outline" className="w-full flex items-center gap-2">
+                    <svg className="w-5 h-5" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
+                        <path fill="currentColor" d="M488 261.8C488 403.3 381.5 504 244 504 110.1 504 0 393.9 0 256S110.1 8 244 8c66.8 0 126.9 25.8 171.4 68.3L354.7 137.9C323.5 109.4 287.4 92 244 92c-77.2 0-140 62.8-140 140s62.8 140 140 140c83.6 0 122.3-61.4 125.8-92.7H244v-75.5h243.2c1.3 7.8 2.8 15.3 2.8 23.3z"></path>
+                    </svg>
+                    Sign in with Google
+                </Button>
+                <button onClick={() => setIsLogin(!isLogin)} className="text-sm text-gray-500 hover:underline">
+                    {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Login'}
+                </button>
+            </div>
+        </div>
+    );
+};
+
+
 export default function AccountPage() {
   const { user, loading, logout } = useAuth()
   const [activeSection, setActiveSection] = useState(accountSections.DASHBOARD)
   const { hasNewOrder } = useOrders()
   const { hasNewItem } = useWishlist()
-  const { toast } = useToast()
-
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [otp, setOtp] = useState('')
-  const [confirmationResult, setConfirmationResult] = useState<any>(null)
-  const [otpSent, setOtpSent] = useState(false)
-
-  useEffect(() => {
-    if (!loading && !user) {
-        try {
-            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-                'size': 'invisible',
-                'callback': (response: any) => {
-                    // reCAPTCHA solved, allow signInWithPhoneNumber.
-                }
-            });
-        } catch (error) {
-            console.error("Error initializing RecaptchaVerifier:", error);
-            // Add a toast notification for the user
-            toast({
-                title: "Error",
-                description: "Could not initialize login provider. Please refresh the page.",
-                variant: "destructive"
-            });
-        }
-    }
-  }, [loading, user, toast]);
-
-  const handleSendOtp = async () => {
-    if (!phoneNumber || !/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
-        toast({ title: "Invalid Phone Number", description: "Please enter a valid phone number including the country code (e.g., +91).", variant: "destructive" });
-        return;
-    }
-    try {
-        const verifier = window.recaptchaVerifier;
-        const result = await signInWithPhoneNumber(auth, phoneNumber, verifier);
-        setConfirmationResult(result);
-        setOtpSent(true);
-        toast({ title: "OTP Sent!", description: `An OTP has been sent to ${phoneNumber}.` });
-    } catch (error) {
-        console.error("Error sending OTP:", error);
-        toast({ title: "Error", description: "Failed to send OTP. Please try again.", variant: "destructive" });
-    }
-  }
-
-  const handleVerifyOtp = async () => {
-    if (!otp || otp.length !== 6) {
-        toast({ title: "Invalid OTP", description: "Please enter a valid 6-digit OTP.", variant: "destructive" });
-        return;
-    }
-    try {
-        await confirmationResult.confirm(otp);
-        toast({ title: "Success!", description: "You have been logged in successfully." });
-    } catch (error) {
-        console.error("Error verifying OTP:", error);
-        toast({ title: "Error", description: "Invalid OTP. Please try again.", variant: "destructive" });
-    }
-  }
-
+  
   if (loading) {
     return <div className="text-center py-10">Loading...</div>
   }
 
   if (!user) {
-    return (
-        <div className="mx-auto max-w-sm card p-6 text-center">
-             <h1 className="text-2xl font-bold mb-4">Login or Signup</h1>
-             {!otpSent ? (
-                <div className="space-y-4">
-                    <p className="text-sm text-gray-600">Enter your phone number to receive a verification code.</p>
-                    <input
-                        type="tel"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="+91 98765 43210"
-                        className="w-full rounded-lg border px-3 py-2 text-sm text-center"
-                    />
-                    <button onClick={handleSendOtp} className="w-full rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">
-                        Send OTP
-                    </button>
-                </div>
-             ) : (
-                <div className="space-y-4">
-                     <p className="text-sm text-gray-600">Enter the 6-digit OTP sent to {phoneNumber}.</p>
-                    <input
-                        type="text"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
-                        placeholder="123456"
-                        maxLength={6}
-                        className="w-full rounded-lg border px-3 py-2 text-sm text-center tracking-widest"
-                    />
-                     <button onClick={handleVerifyOtp} className="w-full rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">
-                        Verify & Login
-                    </button>
-                    <button onClick={() => setOtpSent(false)} className="text-sm text-gray-500 hover:underline">
-                        Change Number
-                    </button>
-                </div>
-             )}
-             <div id="recaptcha-container" className="mt-4"></div>
-        </div>
-    )
+    return <AuthForm />;
   }
 
   const renderSection = () => {
@@ -142,7 +126,7 @@ export default function AccountPage() {
                     </div>
                     <div>
                         <h2 className="text-xl font-bold">Welcome!</h2>
-                        <p className="text-sm text-gray-500">{user.phoneNumber}</p>
+                        <p className="text-sm text-gray-500">{user.email || user.phoneNumber}</p>
                     </div>
                 </div>
             </div>
