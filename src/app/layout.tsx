@@ -1,7 +1,6 @@
 
 import './globals.css';
 import type { Metadata } from 'next';
-import { AddressProvider } from '@/lib/addressStore';
 import { OrdersProvider } from '@/lib/ordersStore';
 import RootContent from './RootContent';
 import { AuthProvider } from '@/context/AuthContext';
@@ -35,9 +34,7 @@ export default function RootLayout({
       <body className="font-body antialiased bg-background" suppressHydrationWarning>
         <AuthProvider>
           <OrdersProvider>
-            <AddressProvider>
-              <RootContent>{children}</RootContent>
-            </AddressProvider>
+            <RootContent>{children}</RootContent>
           </OrdersProvider>
         </AuthProvider>
       </body>

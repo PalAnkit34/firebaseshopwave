@@ -1,34 +1,75 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
-import { safeGet, safeSet } from './storage'
+import { create } from 'zustand'
+import { doc, onSnapshot, setDoc } from 'firebase/firestore'
+import { db } from './firebase'
 import type { Address } from './types'
 
-const AddrCtx = createContext<{ addresses: Address[]; save: (a: Address) => void; remove: (id: string) => void; setDefault: (id: string) => void }>({ addresses: [], save: () => {}, remove: () => {}, setDefault: () => {} })
-
-export const AddressProvider = ({ children }: { children: React.ReactNode }) => {
-  const [addresses, setAddresses] = useState<Address[]>(safeGet<Address[]>('addresses', []))
-  useEffect(() => { safeSet('addresses', addresses) }, [addresses])
-  
-  const save = (a: Address) => {
-    setAddresses(prev => {
-      const existing = prev.find(addr => addr.id === a.id);
-      let newAddresses: Address[];
-      if (existing) {
-        newAddresses = prev.map(addr => addr.id === a.id ? a : addr);
-      } else {
-        newAddresses = [{ ...a, id: `addr_${Date.now()}` }, ...prev];
-      }
-      if (a.default) {
-        return newAddresses.map(addr => ({ ...addr, default: addr.id === (a.id || newAddresses[0].id) }));
-      }
-      return newAddresses;
-    });
-  };
-
-  const remove = (id: string) => setAddresses(prev => prev.filter(a => a.id !== id));
-  
-  const setDefault = (id: string) => setAddresses(prev => prev.map((a) => ({ ...a, default: a.id === id })))
-
-  return <AddrCtx.Provider value={{ addresses, save, remove, setDefault }}>{children}</AddrCtx.Provider>
+type AddressState = {
+  addresses: Address[]
+  isLoading: boolean
+  init: (userId: string) => () => void
+  save: (userId: string, address: Address) => Promise<void>
+  remove: (userId: string, addressId: string) => Promise<void>
+  setDefault: (userId: string, addressId: string) => Promise<void>
+  clear: () => void
 }
-export const useAddressBook = () => useContext(AddrCtx)
+
+const getDocRef = (userId: string) => doc(db, 'addresses', userId);
+
+export const useAddressBook = create<AddressState>()((set, get) => ({
+  addresses: [],
+  isLoading: true,
+  init: (userId: string) => {
+    set({ isLoading: true });
+    const docRef = getDocRef(userId);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const addresses = docSnap.data().list || [];
+        set({ addresses, isLoading: false });
+      } else {
+        // Create the document if it doesn't exist for a new user
+        setDoc(docRef, { list: [] });
+        set({ addresses: [], isLoading: false });
+      }
+    });
+    return unsubscribe; // Return the unsubscribe function for cleanup
+  },
+  save: async (userId, address) => {
+    const docRef = getDocRef(userId);
+    const state = get();
+    const existing = state.addresses.find((a) => a.id === address.id);
+    let newAddresses: Address[];
+
+    if (existing) {
+      newAddresses = state.addresses.map((a) => (a.id === address.id ? address : a));
+    } else {
+      const newAddress = { ...address, id: `addr_${Date.now()}` };
+      newAddresses = [newAddress, ...state.addresses];
+    }
+    
+    // If setting default, ensure only one is default
+    if (address.default) {
+      newAddresses = newAddresses.map(a => ({
+        ...a, 
+        default: a.id === (address.id || newAddresses[0].id)
+      }));
+    }
+
+    await setDoc(docRef, { list: newAddresses });
+  },
+  remove: async (userId, addressId) => {
+    const docRef = getDocRef(userId);
+    const state = get();
+    const newAddresses = state.addresses.filter((a) => a.id !== addressId);
+    await setDoc(docRef, { list: newAddresses });
+  },
+  setDefault: async (userId, addressId) => {
+    const docRef = getDocRef(userId);
+    const state = get();
+    const newAddresses = state.addresses.map((a) => ({ ...a, default: a.id === addressId }));
+    await setDoc(docRef, { list: newAddresses });
+  },
+  clear: () => {
+    set({ addresses: [], isLoading: true });
+  }
+}))
