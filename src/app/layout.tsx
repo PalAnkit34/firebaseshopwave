@@ -1,16 +1,10 @@
 
 import './globals.css';
 import type { Metadata } from 'next';
-import TopBar from '@/components/TopBar';
-import BottomNav from '@/components/BottomNav';
 import { AddressProvider } from '@/lib/addressStore';
 import { OrdersProvider } from '@/lib/ordersStore';
-import OfferPopup from '@/components/OfferPopup';
-import Footer from '@/components/Footer';
-import { Toaster } from '@/components/ui/toast';
-import { usePathname } from 'next/navigation';
-import AdminLayout from './admin/layout';
 import RootContent from './RootContent';
+import { AuthProvider } from '@/context/AuthContext';
 
 
 export const metadata: Metadata = {
@@ -39,11 +33,13 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased bg-background" suppressHydrationWarning>
-        <OrdersProvider>
-          <AddressProvider>
-            <RootContent>{children}</RootContent>
-          </AddressProvider>
-        </OrdersProvider>
+        <AuthProvider>
+          <OrdersProvider>
+            <AddressProvider>
+              <RootContent>{children}</RootContent>
+            </AddressProvider>
+          </OrdersProvider>
+        </AuthProvider>
       </body>
     </html>
   );

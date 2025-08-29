@@ -1,71 +1,129 @@
 
 'use client'
 import { useState, useEffect } from 'react'
-import { User, Package, Heart, MapPin, LifeBuoy, LogOut, ChevronRight, Edit } from 'lucide-react'
+import { User, Package, Heart, MapPin, LifeBuoy, LogOut, ChevronRight, Phone } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import AddressManager from '@/components/AddressManager'
-import { safeGet, safeSet } from '@/lib/storage'
 import { useOrders } from '@/lib/ordersStore'
 import { useWishlist } from '@/lib/wishlistStore'
+import { useAuth } from '@/context/AuthContext'
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import { auth } from '@/lib/firebase'
+import { useToast } from '@/hooks/use-toast'
 
 const accountSections = {
   DASHBOARD: 'DASHBOARD',
   ADDRESSES: 'ADDRESSES',
-  EDIT_PROFILE: 'EDIT_PROFILE',
-}
-
-interface UserProfile {
-  fullName: string;
-  email: string;
-  phone: string;
 }
 
 export default function AccountPage() {
+  const { user, loading, logout } = useAuth()
   const [activeSection, setActiveSection] = useState(accountSections.DASHBOARD)
-  const [user, setUser] = useState<UserProfile>({
-    fullName: 'Dhananjay Singh',
-    email: 'd.singh@example.com',
-    phone: '+91 98765 43210',
-  })
   const { hasNewOrder } = useOrders()
   const { hasNewItem } = useWishlist()
+  const { toast } = useToast()
 
-  // Load user from local storage on mount
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [otp, setOtp] = useState('')
+  const [confirmationResult, setConfirmationResult] = useState<any>(null)
+  const [otpSent, setOtpSent] = useState(false)
+
   useEffect(() => {
-    const savedUser = safeGet<UserProfile>('userProfile', user);
-    setUser(savedUser);
-  }, []);
-
-  // Save user to local storage on change
-  useEffect(() => {
-    safeSet('userProfile', user);
-  }, [user]);
-
-  const EditProfileSection = () => {
-    const [formData, setFormData] = useState(user);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      setFormData(prev => ({ ...prev, [name]: value }));
+    if (!loading && !user) {
+        try {
+            window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                'size': 'invisible',
+                'callback': (response: any) => {
+                    // reCAPTCHA solved, allow signInWithPhoneNumber.
+                }
+            });
+        } catch (error) {
+            console.error("Error initializing RecaptchaVerifier:", error);
+            // Add a toast notification for the user
+            toast({
+                title: "Error",
+                description: "Could not initialize login provider. Please refresh the page.",
+                variant: "destructive"
+            });
+        }
     }
+  }, [loading, user, toast]);
 
-    const handleSave = () => {
-      setUser(formData);
-      setActiveSection(accountSections.DASHBOARD);
+  const handleSendOtp = async () => {
+    if (!phoneNumber || !/^\+?[1-9]\d{1,14}$/.test(phoneNumber)) {
+        toast({ title: "Invalid Phone Number", description: "Please enter a valid phone number with country code.", variant: "destructive" });
+        return;
     }
+    try {
+        const verifier = window.recaptchaVerifier;
+        const result = await signInWithPhoneNumber(auth, phoneNumber, verifier);
+        setConfirmationResult(result);
+        setOtpSent(true);
+        toast({ title: "OTP Sent!", description: `An OTP has been sent to ${phoneNumber}.` });
+    } catch (error) {
+        console.error("Error sending OTP:", error);
+        toast({ title: "Error", description: "Failed to send OTP. Please try again.", variant: "destructive" });
+    }
+  }
 
+  const handleVerifyOtp = async () => {
+    if (!otp || otp.length !== 6) {
+        toast({ title: "Invalid OTP", description: "Please enter a valid 6-digit OTP.", variant: "destructive" });
+        return;
+    }
+    try {
+        await confirmationResult.confirm(otp);
+        toast({ title: "Success!", description: "You have been logged in successfully." });
+    } catch (error) {
+        console.error("Error verifying OTP:", error);
+        toast({ title: "Error", description: "Invalid OTP. Please try again.", variant: "destructive" });
+    }
+  }
+
+  if (loading) {
+    return <div className="text-center py-10">Loading...</div>
+  }
+
+  if (!user) {
     return (
-       <div>
-        <button onClick={() => setActiveSection(accountSections.DASHBOARD)} className="text-sm text-brand font-semibold mb-4">&larr; Back to Account</button>
-        <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
-        <div className="card p-6 space-y-4">
-          <input name="fullName" value={formData.fullName} onChange={handleInputChange} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Full Name"/>
-          <input name="email" value={formData.email} onChange={handleInputChange} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Email" type="email"/>
-          <input name="phone" value={formData.phone} onChange={handleInputChange} className="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Phone"/>
-          <button onClick={handleSave} className="rounded-xl bg-brand px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Save Changes</button>
+        <div className="mx-auto max-w-sm card p-6 text-center">
+             <h1 className="text-2xl font-bold mb-4">Login or Signup</h1>
+             {!otpSent ? (
+                <div className="space-y-4">
+                    <p className="text-sm text-gray-600">Enter your phone number to receive a verification code.</p>
+                    <input
+                        type="tel"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        placeholder="+91 98765 43210"
+                        className="w-full rounded-lg border px-3 py-2 text-sm text-center"
+                    />
+                    <button onClick={handleSendOtp} className="w-full rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">
+                        Send OTP
+                    </button>
+                </div>
+             ) : (
+                <div className="space-y-4">
+                     <p className="text-sm text-gray-600">Enter the 6-digit OTP sent to {phoneNumber}.</p>
+                    <input
+                        type="text"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        placeholder="123456"
+                        maxLength={6}
+                        className="w-full rounded-lg border px-3 py-2 text-sm text-center tracking-widest"
+                    />
+                     <button onClick={handleVerifyOtp} className="w-full rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">
+                        Verify & Login
+                    </button>
+                    <button onClick={() => setOtpSent(false)} className="text-sm text-gray-500 hover:underline">
+                        Change Number
+                    </button>
+                </div>
+             )}
+             <div id="recaptcha-container" className="mt-4"></div>
         </div>
-      </div>
     )
   }
 
@@ -73,8 +131,6 @@ export default function AccountPage() {
     switch (activeSection) {
       case accountSections.ADDRESSES:
         return <AddressManager onBack={() => setActiveSection(accountSections.DASHBOARD)} />
-      case accountSections.EDIT_PROFILE:
-        return <EditProfileSection />
       case accountSections.DASHBOARD:
       default:
         return (
@@ -85,9 +141,8 @@ export default function AccountPage() {
                         <User className="w-8 h-8 text-gray-500" />
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold">{user.fullName}</h2>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                        <p className="text-sm text-gray-500">{user.phone}</p>
+                        <h2 className="text-xl font-bold">Welcome!</h2>
+                        <p className="text-sm text-gray-500">{user.phoneNumber}</p>
                     </div>
                 </div>
             </div>
@@ -100,8 +155,7 @@ export default function AccountPage() {
             </div>
 
             <div className="card p-4">
-                 <AccountLink title="Edit Profile" icon={Edit} onClick={() => setActiveSection(accountSections.EDIT_PROFILE)} />
-                 <AccountLink title="Logout" icon={LogOut} />
+                 <AccountLink title="Logout" icon={LogOut} onClick={logout} />
             </div>
           </div>
         )
@@ -125,7 +179,7 @@ const DashboardCard = ({ icon: Icon, title, href, onClick, hasNotification }: { 
   const content = (
       <div className="card p-4 text-center flex flex-col items-center justify-center h-full relative">
           {hasNotification && <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full blinking-dot"></div>}
-          <Icon className="w-8 h-8 mb-2 text-brand" />
+          <Icon className="w-8 h-8 text-brand" />
           <h3 className="font-semibold">{title}</h3>
       </div>
   );
