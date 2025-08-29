@@ -7,17 +7,15 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function OrdersPage(){
-  const { orders, clearNewOrderStatus } = useOrders()
-  const [isClient, setIsClient] = useState(false)
+  const { orders, isLoading, clearNewOrderStatus } = useOrders()
 
   useEffect(() => {
-    setIsClient(true)
     // When the user visits this page, clear the new order notification
     clearNewOrderStatus();
   }, [clearNewOrderStatus]);
 
-  if (!isClient) {
-    return null; // or a loading spinner
+  if (isLoading) {
+    return <div className="text-center py-10">Loading orders...</div>;
   }
 
   return (

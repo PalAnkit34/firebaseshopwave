@@ -47,14 +47,14 @@ export default function Checkout(){
     setShowForm(addresses.length === 0);
   }, [addresses.length]);
 
-  const handleSuccessfulPayment = () => {
+  const handleSuccessfulPayment = async () => {
     const addr = addresses.find(a => a.default) || addresses[0]
     if (!addr || !user) {
       toast({ title: "Error", description: "Could not find address or user to place order.", variant: 'destructive' });
       return;
     }
-    placeOrder(user.id, items, addr, total, paymentMethod as any)
-    clearCart() // This now just clears the local state
+    await placeOrder(user.id, items, addr, total, paymentMethod as any)
+    clearCart() 
     router.push('/orders')
     toast({ title: "Order Placed!", description: "Thank you for your purchase." });
   }
