@@ -5,22 +5,36 @@ import { PRODUCTS } from '@/lib/sampleData'
 import ProductCard from '@/components/ProductCard'
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
+import { useAuth } from '@/context/AuthContext'
 
 export default function WishlistPage() {
-  const { ids, clearNewItemStatus } = useWishlist()
-  const wishedProducts = PRODUCTS.filter(p => ids.includes(p.id))
-  const [isClient, setIsClient] = useState(false)
-
+  const { user } = useAuth();
+  const { ids, isLoading, clearNewItemStatus } = useWishlist()
+  
+  // Memoize the wished products based on the ids from the store
+  const wishedProducts = useMemo(() => {
+    return PRODUCTS.filter(p => ids.includes(p.id));
+  }, [ids]);
 
   useEffect(() => {
-    setIsClient(true)
     // When the user visits this page, clear the new item notification
     clearNewItemStatus();
   }, [clearNewItemStatus]);
 
-  if (!isClient) {
-    return null; // or a loading spinner
+  if (isLoading) {
+    return <div className="text-center py-10">Loading Wishlist...</div>
+  }
+
+  if (!user) {
+    return (
+       <div className="text-center py-10 rounded-xl border bg-white">
+          <Heart className="mx-auto h-12 w-12 text-gray-300" />
+          <h2 className="mt-4 text-lg font-medium text-gray-700">Please Login</h2>
+          <p className="text-sm text-gray-500 mt-1">Login to see your wishlist.</p>
+          <Link href="/account" className="mt-4 inline-block rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Go to Login</Link>
+      </div>
+    )
   }
 
   return (

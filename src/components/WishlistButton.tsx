@@ -4,19 +4,26 @@ import { Heart } from 'lucide-react'
 import { useWishlist } from '@/lib/wishlistStore'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { useAuth } from '@/context/AuthContext'
+import { useToast } from '@/hooks/use-toast'
 
 export default function WishlistButton({ id }: { id: string }) {
-  const { has, toggle } = useWishlist()
+  const { user } = useAuth();
+  const { ids, has, toggle } = useWishlist()
+  const { toast } = useToast()
   const [isWished, setIsWished] = useState(false)
 
-  // Avoid hydration mismatch by setting state after mount
+  // Sync state with the store whenever the ids array changes
   useEffect(() => {
     setIsWished(has(id))
-  }, [has, id])
+  }, [ids, has, id])
 
   const handleToggle = () => {
-    toggle(id)
-    setIsWished(!isWished)
+    if (!user) {
+      toast({ title: "Please Login", description: "You need to be logged in to add items to your wishlist.", variant: "destructive" });
+      return;
+    }
+    toggle(user.id, id)
   }
 
   return (

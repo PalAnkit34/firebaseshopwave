@@ -1,0 +1,35 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Products are public and can be read by anyone.
+    // Only admins should be able to write to them (future implementation).
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if false; // To be secured for admin access later
+    }
+
+    // Users can only read and write to their own documents in these collections.
+    // The document ID must match their authenticated user ID (phone number).
+    match /wishlists/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /carts/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /addresses/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Users can create new orders and read their own past orders.
+    // They cannot update or delete orders once placed.
+    match /orders/{orderId} {
+       allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+       allow update, delete: if false;
+    }
+  }
+}
