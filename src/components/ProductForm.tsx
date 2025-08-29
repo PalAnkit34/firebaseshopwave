@@ -185,9 +185,8 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
                     fileName={`product_${Date.now()}`}
                     onSuccess={(res: any) => handleUploadSuccess(res, name)} 
                     onError={handleUploadError}
-                    className="flex-shrink-0"
                 >
-                    <Button type="button" variant="outline" size="icon" aria-label="Upload">
+                    <Button type="button" variant="outline" size="icon" aria-label="Upload" className="flex-shrink-0">
                         <Upload className="h-4 w-4" />
                     </Button>
                 </IKUpload>
@@ -329,5 +328,3 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         </IKContext>
     )
 }
-
-    
