@@ -43,8 +43,8 @@ export default function OfferCard({ title, products, href }: { title: string; pr
 
   return (
     <div className="card p-4 h-full flex flex-col">
-        <h3 className="font-bold text-lg">{title}</h3>
-        <p className="text-sm text-gray-500 mb-3">Top picks for you</p>
+        <h3 className="font-bold text-xl">{title}</h3>
+        <p className="text-base text-gray-500 mb-3">Top picks for you</p>
         <div className="relative flex-grow aspect-square">
              <AnimatePresence initial={false}>
                 <motion.div
@@ -70,7 +70,7 @@ export default function OfferCard({ title, products, href }: { title: string; pr
                 </motion.div>
              </AnimatePresence>
         </div>
-        <Link href={href} className="block mt-4 text-center text-sm font-semibold text-brand hover:underline">
+        <Link href={href} className="block mt-4 text-center text-base font-semibold text-brand hover:underline">
             See all deals
         </Link>
     </div>
