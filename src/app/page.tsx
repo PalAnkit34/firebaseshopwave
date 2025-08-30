@@ -23,16 +23,16 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 const topCategories = [
   { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja_Essential_W_2_11zon.avif', dataAiHint: 'pooja items' },
   { name: 'Best Selling', href: '/search?sort=popular', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Best_selling_w_1.avif', dataAiHint: 'best seller' },
-  { name: 'New Arrivals', href: '/search?sort=new', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Best_selling_w_1.avif', dataAiHint: 'new arrivals' },
-  { name: 'Mobiles & Tablets', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Best_selling_w_1.avif', dataAiHint: 'mobiles tablets' },
+  { name: 'New Arrivals', href: '/search?sort=new', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/New_Arrival_W_1.avif', dataAiHint: 'new arrivals' },
+  { name: 'Mobiles & Tablets', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Improvement_W.avif', dataAiHint: 'mobiles tablets' },
   { name: 'Home & Kitchen', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Kitchen_W.avif', dataAiHint: 'modern kitchen' },
   { name: 'Personal Care', href: '/search?category=Ayurvedic&subcategory=Personal-Care', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/PersonalCare.avif', dataAiHint: 'personal care' },
   { name: 'Electronics', href: '/search?category=Tech', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Electronics_W.avif', dataAiHint: 'electronic gadgets' },
   { name: 'Home Improvement', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Improvement_W.avif', dataAiHint: 'home improvement' },
   { name: 'Toys & Games', href: '/search?category=Toys', image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop', dataAiHint: 'children toys' },
   { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'corporate gifts' },
-  { name: 'Mobile Cover', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=400&auto=format&fit=crop', dataAiHint: 'phone case' },
-  { name: 'Custom Print Products', href: '/search', image: 'https://images.unsplash.com/photo-1506784983877-45594efa4c85?q=80&w=400&auto=format&fit=crop', dataAiHint: 'custom printing' },
+  { name: 'Mobile Cover', href: '/search?category=Tech&subcategory=Accessories', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Mobile_Cover_W_1__11zon.avif', dataAiHint: 'phone case' },
+  { name: 'Custom Print Products', href: '/search', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Custom_Print_250x250px.avif', dataAiHint: 'custom printing' },
 ];
 
 
