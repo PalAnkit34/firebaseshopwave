@@ -13,7 +13,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import PriceTag from '@/components/PriceTag';
+import OfferCard from '@/components/OfferCard';
 import type { Product } from '@/lib/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProductStore } from '@/lib/productStore';
@@ -29,7 +29,7 @@ const topCategories = [
   { name: 'Personal Care', href: '/search?category=Ayurvedic&subcategory=Personal-Care', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/PersonalCare.avif', dataAiHint: 'personal care' },
   { name: 'Electronics', href: '/search?category=Tech', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Electronics_W.avif', dataAiHint: 'electronic gadgets' },
   { name: 'Home Improvement', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Improvement_W.avif', dataAiHint: 'home improvement' },
-  { name: 'Toys & Games', href: '/search?category=Toys', image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop', dataAiHint: 'children toys' },
+  { name: 'Cleaning Supplies', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Cleaning_Supplies_W_e5bf1666-0811-4c5d-90c3-48f714abf103.avif', dataAiHint: 'cleaning supplies' },
   { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'corporate gifts' },
   { name: 'Mobile Cover', href: '/search?category=Tech&subcategory=Accessories', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Mobile_Cover_W_1__11zon.avif', dataAiHint: 'phone case' },
   { name: 'Custom Print Products', href: '/search', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Custom_Print_250x250px.avif', dataAiHint: 'custom printing' },
@@ -38,75 +38,6 @@ const topCategories = [
 
 const filterCategories = ['All', 'Tech', 'Home', 'Ayurvedic'];
 const PRODUCTS_TO_SHOW = 10;
-
-const useProductCycler = (products: Product[], count: number, interval: number) => {
-  const [startIndex, setStartIndex] = useState(0);
-
-  useEffect(() => {
-    if (products.length <= count) return;
-    
-    const timer = setInterval(() => {
-      setStartIndex(prevIndex => (prevIndex + count) % products.length);
-    }, interval);
-
-    return () => clearInterval(timer);
-  }, [products.length, count, interval]);
-
-  const getVisibleProducts = () => {
-    if (products.length === 0) return [];
-    const visible: Product[] = [];
-    for (let i = 0; i < count; i++) {
-        // Loop back to the start if we run out of products
-        visible.push(products[(startIndex + i) % products.length]);
-    }
-    return visible;
-  }
-
-  return getVisibleProducts();
-};
-
-function OfferCard({ title, products, href }: { title: string; products: Product[]; href: string }) {
-  const visibleProducts = useProductCycler(products, 4, 5000);
-
-  if (!products || products.length === 0) return null;
-  
-  const animationKey = visibleProducts.map(p => p.id).join('-');
-
-  return (
-    <div className="card p-4 h-full flex flex-col">
-        <h3 className="font-bold text-lg">{title}</h3>
-        <p className="text-sm text-gray-500 mb-3">Top picks for you</p>
-        <div className="relative flex-grow aspect-square">
-             <AnimatePresence initial={false}>
-                <motion.div
-                    key={animationKey}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    className="grid grid-cols-2 grid-rows-2 gap-2 absolute inset-0"
-                >
-                    {visibleProducts.map((p, i) => (
-                        <Link key={`${p.id}-${i}`} href={`/product/${p.slug}`} className="block w-full h-full relative rounded-lg overflow-hidden group">
-                            <Image
-                                src={p.image}
-                                alt={p.name}
-                                fill
-                                sizes="25vw"
-                                className="object-cover transform group-hover:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
-                        </Link>
-                    ))}
-                </motion.div>
-             </AnimatePresence>
-        </div>
-        <Link href={href} className="block mt-4 text-center text-sm font-semibold text-brand hover:underline">
-            See all deals
-        </Link>
-    </div>
-  );
-}
 
 
 export default function Home() {
