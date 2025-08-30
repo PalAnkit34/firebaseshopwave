@@ -59,12 +59,12 @@ const techCategories = [
 ];
 
 const homeCategories = [
-    { name: 'Decor', href: '/search?category=Home&subcategory=Decor', image: 'https://images.unsplash.com/photo-1534349762230-e09968411995?q=80&w=800&auto=format&fit=crop', dataAiHint: 'home decor' },
-    { name: 'Lighting', href: '/search?category=Home&subcategory=Lighting', image: 'https://images.unsplash.com/photo-1617013685142-df02ca451390?q=80&w=800&auto=format&fit=crop', dataAiHint: 'modern lighting' },
-    { name: 'Kitchenware', href: '/search?category=Home&subcategory=Kitchenware', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=800&auto=format&fit=crop', dataAiHint: 'kitchenware set' },
-    { name: 'Wall Decor', href: '/search?category=Home&subcategory=Wall%20Decor', image: 'https://images.unsplash.com/photo-1579541620958-c6996119565e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'wall art' },
-    { name: 'Appliances', href: '/search?category=Home&subcategory=Appliances', image: 'https://images.unsplash.com/photo-1626806819282-2c1dc0165453?q=80&w=800&auto=format&fit=crop', dataAiHint: 'kitchen appliances' },
-    { name: 'Smart Home', href: '/search?category=Home&subcategory=Smart-Home', image: 'https://images.unsplash.com/photo-1659024492834-c7b4c6a8f1b2?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smart home' },
+    { name: 'Bathroom Accessories', href: '/search?category=Home&subcategory=Bathroom-Accessories', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/02_fa708df0-d2c7-454a-b15b-bb321a5a0efe.webp', dataAiHint: 'Bathroom Accessories' },
+    { name: 'Puja Essentials', href: '/search?category=Home&subcategory=Puja-Essentials', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/4_86ddff46-3968-4413-9b38-e66bcd792aae_10_11zon.webp', dataAiHint: 'Puja Essentials' },
+    { name: 'Cleaning Supplies', href: '/search?category=Home&subcategory=Cleaning-Supplies', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/4_86ddff46-3968-4413-9b38-e66bcd792aae_10_11zon.webp', dataAiHint: 'Cleaning Supplies' },
+    { name: 'Household Appliances', href: '/search?category=Home&subcategory=Household-Appliances', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/1_37b9809b-d67b-40bb-aa14-f9e109013c88.webp', dataAiHint: 'Household Appliances' },
+    { name: 'Home Decor', href: '/search?category=Home&subcategory=HomeDecor', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/01_be46bb9f-00b8-4373-80f2-47d1de4ccf06.webp', dataAiHint: 'Home Decor' },
+    { name: 'Home storage', href: '/search?category=Home&subcategory=Home-storage', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/hangers_wordrobe_storage%20(1).webp', dataAiHint: 'Home storage' },
 ];
 
 const foodAndDrinksCategories = [
