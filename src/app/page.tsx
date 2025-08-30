@@ -187,9 +187,9 @@ export default function Home() {
           className="w-full"
         >
           <CarouselContent>
-            <CarouselItem className="basis-1/2 md:basis-1/2 lg:basis-1/3"><OfferCard title="Tech Accessories" products={techDeals} href="/search?category=Tech"/></CarouselItem>
-            <CarouselItem className="basis-1/2 md:basis-1/2 lg:basis-1/3"><OfferCard title="Home Accessories" products={homeDeals} href="/search?category=Home"/></CarouselItem>
-            <CarouselItem className="basis-1/2 md:basis-1/2 lg:basis-1/3"><OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/></CarouselItem>
+            <CarouselItem className="basis-1/2 md:basis-1/3"><OfferCard title="Tech Accessories" products={techDeals} href="/search?category=Tech"/></CarouselItem>
+            <CarouselItem className="basis-1/2 md:basis-1/3"><OfferCard title="Home Accessories" products={homeDeals} href="/search?category=Home"/></CarouselItem>
+            <CarouselItem className="basis-1/2 md:basis-1/3"><OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/></CarouselItem>
           </CarouselContent>
           <CarouselPrevious className="hidden md:flex" />
           <CarouselNext className="hidden md:flex" />
