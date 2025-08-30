@@ -30,7 +30,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased bg-background" suppressHydrationWarning>
+      <body className="font-body antialiased bg-background">
         <AuthProvider>
           <RootContent>{children}</RootContent>
         </AuthProvider>
