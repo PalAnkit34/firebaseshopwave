@@ -17,6 +17,7 @@ import PriceTag from '@/components/PriceTag';
 import type { Product } from '@/lib/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProductStore } from '@/lib/productStore';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 const topCategories = [
@@ -140,9 +141,8 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="text-center py-10">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading Products...</p>
+      <div className="flex justify-center py-10">
+          <LoadingSpinner />
       </div>
     )
   }

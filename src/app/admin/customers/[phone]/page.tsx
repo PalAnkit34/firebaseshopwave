@@ -6,6 +6,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { User, Phone, Mail, MapPin, IndianRupee, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function CustomerDetailPage() {
     const { phone } = useParams()
@@ -38,9 +39,8 @@ export default function CustomerDetailPage() {
 
     if (!isClient) {
         return (
-            <div className="text-center py-10">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
-                <p className="mt-4 text-gray-600">Loading Customer Details...</p>
+            <div className="flex justify-center py-10">
+                <LoadingSpinner />
             </div>
         )
     }

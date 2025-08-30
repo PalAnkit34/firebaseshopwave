@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useEffect, useState, useMemo } from 'react'
 import { IndianRupee, ShoppingCart, Users, Package } from 'lucide-react'
 import { useAdminAuth } from '@/context/AdminAuthContext'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 const StatCard = ({ icon: Icon, title, value, color, href }: { icon: React.ElementType, title: string, value: string | number, color: string, href?: string }) => {
     const cardContent = (
@@ -50,9 +51,8 @@ export default function AdminPage() {
 
     if (!isClient) {
         return (
-            <div className="text-center py-10">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
-                <p className="mt-4 text-gray-600">Loading Admin Dashboard...</p>
+            <div className="flex justify-center py-10">
+                <LoadingSpinner />
             </div>
         )
     }

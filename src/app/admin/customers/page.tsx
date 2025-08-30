@@ -3,6 +3,7 @@
 import { useOrders } from '@/lib/ordersStore'
 import { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function AdminCustomersPage() {
     const { orders } = useOrders()
@@ -41,9 +42,8 @@ export default function AdminCustomersPage() {
 
     if (!isClient) {
         return (
-            <div className="text-center py-10">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
-                <p className="mt-4 text-gray-600">Loading Customers...</p>
+            <div className="flex justify-center py-10">
+                <LoadingSpinner />
             </div>
         )
     }

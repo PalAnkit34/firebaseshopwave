@@ -7,6 +7,7 @@ import { Heart } from 'lucide-react'
 import { useEffect, useState, useMemo } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useProductStore } from '@/lib/productStore'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function WishlistPage() {
   const { user } = useAuth();
@@ -24,7 +25,7 @@ export default function WishlistPage() {
   }, [clearNewItemStatus]);
 
   if (isLoading || productsLoading) {
-    return <div className="text-center py-10">Loading Wishlist...</div>
+    return <div className="flex justify-center py-10"><LoadingSpinner /></div>
   }
 
   if (!user) {

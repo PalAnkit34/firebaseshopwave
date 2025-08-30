@@ -4,10 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 export default function OfferPopup(){
   const [open, setOpen] = useState(false)
+  
   useEffect(() => { 
-    if (typeof window !== 'undefined' && sessionStorage.getItem('seenOffer')!=='1'){ 
-      const timer = setTimeout(()=>setOpen(true), 1200); 
-      sessionStorage.setItem('seenOffer','1');
+    if (typeof window !== 'undefined' && sessionStorage.getItem('seenOffer') !== '1') { 
+      const timer = setTimeout(() => {
+        setOpen(true);
+        sessionStorage.setItem('seenOffer', '1');
+      }, 5000); // Delay popup so it doesn't appear instantly
       return () => clearTimeout(timer);
     } 
   }, [])

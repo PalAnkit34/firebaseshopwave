@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useProductStore } from '@/lib/productStore'
 import { useToast } from '@/hooks/use-toast'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function AdminProductsPage() {
     const { products, addProduct, updateProduct, deleteProduct, isLoading } = useProductStore()
@@ -82,9 +83,8 @@ export default function AdminProductsPage() {
 
     if (isLoading) {
       return (
-          <div className="text-center py-10">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
-              <p className="mt-4 text-gray-600">Loading Products...</p>
+          <div className="flex justify-center py-10">
+              <LoadingSpinner />
           </div>
       )
     }

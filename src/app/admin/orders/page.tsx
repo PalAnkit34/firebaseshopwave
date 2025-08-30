@@ -19,6 +19,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 const orderStatuses: Order['status'][] = ['Pending', 'Processing', 'Shipped', 'Delivered'];
 
@@ -66,9 +67,8 @@ export default function AdminOrdersPage() {
 
     if (isLoading || !isClient) {
         return (
-            <div className="text-center py-10">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
-                <p className="mt-4 text-gray-600">Loading Orders...</p>
+            <div className="flex justify-center py-10">
+                <LoadingSpinner />
             </div>
         )
     }

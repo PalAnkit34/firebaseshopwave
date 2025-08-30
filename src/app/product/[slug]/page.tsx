@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/context/AuthContext'
 import { useProductStore } from '@/lib/productStore'
 import type { Product } from '@/lib/types'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 function ProductDetailContent() {
   const router = useRouter()
@@ -40,9 +41,8 @@ function ProductDetailContent() {
 
   if (p === undefined) {
     return (
-      <div className="text-center py-10">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading Product...</p>
+      <div className="flex justify-center py-10">
+          <LoadingSpinner />
       </div>
     )
   }
@@ -222,7 +222,7 @@ function ProductDetailContent() {
 
 export default function ProductDetailPage() {
   return (
-    <Suspense fallback={<div>Loading product...</div>}>
+    <Suspense fallback={<div className="flex justify-center py-10"><LoadingSpinner /></div>}>
       <ProductDetailContent />
     </Suspense>
   )

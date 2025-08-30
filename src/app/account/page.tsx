@@ -10,6 +10,7 @@ import { useWishlist } from '@/lib/wishlistStore'
 import { useAuth } from '@/context/AuthContext'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 const accountSections = {
   DASHBOARD: 'DASHBOARD',
@@ -63,7 +64,7 @@ export default function AccountPage() {
   const { hasNewItem } = useWishlist()
   
   if (loading) {
-    return <div className="text-center py-10">Loading...</div>
+    return <div className="flex justify-center py-10"><LoadingSpinner /></div>
   }
 
   if (!user) {

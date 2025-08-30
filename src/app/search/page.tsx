@@ -1,5 +1,4 @@
 
-
 'use client'
 import { useMemo, Suspense, useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -17,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import CategoryGrid from '@/components/CategoryGrid';
 import { cn } from '@/lib/utils';
 import { useProductStore } from '@/lib/productStore';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const topCategories = [
   { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=400&auto=format&fit=crop', dataAiHint: 'pooja items' },
@@ -352,9 +352,8 @@ function SearchContent() {
   
   if (isLoading) {
     return (
-      <div className="text-center py-10">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+      <div className="flex justify-center py-10">
+          <LoadingSpinner />
       </div>
     )
   }
@@ -445,7 +444,7 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="flex justify-center py-10"><LoadingSpinner /></div>}>
       <SearchContent />
     </Suspense>
   )

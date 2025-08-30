@@ -7,6 +7,8 @@ import BottomNav from '@/components/BottomNav';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toast';
 import OfferPopup from '@/components/OfferPopup';
+import { useProductStore } from '@/lib/productStore';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function RootContent({
   children,
@@ -15,9 +17,18 @@ export default function RootContent({
 }) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith('/admin');
+  const { isLoading: productsLoading } = useProductStore();
 
   if (isAdminRoute) {
     return <>{children}</>;
+  }
+  
+  if (productsLoading) {
+    return (
+        <div className="flex h-screen items-center justify-center">
+            <LoadingSpinner />
+        </div>
+    );
   }
 
   return (

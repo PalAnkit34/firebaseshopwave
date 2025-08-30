@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
 import { useRouter, usePathname } from 'next/navigation';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface AdminAuthContextType {
   adminUser: User | null;
@@ -67,7 +68,7 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
   if (loading && pathname !== '/admin/login') {
      return (
         <div className="flex h-screen items-center justify-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-brand"></div>
+            <LoadingSpinner />
         </div>
      );
   }

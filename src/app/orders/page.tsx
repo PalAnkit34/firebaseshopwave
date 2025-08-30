@@ -5,6 +5,7 @@ import { useProductStore } from '@/lib/productStore'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function OrdersPage(){
   const { orders, isLoading, clearNewOrderStatus } = useOrders()
@@ -16,7 +17,7 @@ export default function OrdersPage(){
   }, [clearNewOrderStatus]);
 
   if (isLoading || products.length === 0) {
-    return <div className="text-center py-10">Loading orders...</div>;
+    return <div className="flex justify-center py-10"><LoadingSpinner /></div>;
   }
 
   return (
