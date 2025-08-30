@@ -1,8 +1,7 @@
 
 'use client'
 import { create } from 'zustand'
-import { doc, onSnapshot, setDoc } from 'firebase/firestore'
-import { db } from './firebase'
+import { safeGet, safeSet } from './storage'
 import type { Product } from './types'
 import { useProductStore } from './productStore'
 
@@ -11,25 +10,28 @@ export type CartItem = Pick<Product, 'id' | 'name' | 'image'> & {
   price: number
 }
 
+type AllCartsData = {
+  [userId: string]: CartItem[]
+}
+
 type CartState = {
   items: CartItem[]
   subtotal: number
   totalShipping: number
   totalTax: number
   total: number
-  init: (userId: string) => () => void
-  add: (userId: string, item: CartItem) => Promise<void>
-  remove: (userId: string, id: string) => Promise<void>
-  setQty: (userId: string, id: string, qty: number) => Promise<void>
+  init: (userId: string) => void
+  add: (userId: string, item: CartItem) => void
+  remove: (userId: string, id: string) => void
+  setQty: (userId: string, id: string, qty: number) => void
   clear: () => void
-  clearCartFromDB: (userId: string) => Promise<void>
+  clearCartFromDB: (userId: string) => void
 }
 
 const calculateTotals = (items: CartItem[]) => {
   const products = useProductStore.getState().products;
   const subtotal = items.reduce((s, i) => s + i.qty * i.price, 0)
   
-  // Dynamic shipping cost logic
   const totalItems = items.reduce((acc, item) => acc + item.qty, 0);
   let totalShipping = 0;
   if (totalItems > 0) {
@@ -53,7 +55,13 @@ const calculateTotals = (items: CartItem[]) => {
   return { subtotal, totalShipping, totalTax, total }
 }
 
-const getDocRef = (userId: string) => doc(db, 'carts', userId);
+const getAllCarts = (): AllCartsData => {
+  return safeGet('all-carts', {});
+}
+
+const saveAllCarts = (data: AllCartsData) => {
+  safeSet('all-carts', data);
+}
 
 export const useCart = create<CartState>()((set, get) => ({
   items: [],
@@ -62,54 +70,54 @@ export const useCart = create<CartState>()((set, get) => ({
   totalTax: 0,
   total: 0,
   init: (userId: string) => {
-    const docRef = getDocRef(userId);
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const items = docSnap.data().items || [];
-        set({ items, ...calculateTotals(items) });
-      } else {
-        setDoc(docRef, { items: [] });
-        set({ items: [], ...calculateTotals([]) });
-      }
-    }, (error) => {
-        console.error("Error in cart snapshot listener:", error);
-    });
-    return unsubscribe;
+    const allCarts = getAllCarts();
+    const userCart = allCarts[userId] || [];
+    set({ items: userCart, ...calculateTotals(userCart) });
   },
-  add: async (userId: string, item: CartItem) => {
-    const docRef = getDocRef(userId);
-    const state = get();
-    const existing = state.items.find((p) => p.id === item.id)
-    let newItems;
+  add: (userId: string, item: CartItem) => {
+    const allCarts = getAllCarts();
+    let userCart = allCarts[userId] || [];
+    const existing = userCart.find((p) => p.id === item.id)
+    
     if (existing) {
-      newItems = state.items.map((p) =>
+      userCart = userCart.map((p) =>
         p.id === item.id ? { ...p, qty: Math.min(99, p.qty + item.qty) } : p
       )
     } else {
-      newItems = [...state.items, { ...item, qty: Math.max(1, item.qty) }]
+      userCart = [...userCart, { ...item, qty: Math.max(1, item.qty) }]
     }
-    await setDoc(docRef, { items: newItems }, { merge: true });
+
+    allCarts[userId] = userCart;
+    saveAllCarts(allCarts);
+    set({ items: userCart, ...calculateTotals(userCart) });
   },
-  remove: async (userId: string, id: string) => {
-    const docRef = getDocRef(userId);
-    const state = get();
-    const newItems = state.items.filter((p) => p.id !== id);
-    await setDoc(docRef, { items: newItems });
+  remove: (userId: string, id: string) => {
+    const allCarts = getAllCarts();
+    let userCart = allCarts[userId] || [];
+    const newItems = userCart.filter((p) => p.id !== id);
+    
+    allCarts[userId] = newItems;
+    saveAllCarts(allCarts);
+    set({ items: newItems, ...calculateTotals(newItems) });
   },
-  setQty: async (userId: string, id: string, qty: number) => {
-    const docRef = getDocRef(userId);
-    const state = get();
-    const newItems = state.items.map((p) =>
+  setQty: (userId: string, id: string, qty: number) => {
+    const allCarts = getAllCarts();
+    let userCart = allCarts[userId] || [];
+    const newItems = userCart.map((p) =>
       p.id === id ? { ...p, qty: Math.max(1, Math.min(99, qty)) } : p
     );
-    await setDoc(docRef, { items: newItems });
+
+    allCarts[userId] = newItems;
+    saveAllCarts(allCarts);
+    set({ items: newItems, ...calculateTotals(newItems) });
   },
   clear: () => {
     set({ items: [], subtotal: 0, totalShipping: 0, totalTax: 0, total: 0 })
   },
-  clearCartFromDB: async (userId: string) => {
-    const docRef = getDocRef(userId);
-    await setDoc(docRef, { items: [] });
+  clearCartFromDB: (userId: string) => {
+    const allCarts = getAllCarts();
+    allCarts[userId] = [];
+    saveAllCarts(allCarts);
     get().clear();
   }
 }))

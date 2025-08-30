@@ -1,8 +1,6 @@
 
 'use client'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
 import { safeGet, safeSet } from '@/lib/storage'
 import { useWishlist } from '@/lib/wishlistStore'
 import { useCart } from '@/lib/cartStore'
@@ -35,7 +33,13 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => {},
 });
 
-const getUserDocRef = (userId: string) => doc(db, 'users', userId);
+const getAllUsers = (): Record<string, CustomUser> => {
+    return safeGet('all-users', {});
+}
+
+const saveAllUsers = (users: Record<string, CustomUser>) => {
+    safeSet('all-users', users);
+}
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<CustomUser | null>(null);
@@ -49,39 +53,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { init: initOrders, clear: clearOrders } = useOrders();
 
   const initializeStoresForUser = (userId: string) => {
-    const unsubWishlist = initWishlist(userId);
-    const unsubCart = initCart(userId);
-    const unsubAddresses = initAddresses(userId);
-    const unsubOrders = initOrders(userId);
-    return [unsubWishlist, unsubCart, unsubAddresses, unsubOrders];
+    initWishlist(userId);
+    initCart(userId);
+    initAddresses(userId);
+    initOrders(userId);
   };
 
+  const clearAllStores = () => {
+      clearWishlist();
+      clearCart();
+      clearAddresses();
+      clearOrders();
+  }
+
   useEffect(() => {
-    let unsubs: (() => void)[] = [];
-    const storedUser = safeGet<CustomUser | null>('custom-user', null);
+    const storedUser = safeGet<CustomUser | null>('current-user', null);
     
     if (storedUser) {
       setUser(storedUser);
-      unsubs = initializeStoresForUser(storedUser.id);
+      initializeStoresForUser(storedUser.id);
     }
     
     setLoading(false);
-
-    return () => {
-      unsubs.forEach(unsub => unsub());
-    };
   }, []);
 
   const login = async (phone: string) => {
     setLoading(true);
-    const userDocRef = getUserDocRef(phone);
-    const docSnap = await getDoc(userDocRef);
+    const allUsers = getAllUsers();
+    const existingUser = allUsers[phone];
 
-    if (docSnap.exists()) {
-      const userData = { id: docSnap.id, ...docSnap.data() } as CustomUser;
-      safeSet('custom-user', userData);
-      setUser(userData);
-      initializeStoresForUser(userData.id);
+    if (existingUser) {
+      safeSet('current-user', existingUser);
+      setUser(existingUser);
+      initializeStoresForUser(existingUser.id);
       setIsNewUser(false);
     } else {
       setIsNewUser(true);
@@ -93,13 +97,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const completeRegistration = async (fullName: string) => {
     if (!tempPhone) return;
     setLoading(true);
+    const allUsers = getAllUsers();
     const newUser: CustomUser = {
       id: tempPhone,
       fullName: fullName,
       createdAt: Date.now(),
     };
-    await setDoc(getUserDocRef(tempPhone), newUser);
-    safeSet('custom-user', newUser);
+    
+    allUsers[tempPhone] = newUser;
+    saveAllUsers(allUsers);
+
+    safeSet('current-user', newUser);
     setUser(newUser);
     initializeStoresForUser(newUser.id);
     setIsNewUser(false);
@@ -109,20 +117,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const updateUserProfile = async (profileData: Partial<CustomUser>) => {
     if (!user) return;
-    const userDocRef = getUserDocRef(user.id);
-    await updateDoc(userDocRef, profileData);
+    const allUsers = getAllUsers();
     const updatedUser = { ...user, ...profileData };
+    
+    allUsers[user.id] = updatedUser;
+    saveAllUsers(allUsers);
+
     setUser(updatedUser);
-    safeSet('custom-user', updatedUser);
+    safeSet('current-user', updatedUser);
   };
 
   const logout = () => {
-    safeSet('custom-user', null);
+    safeSet('current-user', null);
     setUser(null);
-    clearWishlist();
-    clearCart();
-    clearAddresses();
-    clearOrders();
+    clearAllStores();
   }
 
   return (

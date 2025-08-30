@@ -1,77 +1,83 @@
 
 'use client'
 import { create } from 'zustand'
-import { doc, onSnapshot, setDoc } from 'firebase/firestore'
-import { db } from './firebase'
+import { safeGet, safeSet } from './storage'
 import type { Address } from './types'
+
+type AddressBookData = {
+  [userId: string]: Address[]
+}
 
 type AddressState = {
   addresses: Address[]
   isLoading: boolean
-  init: (userId: string) => () => void
-  save: (userId: string, address: Address) => Promise<void>
-  remove: (userId: string, addressId: string) => Promise<void>
-  setDefault: (userId: string, addressId: string) => Promise<void>
+  init: (userId: string) => void
+  save: (userId: string, address: Address) => void
+  remove: (userId: string, addressId: string) => void
+  setDefault: (userId: string, addressId: string) => void
   clear: () => void
 }
 
-const getDocRef = (userId: string) => doc(db, 'addresses', userId);
+const getAddressBook = (): AddressBookData => {
+  return safeGet('address-book', {});
+}
+
+const saveAddressBook = (data: AddressBookData) => {
+  safeSet('address-book', data);
+}
 
 export const useAddressBook = create<AddressState>()((set, get) => ({
   addresses: [],
   isLoading: true,
   init: (userId: string) => {
     set({ isLoading: true });
-    const docRef = getDocRef(userId);
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const addresses = docSnap.data().list || [];
-        set({ addresses, isLoading: false });
-      } else {
-        // Create the document if it doesn't exist for a new user
-        setDoc(docRef, { list: [] });
-        set({ addresses: [], isLoading: false });
-      }
-    }, (error) => {
-        console.error("Error in address snapshot listener:", error);
-        set({ isLoading: false });
-    });
-    return unsubscribe; // Return the unsubscribe function for cleanup
+    const addressBook = getAddressBook();
+    const userAddresses = addressBook[userId] || [];
+    set({ addresses: userAddresses, isLoading: false });
   },
-  save: async (userId, address) => {
-    const docRef = getDocRef(userId);
-    const state = get();
-    const existing = state.addresses.find((a) => a.id === address.id);
-    let newAddresses: Address[];
+  save: (userId, address) => {
+    const addressBook = getAddressBook();
+    let userAddresses = addressBook[userId] || [];
+    const existingIndex = userAddresses.findIndex((a) => a.id === address.id);
+    
+    let newAddress: Address;
 
-    if (existing) {
-      newAddresses = state.addresses.map((a) => (a.id === address.id ? address : a));
+    if (existingIndex > -1) {
+      newAddress = { ...userAddresses[existingIndex], ...address };
+      userAddresses[existingIndex] = newAddress;
     } else {
-      const newAddress = { ...address, id: `addr_${Date.now()}` };
-      newAddresses = [newAddress, ...state.addresses];
+      newAddress = { ...address, id: `addr_${Date.now()}` };
+      userAddresses.push(newAddress);
     }
     
-    // If setting default, ensure only one is default
-    if (address.default) {
-      newAddresses = newAddresses.map(a => ({
+    if (newAddress.default) {
+      userAddresses = userAddresses.map(a => ({
         ...a, 
-        default: a.id === (address.id || newAddresses[0].id)
+        default: a.id === newAddress.id
       }));
     }
 
-    await setDoc(docRef, { list: newAddresses });
+    addressBook[userId] = userAddresses;
+    saveAddressBook(addressBook);
+    set({ addresses: userAddresses });
   },
-  remove: async (userId, addressId) => {
-    const docRef = getDocRef(userId);
-    const state = get();
-    const newAddresses = state.addresses.filter((a) => a.id !== addressId);
-    await setDoc(docRef, { list: newAddresses });
+  remove: (userId, addressId) => {
+    const addressBook = getAddressBook();
+    let userAddresses = addressBook[userId] || [];
+    const newAddresses = userAddresses.filter((a) => a.id !== addressId);
+    
+    addressBook[userId] = newAddresses;
+    saveAddressBook(addressBook);
+    set({ addresses: newAddresses });
   },
-  setDefault: async (userId, addressId) => {
-    const docRef = getDocRef(userId);
-    const state = get();
-    const newAddresses = state.addresses.map((a) => ({ ...a, default: a.id === addressId }));
-    await setDoc(docRef, { list: newAddresses });
+  setDefault: (userId, addressId) => {
+    const addressBook = getAddressBook();
+    let userAddresses = addressBook[userId] || [];
+    const newAddresses = userAddresses.map((a) => ({ ...a, default: a.id === addressId }));
+    
+    addressBook[userId] = newAddresses;
+    saveAddressBook(addressBook);
+    set({ addresses: newAddresses });
   },
   clear: () => {
     set({ addresses: [], isLoading: true });

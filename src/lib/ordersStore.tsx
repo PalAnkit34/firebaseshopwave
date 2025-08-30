@@ -1,25 +1,33 @@
 
 'use client'
 import { create } from 'zustand'
-import { doc, onSnapshot, setDoc, updateDoc, collection, getDocs, where, query } from 'firebase/firestore'
-import { db } from './firebase'
+import { safeGet, safeSet } from './storage'
 import type { Order, Address, PaymentMethod } from './types'
 import type { CartItem } from './cartStore'
 import { useCart } from './cartStore'
+
+type AllOrdersData = {
+  [userId: string]: Order[]
+}
 
 type OrdersState = {
   orders: Order[]
   isLoading: boolean
   hasNewOrder: boolean
-  init: (userId: string | null) => () => void
+  init: (userId: string | null) => void
   placeOrder: (userId: string, items: CartItem[], address: Address, total: number, payment: PaymentMethod) => Promise<Order>
   updateOrderStatus: (orderId: string, status: Order['status']) => Promise<void>
-  clearNewOrderStatus: (userId: string) => Promise<void>
+  clearNewOrderStatus: (userId: string) => void
   clear: () => void
 }
 
-const getOrderDocRef = (userId: string) => doc(db, 'orders', userId);
-const allOrdersCollRef = collection(db, 'orders');
+const getAllOrders = (): AllOrdersData => {
+  return safeGet('all-orders', {});
+}
+
+const saveAllOrders = (data: AllOrdersData) => {
+  safeSet('all-orders', data);
+}
 
 export const useOrders = create<OrdersState>()((set, get) => ({
   orders: [],
@@ -27,53 +35,25 @@ export const useOrders = create<OrdersState>()((set, get) => ({
   hasNewOrder: false,
   init: (userId) => {
     set({ isLoading: true });
-    
-    // If userId is provided (regular user), listen to that user's orders document.
-    if (userId) {
-        const docRef = getOrderDocRef(userId);
-        const unsubscribe = onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                const sortedList = (data.list || []).sort((a: Order, b: Order) => b.createdAt - a.createdAt);
-                set({ orders: sortedList, hasNewOrder: data.hasNewOrder || false, isLoading: false });
-            } else {
-                setDoc(docRef, { list: [], hasNewOrder: false });
-                set({ orders: [], hasNewOrder: false, isLoading: false });
-            }
-        }, (error) => {
-            console.error(`Error fetching orders for user ${userId}:`, error);
-            set({ isLoading: false });
-        });
-        return unsubscribe;
-    } 
-    // If no userId (for admin), fetch all order documents ONCE.
-    else {
-        const fetchAllOrders = async () => {
-            try {
-                const querySnapshot = await getDocs(allOrdersCollRef);
-                const allOrders: Order[] = [];
-                querySnapshot.forEach(doc => {
-                     const data = doc.data();
-                     if (data.list) {
-                        allOrders.push(...data.list);
-                     }
-                });
-                const sortedOrders = allOrders.sort((a, b) => b.createdAt - a.createdAt);
-                set({ orders: sortedOrders, isLoading: false });
-            } catch (error) {
-                console.error("Error fetching all orders for admin:", error);
-                set({ isLoading: false });
-            }
-        };
+    const allOrdersData = getAllOrders();
+    let ordersToShow: Order[] = [];
+    let newOrderFlag = false;
 
-        fetchAllOrders();
-        // For admin, we don't use a real-time listener as it's inefficient.
-        // Return an empty unsubscribe function.
-        return () => {};
+    if (userId) { // Regular user
+        ordersToShow = (allOrdersData[userId] || []).sort((a, b) => b.createdAt - a.createdAt);
+        newOrderFlag = safeGet(`new-order-flag-${userId}`, false);
+    } else { // Admin user
+        for (const uid in allOrdersData) {
+            ordersToShow.push(...allOrdersData[uid]);
+        }
+        ordersToShow.sort((a, b) => b.createdAt - a.createdAt);
     }
+    
+    set({ orders: ordersToShow, hasNewOrder: newOrderFlag, isLoading: false });
   },
   placeOrder: async (userId, items, address, total, payment) => {
-    const docRef = getOrderDocRef(userId);
+    const allOrdersData = getAllOrders();
+    const userOrders = allOrdersData[userId] || [];
     const { clearCartFromDB } = useCart.getState();
 
     const order: Order = {
@@ -85,48 +65,41 @@ export const useOrders = create<OrdersState>()((set, get) => ({
       payment,
       status: 'Pending',
     }
-    const state = get();
-    const currentOrders = state.orders;
-    const newOrders = [order, ...currentOrders];
-    await setDoc(docRef, { list: newOrders, hasNewOrder: true }, { merge: true });
+    const newOrders = [order, ...userOrders];
+    allOrdersData[userId] = newOrders;
+    saveAllOrders(allOrdersData);
     
-    // After placing order, clear the cart from the database
     await clearCartFromDB(userId);
     
-    set({ hasNewOrder: true }); 
+    safeSet(`new-order-flag-${userId}`, true);
+    set({ hasNewOrder: true, orders: newOrders }); 
     return order;
   },
   updateOrderStatus: async (orderId: string, status: Order['status']) => {
-    // This logic is inefficient and should be improved with a better data model,
-    // e.g., a top-level 'orders' collection where each doc is an order.
-    // For now, fetching all and updating in client.
-    const allDocsSnapshot = await getDocs(allOrdersCollRef);
-    let targetDocRef: any = null;
-    let userOrders: Order[] = [];
+    const allOrdersData = getAllOrders();
+    let targetUserId: string | null = null;
+    let targetOrderIndex = -1;
 
-    for (const doc of allDocsSnapshot.docs) {
-        const ordersList = doc.data().list as Order[];
-        if (ordersList && ordersList.some(o => o.id === orderId)) {
-            targetDocRef = doc.ref;
-            userOrders = ordersList;
-            break;
-        }
+    for (const uid in allOrdersData) {
+      const index = allOrdersData[uid].findIndex(o => o.id === orderId);
+      if (index > -1) {
+        targetUserId = uid;
+        targetOrderIndex = index;
+        break;
+      }
     }
 
-    if (!targetDocRef) {
-        console.error("Could not find document for order:", orderId);
-        return;
+    if (targetUserId) {
+        allOrdersData[targetUserId][targetOrderIndex].status = status;
+        saveAllOrders(allOrdersData);
+        get().init(null); // Re-init to refresh admin view
+    } else {
+        console.error("Could not find order to update:", orderId);
     }
-
-    const newOrders = userOrders.map(o => 
-      o.id === orderId ? { ...o, status: status } : o
-    );
-    await updateDoc(targetDocRef, { list: newOrders });
   },
-  clearNewOrderStatus: async (userId: string) => {
+  clearNewOrderStatus: (userId: string) => {
+     safeSet(`new-order-flag-${userId}`, false);
      set({ hasNewOrder: false });
-     const docRef = getOrderDocRef(userId);
-     await updateDoc(docRef, { hasNewOrder: false });
   },
   clear: () => {
     set({ orders: [], isLoading: true, hasNewOrder: false });
