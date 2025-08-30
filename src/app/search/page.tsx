@@ -176,7 +176,7 @@ function SearchContent() {
                       description="Explore the newest gadgets and accessories to elevate your lifestyle."
                       linkText="Shop Tech"
                       bannerImages={[
-                          "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop",
+                          "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/01_be46bb9f-00b8-4373-80f2-47d1de4ccf06.webp",
                           "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1200&auto=format&fit=crop",
                           "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1200&auto=format&fit=crop",
                       ]}
