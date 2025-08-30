@@ -45,7 +45,10 @@ export default function Checkout(){
   }, [items, router, user, authLoading]);
 
   useEffect(() => {
-    setShowForm(addresses.length === 0);
+    // Show form automatically if no addresses are saved
+    if (addresses.length === 0) {
+      setShowForm(true);
+    }
   }, [addresses.length]);
 
   const redirectToWhatsApp = (order: Order) => {
@@ -181,9 +184,9 @@ ${order.address.landmark ? `Landmark: ${order.address.landmark}` : ''}
     handleOnlinePayment()
   }
 
-  const handleSaveAddress = (addr: Address) => {
+  const handleSaveAddress = (addr: Omit<Address, 'id'>) => {
     if (user) {
-      save(user.id, { ...addr, default: addresses.length === 0 || addr.default });
+      save(user.id, { ...editingAddress, ...addr });
       setShowForm(false);
       setEditingAddress(undefined);
     }

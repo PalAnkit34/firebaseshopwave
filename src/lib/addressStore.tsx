@@ -12,7 +12,7 @@ type AddressState = {
   addresses: Address[]
   isLoading: boolean
   init: (userId: string) => void
-  save: (userId: string, address: Address) => void
+  save: (userId: string, address: Omit<Address, 'id'> & { id?: string }) => void
   remove: (userId: string, addressId: string) => void
   setDefault: (userId: string, addressId: string) => void
   clear: () => void
@@ -38,34 +38,49 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
   save: (userId, address) => {
     const addressBook = getAddressBook();
     let userAddresses = addressBook[userId] || [];
-    const existingIndex = userAddresses.findIndex((a) => a.id === address.id);
     
-    let newAddress: Address;
+    const existingIndex = address.id ? userAddresses.findIndex((a) => a.id === address.id) : -1;
+
+    let updatedAddresses;
 
     if (existingIndex > -1) {
-      newAddress = { ...userAddresses[existingIndex], ...address };
-      userAddresses[existingIndex] = newAddress;
+      // Update existing address
+      updatedAddresses = userAddresses.map((a, index) => 
+        index === existingIndex ? { ...a, ...address } : a
+      );
     } else {
-      newAddress = { ...address, id: `addr_${Date.now()}` };
-      userAddresses.push(newAddress);
+      // Add new address
+      const newAddress = { ...address, id: `addr_${Date.now()}` };
+      // When adding a new address, make it the default.
+      updatedAddresses = [
+        ...userAddresses.map(a => ({ ...a, default: false })),
+        { ...newAddress, default: true }
+      ];
     }
     
-    if (newAddress.default) {
-      userAddresses = userAddresses.map(a => ({
-        ...a, 
-        default: a.id === newAddress.id
-      }));
+    // Ensure only one default exists if the user is explicitly setting one
+    if (address.default) {
+        updatedAddresses = updatedAddresses.map(a => ({
+            ...a,
+            default: a.id === address.id
+        }));
     }
 
-    addressBook[userId] = userAddresses;
+    addressBook[userId] = updatedAddresses;
     saveAddressBook(addressBook);
-    set({ addresses: userAddresses });
+    set({ addresses: updatedAddresses });
   },
   remove: (userId, addressId) => {
     const addressBook = getAddressBook();
     let userAddresses = addressBook[userId] || [];
-    const newAddresses = userAddresses.filter((a) => a.id !== addressId);
+    let newAddresses = userAddresses.filter((a) => a.id !== addressId);
     
+    // If the removed address was the default, make the first remaining address the new default
+    const wasDefault = userAddresses.find(a => a.id === addressId)?.default;
+    if (wasDefault && newAddresses.length > 0) {
+      newAddresses[0].default = true;
+    }
+
     addressBook[userId] = newAddresses;
     saveAddressBook(addressBook);
     set({ addresses: newAddresses });

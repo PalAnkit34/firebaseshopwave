@@ -12,9 +12,9 @@ export default function AddressManager({ onBack }: { onBack: () => void }) {
   const [showForm, setShowForm] = useState(addresses.length === 0)
   const [editingAddress, setEditingAddress] = useState<Address | undefined>(undefined)
 
-  const handleSaveAddress = (addr: Address) => {
+  const handleSaveAddress = (addr: Omit<Address, 'id'>) => {
     if (user) {
-      save(user.id, { ...addr, default: addresses.length === 0 || addr.default });
+      save(user.id, { ...editingAddress, ...addr });
       setShowForm(false);
       setEditingAddress(undefined);
     }

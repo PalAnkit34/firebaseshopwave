@@ -4,7 +4,7 @@ import type { Address } from '@/lib/types'
 
 const required = (s?: string) => !!(s && s.trim().length)
 
-export default function AddressForm({ onSubmit, initial, onCancel }: { onSubmit: (a: Address) => void; initial?: Partial<Address>; onCancel?: () => void }) {
+export default function AddressForm({ onSubmit, initial, onCancel }: { onSubmit: (a: Omit<Address, 'id'>) => void; initial?: Partial<Address>; onCancel?: () => void }) {
   const [a, setA] = useState<Omit<Address, 'id'>>({
     fullName: initial?.fullName || '',
     phone: initial?.phone || '',
@@ -51,7 +51,7 @@ export default function AddressForm({ onSubmit, initial, onCancel }: { onSubmit:
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      onSubmit({ ...initial, ...a });
+      onSubmit(a);
     }
   }
 
