@@ -22,7 +22,14 @@ export const filterProducts = (products: Product[], opts: { q?: string; category
     const fuse = new Fuse(products, { keys: ['name','brand','category','tags'], threshold: 0.4 });
     list = fuse.search(opts.q).map(result => result.item);
   }
-  if (opts.category && opts.category !== 'All') list = list.filter(p => p.category === opts.category)
+
+  // Special handling for "Pooja" category
+  if (opts.category === 'Pooja') {
+    list = list.filter(p => p.category === 'Pooja' || p.subcategory === 'Puja-Essentials');
+  } else if (opts.category && opts.category !== 'All') {
+    list = list.filter(p => p.category === opts.category);
+  }
+  
   if (opts.subcategory) list = list.filter(p => p.subcategory === opts.subcategory)
   if (opts.tertiaryCategory) list = list.filter(p => p.tertiaryCategory === opts.tertiaryCategory)
   if (opts.brand) list = list.filter(p => p.brand === opts.brand)

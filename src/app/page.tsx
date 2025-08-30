@@ -21,7 +21,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 const topCategories = [
-  { name: 'Pooja Essentials', href: '/search?category=Home&subcategory=Puja-Essentials', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja_Essential_W_2_11zon.avif', dataAiHint: 'pooja items' },
+  { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja_Essential_W_2_11zon.avif', dataAiHint: 'pooja items' },
   { name: 'Best Selling', href: '/search?sort=popular', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Best_selling_w_1.avif', dataAiHint: 'best seller' },
   { name: 'New Arrivals', href: '/search?sort=new', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/New_Arrival_W_1.avif', dataAiHint: 'new arrivals' },
   { name: 'Mobiles & Tablets', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Improvement_W.avif', dataAiHint: 'mobiles tablets' },
