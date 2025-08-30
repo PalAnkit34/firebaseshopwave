@@ -88,16 +88,16 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
     return (
         <div className="space-y-8 mb-8">
             <section>
-                <div className={cn("relative overflow-hidden rounded-2xl p-6 md:p-12", bannerColor)}>
+                <div className={cn("relative overflow-hidden rounded-2xl p-6 md:p-8", bannerColor)}>
                     <div className="grid md:grid-cols-2 gap-6 items-center">
                         <div className="text-center md:text-left z-10">
-                            <h1 className="text-3xl md:text-5xl font-bold text-gray-800">{title}</h1>
-                            <p className="mt-4 text-gray-600">{description}</p>
-                            <Link href="#product-grid" className={cn("mt-6 inline-block text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors", buttonColor)}>
+                            <h1 className="text-3xl md:text-4xl font-bold text-gray-800">{title}</h1>
+                            <p className="mt-4 text-gray-600 max-w-md mx-auto md:mx-0">{description}</p>
+                            <Link href="#product-grid" className={cn("mt-6 inline-block text-white px-8 py-3 rounded-lg font-semibold transition-colors", buttonColor)}>
                                 {linkText}
                             </Link>
                         </div>
-                        <div className="relative h-64 md:h-full">
+                        <div className="relative h-56 md:h-64">
                             <AnimatePresence initial={false}>
                                 <motion.div
                                     key={currentImageIndex}
@@ -112,7 +112,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
                                             src={bannerImages[currentImageIndex]}
                                             alt="Category Banner"
                                             fill
-                                            className="object-cover"
+                                            className="object-cover rounded-lg"
                                         />
                                     )}
                                 </motion.div>
@@ -187,7 +187,7 @@ function SearchContent() {
                         {topCategories.map((category) => (
                           <Link key={category.name} href={category.href} className="group block text-center">
                             <div className="relative aspect-square w-full mx-auto max-w-[150px]">
-                              <div className="absolute inset-0 flex items-center justify-center p-2">
+                              <div className="flex items-center justify-center p-2">
                                  <Image
                                   src={category.image}
                                   alt={category.name}
@@ -240,7 +240,7 @@ function SearchContent() {
                 linkText="Explore Items"
                 bannerImages={[
                     "https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1594580236058-f4a4a73455963?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1594580236058-f4a4a7345596?q=80&w=1200&auto=format&fit=crop",
                 ]}
                 categories={poojaSubCategories}
                 bannerColor="bg-amber-50"
@@ -262,7 +262,7 @@ function SearchContent() {
                         { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[1].image, dataAiHint: 'natural remedies' },
                         { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
                         { name: 'Pooja', href: '/search?category=Pooja', image: poojaSubCategories[0].image, dataAiHint: 'pooja items' },
-                        { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || '', dataAiHint: 'fresh groceries' },
+                        { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z3JvY2VyeSUyMHN0b3JlfGVufDB8fHx8MTc1NjM3ODk3N3ww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'fresh groceries' },
                     ]}
                 />
             }
@@ -280,7 +280,7 @@ function SearchContent() {
       )].map(tc => ({
           name: tc.replace(/-/g, ' '),
           href: `/search?category=${opts.category}&subcategory=${sub}&tertiaryCategory=${tc}`,
-          image: products.find(p => p.tertiaryCategory === tc)?.image || 'https://picsum.photos/400/300',
+          image: products.find(p => p.tertiaryCategory === tc)?.image || 'https://images.unsplash.com/photo-1617470732899-736c4f3a743b?q=80&w=800&auto=format&fit=crop',
           dataAiHint: tc.toLowerCase()
       }));
 
@@ -291,7 +291,8 @@ function SearchContent() {
             description="Traditional and effective remedies for your health and well-being."
             linkText="Explore Now"
             bannerImages={[
-                'https://picsum.photos/1200/400?random=1'
+                'https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=1200&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1704650312022-ed1a76dbed1b?q=80&w=1200&auto=format&fit=crop'
             ]}
             categories={subcategoryTertiary}
             bannerColor="bg-emerald-50"
