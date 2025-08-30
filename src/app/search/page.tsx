@@ -34,19 +34,19 @@ const topCategories = [
 ];
 
 const ayurvedicSubCategories = [
-  { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1652122788538-9aba111c550e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxqdWljZSUyMGJvdHRsZXN8ZW58MHx8fHwxNzU2Mzc5MTM3fDA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'juice bottles' },
-  { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1705083649602-03c5fbae2e89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxheXVydmVkaWMlMjBoZXJic3xlbnwwfHx8fDE3NTYzNzg5Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'ayurvedic herbs' },
-  { name: 'Homeopathic Medicines', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1694035449621-8fe51b28f59f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxoZXJiYWwlMjByZW1lZHl8ZW58MHx8fHwxNzU2Mzc4OTc3fDA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'herbal remedy' },
-  { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Churna', image: 'https://images.unsplash.com/photo-1704650312022-ed1a76dbed1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxoZXJiYWwlMjBwb3dkZXJ8ZW58MHx8fHwxNzU2Mzc4OTc3fDA&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'herbal powder' },
-  { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1723937188995-beac88d36998?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwb29qYSUyMGl0ZW1zfGVufDB8fHx8MTc1NjM3ODk3N3ww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'pooja items' },
-  { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z3JvY2VyeSUyMHN0b3JlfGVufDB8fHx8MTc1NjM3ODk3N3ww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'grocery store' },
+  { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1652122788538-9aba111c550e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
+  { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1705083649602-03c5fbae2e89?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+  { name: 'Homeopathic Medicines', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1694035449621-8fe51b28f59f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
+  { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Churna', image: 'https://images.unsplash.com/photo-1704650312022-ed1a76dbed1b?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
+  { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1723937188995-beac88d36998?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
+  { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
 ];
 
 const poojaSubCategories = [
-    { name: 'Dhoop', href: '/search?category=Pooja&subcategory=Dhoop', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Dhoop/photo_2024-03-05_07-10-38-300x300.webp?updatedAt=1756372192267', dataAiHint: 'incense dhoop' },
-    { name: 'Agarbatti', href: '/search?category=Pooja&subcategory=Agarbatti', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Aggarbatti/shanti-flora-2-300x300.jpg?updatedAt=1756372078860', dataAiHint: 'incense sticks' },
-    { name: 'Aasan and Mala', href: '/search?category=Pooja&subcategory=Aasan%20and%20Mala', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Aasan%20and%20Mala/1485014052Tulsi-Mala80-300x300.webp?updatedAt=1756371924065', dataAiHint: 'prayer beads' },
-    { name: 'Photo Frame', href: '/search?category=Pooja&subcategory=Photo%20Frame', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/Pooja%20Items/Photo%20Frame/1643871099bapujiphotoframeL26-300x300.webp?updatedAt=1756372238874', dataAiHint: 'photo frame' },
+    { name: 'Dhoop', href: '/search?category=Pooja&subcategory=Dhoop', image: 'https://images.unsplash.com/photo-1604543213568-963e6e8a4947?q=80&w=800&auto=format&fit=crop', dataAiHint: 'incense dhoop' },
+    { name: 'Agarbatti', href: '/search?category=Pooja&subcategory=Agarbatti', image: 'https://images.unsplash.com/photo-1596701878278-2de47143b4eb?q=80&w=800&auto=format&fit=crop', dataAiHint: 'incense sticks' },
+    { name: 'Aasan and Mala', href: '/search?category=Pooja&subcategory=Aasan%20and%20Mala', image: 'https://images.unsplash.com/photo-1616836109961-c8a74e5b2e5e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'prayer beads' },
+    { name: 'Photo Frame', href: '/search?category=Pooja&subcategory=Photo%20Frame', image: 'https://images.unsplash.com/photo-1579541620958-c6996119565e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'photo frame' },
 ];
 
 const techCategories = [
@@ -88,7 +88,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
     return (
         <div className="space-y-8 mb-8">
             <section>
-                <div className={cn("relative overflow-hidden rounded-2xl p-4 md:p-6", bannerColor)}>
+                <div className={cn("relative overflow-hidden rounded-2xl p-4 md:py-4 md:px-6", bannerColor)}>
                     <div className="grid md:grid-cols-2 gap-6 items-center">
                         <div className="text-center md:text-left z-10">
                             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{title}</h1>
@@ -99,7 +99,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
                                 </Link>
                             </Button>
                         </div>
-                        <div className="relative h-48 md:h-56">
+                        <div className="relative h-40 md:h-48">
                             <AnimatePresence initial={false}>
                                 <motion.div
                                     key={currentImageIndex}
@@ -264,7 +264,7 @@ function SearchContent() {
                         { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[1].image, dataAiHint: 'natural remedies' },
                         { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
                         { name: 'Pooja', href: '/search?category=Pooja', image: poojaSubCategories[0].image, dataAiHint: 'pooja items' },
-                        { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z3JvY2VyeSUyMHN0b3JlfGVufDB8fHx8MTc1NjM3ODk3N3ww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'fresh groceries' },
+                        { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'fresh groceries' },
                     ]}
                 />
             }
@@ -453,3 +453,5 @@ export default function SearchPage() {
     </Suspense>
   )
 }
+
+    
