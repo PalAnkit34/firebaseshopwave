@@ -128,7 +128,15 @@ ${order.address.landmark ? `Landmark: ${order.address.landmark}` : ''}
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to create Razorpay order.');
+        // Instead of throwing an error, show a user-friendly toast.
+        const errorMessage = data.error || 'Failed to create Razorpay order.';
+        const displayMessage = errorMessage.includes("configured") 
+          ? "Payment gateway is not set up correctly. Please try again later."
+          : errorMessage;
+        
+        toast({ title: "Payment Error", description: displayMessage, variant: 'destructive' });
+        setIsProcessing(false);
+        return;
       }
       
       const { order } = data;
