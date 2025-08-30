@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-1234-abcdef123456",
+		"name": "ShopWave E-Commerce API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Razorpay - Create Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://6000-firebase-studio-1756288828902.cluster-cd3bsnf6r5bemwki2bxljme5as.cloudworkstations.dev/api/razorpay",
+					"protocol": "https",
+					"host": [
+						"6000-firebase-studio-1756288828902",
+						"cluster-cd3bsnf6r5bemwki2bxljme5as",
+						"cloudworkstations",
+						"dev"
+					],
+					"path": [
+						"api",
+						"razorpay"
+					]
+				},
+				"description": "Creates a Razorpay payment order. The `amount` should be in the base currency (e.g., INR, not paise). The API will convert it to the smallest unit (paise)."
+			},
+			"response": []
+		},
+		{
+			"name": "ImageKit - Get Auth Parameters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://6000-firebase-studio-1756288828902.cluster-cd3bsnf6r5bemwki2bxljme5as.cloudworkstations.dev/api/imagekit/auth",
+					"protocol": "https"
+				},
+				"description": "Retrieves authentication parameters required by the ImageKit SDK on the frontend for secure file uploads."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://6000-firebase-studio-1756288828902.cluster-cd3bsnf6r5bemwki2bxljme5as.cloudworkstations.dev"
+		}
+	]
+}
