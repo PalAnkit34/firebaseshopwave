@@ -133,16 +133,14 @@ export default function Home() {
           {topCategories.map((category) => (
             <Link key={category.name} href={category.href} className="group block text-center">
               <div className="relative aspect-square w-full mx-auto max-w-[150px]">
-                <div className="absolute inset-0 flex items-center justify-center p-2">
-                   <Image
-                    src={category.image}
-                    alt={category.name}
-                    width={120}
-                    height={120}
-                    className="w-full h-auto object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-105"
-                    data-ai-hint={category.dataAiHint}
-                  />
-                </div>
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  width={120}
+                  height={120}
+                  className="w-full h-auto object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-105"
+                  data-ai-hint={category.dataAiHint}
+                />
               </div>
               <h3 className="mt-2 text-sm font-semibold text-gray-700 group-hover:text-brand">{category.name}</h3>
             </Link>
