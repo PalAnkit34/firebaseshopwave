@@ -110,6 +110,3 @@ export const useOrders = create<OrdersState>()((set, get) => ({
     set({ orders: [], isLoading: true, hasNewOrder: false });
   }
 }));
-
-// Initialize the store for admin on first load
-useOrders.getState().init(null);
