@@ -7,7 +7,7 @@ import AddressForm from '@/components/AddressForm'
 import { useOrders } from '@/lib/ordersStore'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import type { Address } from '@/lib/types'
+import type { Address, Order } from '@/lib/types'
 import { CreditCard, Banknote, QrCode } from 'lucide-react'
 import Image from 'next/image'
 import Script from 'next/script'
@@ -48,6 +48,45 @@ export default function Checkout(){
     setShowForm(addresses.length === 0);
   }, [addresses.length]);
 
+  const redirectToWhatsApp = (order: Order) => {
+    const adminPhoneNumber = "919638883833"; // Your WhatsApp number
+    
+    const itemsText = order.items.map(item => 
+        `- ${item.name} (Qty: ${item.qty}) - ₹${(item.price * item.qty).toLocaleString('en-IN')}`
+    ).join('\n');
+
+    const message = `
+*New Order Received!* ✨
+
+*Order ID:* #${order.id}
+*Customer:* ${order.address.fullName}
+*Phone:* ${order.address.phone}
+
+---
+*Items:*
+${itemsText}
+
+---
+*Subtotal:* ₹${subtotal.toLocaleString('en-IN')}
+*Shipping:* ₹${totalShipping.toLocaleString('en-IN')}
+*Tax:* ₹${totalTax.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+*Total:* *₹${order.total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}*
+*Payment:* ${order.payment}
+---
+
+*Shipping Address:*
+${order.address.line1}
+${order.address.line2 ? order.address.line2 : ''}
+${order.address.city}, ${order.address.state} - ${order.address.pincode}
+${order.address.landmark ? `Landmark: ${order.address.landmark}` : ''}
+    `;
+
+    const whatsappUrl = `https://wa.me/${adminPhoneNumber}?text=${encodeURIComponent(message.trim())}`;
+    
+    // Redirect to WhatsApp
+    window.location.href = whatsappUrl;
+  };
+
   const handleSuccessfulPayment = async () => {
     const addr = addresses.find(a => a.default) || addresses[0]
     if (!addr || !user) {
@@ -55,13 +94,15 @@ export default function Checkout(){
       setIsProcessing(false);
       return;
     }
-    await placeOrder(user.id, items, addr, total, paymentMethod as any)
+    const newOrder = await placeOrder(user.id, items, addr, total, paymentMethod as any)
     
     // clearCartFromDB now handles clearing firestore and local state
     await clearCartFromDB(user.id);
     
-    router.push('/orders')
-    toast({ title: "Order Placed!", description: "Thank you for your purchase." });
+    toast({ title: "Order Placed!", description: "Redirecting to complete order..." });
+
+    // Redirect to WhatsApp with order details
+    redirectToWhatsApp(newOrder);
   }
 
   const handleOnlinePayment = async () => {
@@ -260,3 +301,4 @@ export default function Checkout(){
     </>
   )
 }
+
