@@ -187,8 +187,7 @@ function SearchContent() {
                         {topCategories.map((category) => (
                           <Link key={category.name} href={category.href} className="group block text-center">
                             <div className="relative aspect-square w-full mx-auto max-w-[150px]">
-                              <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-white rounded-b-lg shadow-md"></div>
-                              <div className="absolute inset-0 flex items-end justify-center pb-2">
+                              <div className="absolute inset-0 flex items-center justify-center p-2">
                                  <Image
                                   src={category.image}
                                   alt={category.name}
