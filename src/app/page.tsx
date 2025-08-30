@@ -21,7 +21,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 const topCategories = [
-  { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja_Essential_W_2_11zon.avif', dataAiHint: 'pooja items' },
+  { name: 'Pooja Essentials', href: '/search?category=Home&subcategory=Puja-Essentials', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja_Essential_W_2_11zon.avif', dataAiHint: 'pooja items' },
   { name: 'Best Selling', href: '/search?sort=popular', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/5_d1720387-45fc-43af-bcd8-ba7c37986e76.webp?updatedAt=1756553382584', dataAiHint: 'best seller' },
   { name: 'New Arrivals', href: '/search?sort=new', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/New_Arrival_W_1.avif', dataAiHint: 'new arrivals' },
   { name: 'Mobiles & Tablets', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Improvement_W.avif', dataAiHint: 'mobiles tablets' },
@@ -39,25 +39,12 @@ const topCategories = [
 const filterCategories = ['All', 'Tech', 'Home', 'Ayurvedic'];
 const PRODUCTS_TO_SHOW = 10;
 
-const FEATURED_HOME_PRODUCT_IDS = [
-  'P_HOME_BA_01', 
-  'P_HOME_KW_01', 
-  'P_HOME_KW_02', 
-  'P_HOME_KW_03'
-];
-
-
 export default function Home() {
   const { products, isLoading } = useProductStore();
   const [visibleCount, setVisibleCount] = useState(PRODUCTS_TO_SHOW);
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const techDeals = useMemo(() => {
-    const featuredHome = products.filter(p => FEATURED_HOME_PRODUCT_IDS.includes(p.id));
-    const techDiscounted = products.filter(p => p.category === 'Tech' && p.price.discounted && p.quantity > 0);
-    return [...featuredHome, ...techDiscounted].slice(0, 8);
-  }, [products]);
-  
+  const techDeals = useMemo(() => products.filter(p => p.category === 'Tech' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
   const homeDeals = useMemo(() => products.filter(p => p.category === 'Home' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
   const ayurvedicDeals = useMemo(() => products.filter(p => p.category === 'Ayurvedic' && p.price.discounted && p.quantity > 0).slice(0, 8), [products]);
 
@@ -111,7 +98,7 @@ export default function Home() {
                 </div>
             </Link>
             <Link href="/search?category=Ayurvedic" className="relative block h-24 md:h-48 overflow-hidden rounded-xl group">
-                <Image src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop" alt="Ayurvedic" fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint="ayurvedic products" />
+                <Image src="https://images.unsplash.com/photo-1544131750-2985d621da30?q=80&w=1200&auto=format&fit=crop" alt="Ayurvedic" fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint="ayurvedic products" />
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="absolute inset-0 flex items-center justify-center p-2">
                     <h3 className="text-md font-bold text-white text-center">Ayurvedic Essentials</h3>

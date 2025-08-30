@@ -2,14 +2,6 @@
 import Fuse from 'fuse.js'
 import type { Product } from './types'
 
-// IDs of specific products to feature across categories
-const FEATURED_HOME_PRODUCT_IDS = [
-  'P_HOME_BA_01', 
-  'P_HOME_KW_01', 
-  'P_HOME_KW_02', 
-  'P_HOME_KW_03'
-];
-
 export const liveSearch = (q: string, products: Product[]) => {
   if (!q.trim()) return []
   const fuse = new Fuse(products, { keys: ['name','brand','category','tags'], includeScore: true, threshold: 0.4 })
@@ -33,15 +25,9 @@ export const filterProducts = (products: Product[], opts: { q?: string; category
 
   // Handle category filtering
   if (opts.category && opts.category !== 'All') {
-    const featuredHomeProducts = products.filter(p => FEATURED_HOME_PRODUCT_IDS.includes(p.id));
-    
     if (opts.category === 'Pooja') {
+      // Special case for "Pooja" to include items from both categories
       list = list.filter(p => p.category === 'Pooja' || p.subcategory === 'Puja-Essentials');
-    } else if (opts.category === 'Tech') {
-      // For 'Tech', include actual tech products AND the featured home products
-      const techProducts = list.filter(p => p.category === 'Tech');
-      const uniqueFeatured = featuredHomeProducts.filter(fp => !techProducts.some(tp => tp.id === fp.id));
-      list = [...techProducts, ...uniqueFeatured];
     } else {
       list = list.filter(p => p.category === opts.category);
     }
