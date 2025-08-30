@@ -1,3 +1,4 @@
+
 'use client'
 import { useState, useEffect } from 'react'
 import type { Address } from '@/lib/types'
@@ -6,29 +7,31 @@ const required = (s?: string) => !!(s && s.trim().length)
 
 export default function AddressForm({ onSubmit, initial, onCancel }: { onSubmit: (a: Omit<Address, 'id'>) => void; initial?: Partial<Address>; onCancel?: () => void }) {
   const [a, setA] = useState<Omit<Address, 'id'>>({
-    fullName: initial?.fullName || '',
-    phone: initial?.phone || '',
-    pincode: initial?.pincode || '',
-    line1: initial?.line1 || '',
-    line2: initial?.line2 || '',
-    city: initial?.city || '',
-    state: initial?.state || '',
-    landmark: initial?.landmark || '',
-    default: initial?.default ?? true,
+    fullName: '',
+    phone: '',
+    pincode: '',
+    line1: '',
+    line2: '',
+    city: '',
+    state: '',
+    landmark: '',
+    default: true,
   })
   
   useEffect(() => {
-    setA({
-        fullName: initial?.fullName || '',
-        phone: initial?.phone || '',
-        pincode: initial?.pincode || '',
-        line1: initial?.line1 || '',
-        line2: initial?.line2 || '',
-        city: initial?.city || '',
-        state: initial?.state || '',
-        landmark: initial?.landmark || '',
-        default: initial?.default ?? true,
-    });
+    if (initial) {
+        setA({
+            fullName: initial.fullName || '',
+            phone: initial.phone || '',
+            pincode: initial.pincode || '',
+            line1: initial.line1 || '',
+            line2: initial.line2 || '',
+            city: initial.city || '',
+            state: initial.state || '',
+            landmark: initial.landmark || '',
+            default: initial.default ?? true,
+        });
+    }
   }, [initial]);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
