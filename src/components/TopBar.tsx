@@ -1,18 +1,21 @@
 
 'use client'
-import { ShoppingCart, User, Heart } from 'lucide-react'
+import { ShoppingCart, User, Heart, LogIn } from 'lucide-react'
 import Link from 'next/link'
 import SearchBar from './SearchBar'
 import { useCart } from '@/lib/cartStore'
 import { useWishlist } from '@/lib/wishlistStore'
 import { useOrders } from '@/lib/ordersStore'
 import { useSearchParams } from 'next/navigation'
+import { useAuth } from '@/context/AuthContext'
+import { Button } from './ui/button'
 
 const mainCategories = ['Tech', 'Home', 'Ayurvedic'];
 
 export default function TopBar() {
+  const { user } = useAuth();
   const { items } = useCart();
-  const { ids: wishlistIds } = useWishlist();
+  const { ids: wishlistIds, hasNewItem: hasNewWishlistItem } = useWishlist();
   const { hasNewOrder } = useOrders();
   const cartItemCount = items.reduce((acc, item) => acc + item.qty, 0);
   const searchParams = useSearchParams();
@@ -35,21 +38,35 @@ export default function TopBar() {
         <nav className="ml-auto flex items-center gap-1 sm:gap-3">
           <Link href="/wishlist" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Wishlist">
             <Heart className="h-5 w-5" />
-            {wishlistIds.length > 0 && (
+            {user && hasNewWishlistItem && (
+              <span className="absolute right-0 top-0 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white blinking-dot" />
+            )}
+            {user && wishlistIds.length > 0 && (
               <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand text-xs text-white">
                 {wishlistIds.length}
               </span>
             )}
           </Link>
-          <Link href="/account" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Account">
-            <User className="h-5 w-5" />
-             {hasNewOrder && (
-              <span className="absolute right-0 top-0 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white" />
-            )}
-          </Link>
+          
+          {user ? (
+            <Link href="/account" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Account">
+              <User className="h-5 w-5" />
+              {hasNewOrder && (
+                <span className="absolute right-0 top-0 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white blinking-dot" />
+              )}
+            </Link>
+          ) : (
+            <Button asChild variant="ghost" size="sm" className="hidden md:flex items-center gap-1">
+               <Link href="/account">
+                <LogIn className="h-4 w-4" />
+                Login
+               </Link>
+            </Button>
+          )}
+
           <Link href="/cart" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Cart">
             <ShoppingCart className="h-5 w-5" />
-            {cartItemCount > 0 && (
+            {user && cartItemCount > 0 && (
               <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand text-xs text-white">
                 {cartItemCount}
               </span>
@@ -61,5 +78,3 @@ export default function TopBar() {
     </header>
   )
 }
-
-    

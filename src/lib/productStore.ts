@@ -23,8 +23,7 @@ export const useProductStore = create<ProductState>()((set, get) => ({
   isLoading: true,
   init: async () => {
     // Initial fetch, don't re-fetch if products are already loaded
-    if (get().products.length > 0) {
-      set({ isLoading: false });
+    if (get().products.length > 0 && !get().isLoading) {
       return;
     }
     await get().revalidate();
@@ -46,7 +45,8 @@ export const useProductStore = create<ProductState>()((set, get) => ({
       set({ products: combinedProducts, isLoading: false });
     } catch (error) {
       console.error("Error fetching products:", error);
-      set({ products: localProducts, isLoading: false }); // Fallback
+      // Fallback to local products if firestore fails
+      set({ products: localProducts, isLoading: false }); 
     }
   },
   addProduct: async (productData) => {
