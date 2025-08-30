@@ -37,25 +37,32 @@ export const useProductStore = create<ProductState>()((set, get) => ({
         ...doc.data()
       } as Product));
 
+      // In a real app, you might only use backendProducts.
+      // Here, we merge with local sample data to ensure the store is always populated.
       const productMap = new Map<string, Product>();
+      // Prioritize backend data over local data
       localProducts.forEach(p => productMap.set(p.id, p));
       backendProducts.forEach(p => productMap.set(p.id, p));
       
       const combinedProducts = Array.from(productMap.values());
       set({ products: combinedProducts, isLoading: false });
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error fetching products from Firestore:", error);
       // Fallback to local products if firestore fails
       set({ products: localProducts, isLoading: false }); 
     }
   },
   addProduct: async (productData) => {
-    await addDoc(productCollectionRef, {
+    const docRef = await addDoc(productCollectionRef, {
       ...productData,
-      ratings: { average: 0, count: 0 },
+      ratings: { average: 4.5, count: 1 }, // Default ratings for new products
       createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
     });
-    await get().revalidate(); // Re-fetch products after adding
+    // Optimistically update the UI, then revalidate
+    const newProduct = { ...productData, id: docRef.id, ratings: { average: 4.5, count: 1 } };
+    set(state => ({ products: [...state.products, newProduct] }));
+    await get().revalidate();
   },
   updateProduct: async (productId, productData) => {
     const productDocRef = doc(db, 'products', productId);
@@ -63,14 +70,20 @@ export const useProductStore = create<ProductState>()((set, get) => ({
       ...productData,
       updatedAt: serverTimestamp(),
     });
-    await get().revalidate(); // Re-fetch products after updating
+     // Optimistically update the UI, then revalidate
+    set(state => ({
+        products: state.products.map(p => p.id === productId ? { ...p, ...productData } as Product : p)
+    }));
+    await get().revalidate();
   },
   deleteProduct: async (productId) => {
     const productDocRef = doc(db, 'products', productId);
     await deleteDoc(productDocRef);
-    await get().revalidate(); // Re-fetch products after deleting
+    // Optimistically update the UI, then revalidate
+    set(state => ({ products: state.products.filter(p => p.id !== productId) }));
+    await get().revalidate();
   },
 }));
 
-// Initialize the store immediately for all pages
+// Initialize the store immediately for all pages to fetch products on app start.
 useProductStore.getState().init();

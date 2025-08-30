@@ -93,7 +93,7 @@ export default function AdminProductsPage() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold">Manage Products</h1>
-                <Dialog open={isFormOpen} onOpenChange={(isOpen) => { setFormOpen(isOpen); if (!isOpen) setSelectedProduct(undefined); }}>
+                <Dialog open={isFormOpen} onOpenChange={(isOpen) => { if (!isOpen) { setFormOpen(false); setSelectedProduct(undefined); } else { setFormOpen(true); } }}>
                     <DialogTrigger asChild>
                         <Button onClick={handleAddProduct}>+ Add New Product</Button>
                     </DialogTrigger>
@@ -126,7 +126,7 @@ export default function AdminProductsPage() {
                             {products.map(product => (
                                 <tr key={product.id} className="border-b hover:bg-gray-50">
                                     <td className="p-3 flex items-center gap-3">
-                                        <Image src={product.image} alt={product.name} width={40} height={40} className="rounded-md object-cover"/>
+                                        <Image src={product.image || 'https://picsum.photos/40/40'} alt={product.name} width={40} height={40} className="rounded-md object-cover"/>
                                         <span className="font-medium">{product.name}</span>
                                     </td>
                                     <td className="p-3">{product.category} / {product.subcategory}</td>
@@ -149,9 +149,9 @@ export default function AdminProductsPage() {
                         </tbody>
                     </table>
                 </div>
-                 {products.length === 0 && (
+                 {products.length === 0 && !isLoading && (
                     <div className="text-center py-8 text-gray-500">
-                        No products found.
+                        No products found. Add one to get started.
                     </div>
                 )}
             </div>
@@ -162,12 +162,12 @@ export default function AdminProductsPage() {
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                     <AlertDialogDescription>
                         This action cannot be undone. This will permanently delete the product
-                        from the list.
+                        from your database.
                     </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                     <AlertDialogCancel onClick={() => setProductToDelete(null)}>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDeleteProduct}>Continue</AlertDialogAction>
+                    <AlertDialogAction onClick={handleDeleteProduct} className="bg-destructive hover:bg-destructive/90">Continue</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
