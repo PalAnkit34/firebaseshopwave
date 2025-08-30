@@ -14,17 +14,19 @@ import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/hooks/use-toast'
 import { useNotificationStore } from '@/lib/notificationStore'
 import { BellRing, Check } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[] }) {
   const { add } = useCart()
   const { user } = useAuth()
   const { toast } = useToast()
+  const router = useRouter();
   const { addNotification, hasNotification } = useNotificationStore()
   const price = p.price.discounted ?? p.price.original
   
   const handleAddToCart = () => {
     if (!user) {
-      toast({ title: "Please Login", description: "You need to be logged in to add items to your cart.", variant: "destructive" });
+      router.push('/account');
       return;
     }
     add(user.id, { id: p.id, qty: 1, price, name: p.name, image: p.image });
@@ -33,7 +35,7 @@ export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[
 
   const handleNotifyMe = () => {
     if (!user) {
-      toast({ title: "Please Login", description: "You need to be logged in for notifications.", variant: "destructive" });
+      router.push('/account');
       return;
     }
     if (!hasNotification(p.id)) {

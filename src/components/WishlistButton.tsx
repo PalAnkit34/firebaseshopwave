@@ -6,11 +6,13 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
 
 export default function WishlistButton({ id }: { id: string }) {
   const { user } = useAuth();
   const { ids, has, toggle } = useWishlist()
   const { toast } = useToast()
+  const router = useRouter();
   const [isWished, setIsWished] = useState(false)
 
   // Sync state with the store whenever the ids array changes
@@ -20,7 +22,7 @@ export default function WishlistButton({ id }: { id: string }) {
 
   const handleToggle = () => {
     if (!user) {
-      toast({ title: "Please Login", description: "You need to be logged in to add items to your wishlist.", variant: "destructive" });
+      router.push('/account');
       return;
     }
     toggle(user.id, id)

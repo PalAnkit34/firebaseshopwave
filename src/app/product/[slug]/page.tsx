@@ -59,7 +59,7 @@ function ProductDetailContent() {
 
   const handleAddToCart = () => {
     if (!user) {
-      toast({ title: "Please Login", description: "You need to be logged in to add items to your cart.", variant: "destructive" });
+      router.push('/account');
       return;
     }
     add(user.id, { id:p.id, qty, price, name:p.name, image:p.image });
@@ -68,7 +68,7 @@ function ProductDetailContent() {
 
   const handleBuyNow = () => {
     if (!user) {
-      toast({ title: "Please Login", description: "You need to be logged in to buy items.", variant: "destructive" });
+      router.push('/account');
       return;
     }
     add(user.id, { id:p.id, qty, price, name:p.name, image:p.image });
@@ -77,7 +77,7 @@ function ProductDetailContent() {
 
   const handleNotifyMe = () => {
     if (!user) {
-      toast({ title: "Please Login", description: "You need to be logged in for notifications.", variant: "destructive" });
+      router.push('/account');
       return;
     }
     if (!hasNotification(p.id)) {
