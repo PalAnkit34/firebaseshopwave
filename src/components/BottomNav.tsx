@@ -5,9 +5,11 @@ import { Home, Search, ShoppingBag, Heart, User } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useCart } from '@/lib/cartStore'
 import { useWishlist } from '@/lib/wishlistStore'
+import { useAuth } from '@/context/AuthContext'
 
 export default function BottomNav(){
   const path = usePathname();
+  const { user } = useAuth();
   const { items } = useCart();
   const { ids: wishlistIds } = useWishlist();
   const cartItemCount = items.reduce((acc, item) => acc + item.qty, 0);
@@ -26,7 +28,7 @@ export default function BottomNav(){
       <Link href={href} className={`flex flex-1 flex-col items-center justify-center py-2 text-xs transition-colors ${isActive ?'text-brand':'text-gray-500 hover:text-brand'}`}>
         <div className="relative">
           <Icon className="h-5 w-5"/>
-          {count && count > 0 && (
+          {user && count && count > 0 && (
             <span className="absolute -right-2 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand text-xs text-white">
               {count}
             </span>
