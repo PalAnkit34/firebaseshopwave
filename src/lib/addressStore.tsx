@@ -32,6 +32,9 @@ export const useAddressBook = create<AddressState>()((set, get) => ({
         setDoc(docRef, { list: [] });
         set({ addresses: [], isLoading: false });
       }
+    }, (error) => {
+        console.error("Error in address snapshot listener:", error);
+        set({ isLoading: false });
     });
     return unsubscribe; // Return the unsubscribe function for cleanup
   },

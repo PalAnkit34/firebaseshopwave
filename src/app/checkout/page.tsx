@@ -14,6 +14,7 @@ import Script from 'next/script'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/context/AuthContext'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 const paymentOptions = [
   { id: 'UPI', icon: QrCode, title: 'UPI / QR Code', description: 'Pay with any UPI app' },
@@ -22,8 +23,8 @@ const paymentOptions = [
 ]
 
 export default function Checkout(){
-  const { user } = useAuth()
-  const { items, subtotal, totalShipping, totalTax, total, clear: clearCart } = useCart()
+  const { user, loading: authLoading } = useAuth()
+  const { items, subtotal, totalShipping, totalTax, total, clearCartFromDB } = useCart()
   const { addresses, save, setDefault } = useAddressBook()
   const { placeOrder } = useOrders()
   const router = useRouter()
@@ -34,14 +35,14 @@ export default function Checkout(){
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
-    if (!user) {
+    if (!authLoading && !user) {
         router.replace('/account');
         return;
     }
-    if (items.length === 0) {
+    if (!authLoading && user && items.length === 0) {
       router.replace('/');
     }
-  }, [items, router, user]);
+  }, [items, router, user, authLoading]);
 
   useEffect(() => {
     setShowForm(addresses.length === 0);
@@ -51,10 +52,14 @@ export default function Checkout(){
     const addr = addresses.find(a => a.default) || addresses[0]
     if (!addr || !user) {
       toast({ title: "Error", description: "Could not find address or user to place order.", variant: 'destructive' });
+      setIsProcessing(false);
       return;
     }
     await placeOrder(user.id, items, addr, total, paymentMethod as any)
-    clearCart() 
+    
+    // clearCartFromDB now handles clearing firestore and local state
+    await clearCartFromDB(user.id);
+    
     router.push('/orders')
     toast({ title: "Order Placed!", description: "Thank you for your purchase." });
   }
@@ -123,6 +128,10 @@ export default function Checkout(){
     }
   }
   
+  if (authLoading) {
+    return <div className="flex justify-center py-10"><LoadingSpinner /></div>;
+  }
+
   if (items.length === 0 || !user) {
     return null;
   }
@@ -238,7 +247,7 @@ export default function Checkout(){
           <Button 
               onClick={handleAction} 
               className="mt-4 w-full" 
-              disabled={isProcessing}
+              disabled={isProcessing || addresses.length === 0}
           >
               {isProcessing ? 'Processing...' : `Pay ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
           </Button>

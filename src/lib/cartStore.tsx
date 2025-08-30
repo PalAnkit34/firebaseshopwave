@@ -22,6 +22,7 @@ type CartState = {
   remove: (userId: string, id: string) => Promise<void>
   setQty: (userId: string, id: string, qty: number) => Promise<void>
   clear: () => void
+  clearCartFromDB: (userId: string) => Promise<void>
 }
 
 const calculateTotals = (items: CartItem[]) => {
@@ -52,6 +53,8 @@ const calculateTotals = (items: CartItem[]) => {
   return { subtotal, totalShipping, totalTax, total }
 }
 
+const getDocRef = (userId: string) => doc(db, 'carts', userId);
+
 export const useCart = create<CartState>()((set, get) => ({
   items: [],
   subtotal: 0,
@@ -59,7 +62,7 @@ export const useCart = create<CartState>()((set, get) => ({
   totalTax: 0,
   total: 0,
   init: (userId: string) => {
-    const docRef = doc(db, 'carts', userId);
+    const docRef = getDocRef(userId);
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         const items = docSnap.data().items || [];
@@ -68,11 +71,13 @@ export const useCart = create<CartState>()((set, get) => ({
         setDoc(docRef, { items: [] });
         set({ items: [], ...calculateTotals([]) });
       }
+    }, (error) => {
+        console.error("Error in cart snapshot listener:", error);
     });
     return unsubscribe;
   },
   add: async (userId: string, item: CartItem) => {
-    const docRef = doc(db, 'carts', userId);
+    const docRef = getDocRef(userId);
     const state = get();
     const existing = state.items.find((p) => p.id === item.id)
     let newItems;
@@ -83,16 +88,16 @@ export const useCart = create<CartState>()((set, get) => ({
     } else {
       newItems = [...state.items, { ...item, qty: Math.max(1, item.qty) }]
     }
-    await setDoc(docRef, { items: newItems });
+    await setDoc(docRef, { items: newItems }, { merge: true });
   },
   remove: async (userId: string, id: string) => {
-    const docRef = doc(db, 'carts', userId);
+    const docRef = getDocRef(userId);
     const state = get();
     const newItems = state.items.filter((p) => p.id !== id);
     await setDoc(docRef, { items: newItems });
   },
   setQty: async (userId: string, id: string, qty: number) => {
-    const docRef = doc(db, 'carts', userId);
+    const docRef = getDocRef(userId);
     const state = get();
     const newItems = state.items.map((p) =>
       p.id === id ? { ...p, qty: Math.max(1, Math.min(99, qty)) } : p
@@ -100,8 +105,11 @@ export const useCart = create<CartState>()((set, get) => ({
     await setDoc(docRef, { items: newItems });
   },
   clear: () => {
-    // This function clears the local state. 
-    // The cart in firestore should be cleared explicitly after a successful order.
     set({ items: [], subtotal: 0, totalShipping: 0, totalTax: 0, total: 0 })
   },
+  clearCartFromDB: async (userId: string) => {
+    const docRef = getDocRef(userId);
+    await setDoc(docRef, { items: [] });
+    get().clear();
+  }
 }))

@@ -6,18 +6,32 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import { useAuth } from '@/context/AuthContext'
 
 export default function OrdersPage(){
+  const { user } = useAuth()
   const { orders, isLoading, clearNewOrderStatus } = useOrders()
-  const { products } = useProductStore()
+  const { products, isLoading: productsLoading } = useProductStore()
 
   useEffect(() => {
     // When the user visits this page, clear the new order notification
-    clearNewOrderStatus();
-  }, [clearNewOrderStatus]);
+    if (user?.id) {
+        clearNewOrderStatus(user.id);
+    }
+  }, [clearNewOrderStatus, user]);
 
-  if (isLoading || products.length === 0) {
+  if (isLoading || productsLoading) {
     return <div className="flex justify-center py-10"><LoadingSpinner /></div>;
+  }
+  
+  if (!user) {
+    return (
+       <div className="card p-8 text-center">
+          <h2 className="text-lg font-medium text-gray-700">Please Login</h2>
+          <p className="text-sm text-gray-500 mt-1">Login to view your order history.</p>
+          <Link href="/account" className="mt-4 inline-block rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand/90">Go to Login</Link>
+      </div>
+    )
   }
 
   return (

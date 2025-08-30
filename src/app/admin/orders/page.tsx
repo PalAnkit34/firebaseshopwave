@@ -58,7 +58,7 @@ export default function AdminOrdersPage() {
 
     const handleUpdateStatus = async () => {
         if (orderToUpdate) {
-            await updateOrderStatus(orderToUpdate.address.phone, orderToUpdate.id, newStatus);
+            await updateOrderStatus(orderToUpdate.id, newStatus);
             toast({ title: "Status Updated", description: `Order #${orderToUpdate.id} is now ${newStatus}.` });
             setStatusModalOpen(false);
             setOrderToUpdate(null);
