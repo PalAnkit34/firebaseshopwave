@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Address } from '@/lib/types'
 
 const required = (s?: string) => !!(s && s.trim().length)
@@ -16,6 +16,20 @@ export default function AddressForm({ onSubmit, initial, onCancel }: { onSubmit:
     landmark: initial?.landmark || '',
     default: initial?.default ?? true,
   })
+  
+  useEffect(() => {
+    setA({
+        fullName: initial?.fullName || '',
+        phone: initial?.phone || '',
+        pincode: initial?.pincode || '',
+        line1: initial?.line1 || '',
+        line2: initial?.line2 || '',
+        city: initial?.city || '',
+        state: initial?.state || '',
+        landmark: initial?.landmark || '',
+        default: initial?.default ?? true,
+    });
+  }, [initial]);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
