@@ -4,34 +4,32 @@ import Razorpay from 'razorpay'
 
 // Define allowed origins
 const allowedOrigins = [
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
     "https://6000-firebase-studio-1756288828902.cluster-cd3bsnf6r5bemwki2bxljme5as.cloudworkstations.dev",
-    // You can add other origins here if needed, e.g., for local development
-    // "http://localhost:3000" 
 ];
 
-const corsHeaders = {
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
-
+const getCorsHeaders = (origin: string | null) => {
+    const headers: Record<string, string> = {
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    };
+    if (origin && allowedOrigins.includes(origin)) {
+        headers["Access-Control-Allow-Origin"] = origin;
+    }
+    return headers;
+}
 
 export async function OPTIONS(req: NextRequest) {
-    const origin = req.headers.get('origin') ?? '';
-    if (allowedOrigins.includes(origin)) {
-        return new NextResponse(null, {
-            status: 204,
-            headers: {
-                ...corsHeaders,
-                "Access-Control-Allow-Origin": origin,
-            }
-        });
-    }
-    return new NextResponse(null, { status: 400, statusText: "Bad Request" });
+    const origin = req.headers.get('origin');
+    return new NextResponse(null, {
+        status: 204,
+        headers: getCorsHeaders(origin)
+    });
 }
 
 export async function POST(req: NextRequest) {
-  const origin = req.headers.get('origin') ?? '';
-  const headers = { ...corsHeaders, "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : allowedOrigins[0] };
+  const origin = req.headers.get('origin');
+  const headers = getCorsHeaders(origin);
 
   const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -54,14 +52,14 @@ export async function POST(req: NextRequest) {
       )
     }
     
-    // Due to a bug in Razorpay's type definitions, we need to use `any` here.
+    // Razorpay expects `any` for its constructor options due to outdated types.
     const razorpay: any = new Razorpay({
       key_id: keyId,
       key_secret: keySecret,
     })
 
     const options = {
-      amount: amount * 100, // amount in the smallest currency unit
+      amount: Math.round(amount * 100), // amount in the smallest currency unit (paise)
       currency: 'INR',
       receipt: `receipt_order_${new Date().getTime()}`,
     }
@@ -73,7 +71,7 @@ export async function POST(req: NextRequest) {
     console.error('Error creating Razorpay order:', error)
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json(
-      { error: `Error creating Razorpay order: ${errorMessage}` },
+      { error: `Could not create payment order. ${errorMessage}` },
       { status: 500, headers }
     )
   }
