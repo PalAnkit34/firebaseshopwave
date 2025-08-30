@@ -88,16 +88,18 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
     return (
         <div className="space-y-8 mb-8">
             <section>
-                <div className={cn("relative overflow-hidden rounded-2xl p-6 md:p-8", bannerColor)}>
+                <div className={cn("relative overflow-hidden rounded-2xl p-4 md:p-6", bannerColor)}>
                     <div className="grid md:grid-cols-2 gap-6 items-center">
                         <div className="text-center md:text-left z-10">
-                            <h1 className="text-3xl md:text-4xl font-bold text-gray-800">{title}</h1>
-                            <p className="mt-4 text-gray-600 max-w-md mx-auto md:mx-0">{description}</p>
-                            <Link href="#product-grid" className={cn("mt-6 inline-block text-white px-8 py-3 rounded-lg font-semibold transition-colors", buttonColor)}>
-                                {linkText}
-                            </Link>
+                            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{title}</h1>
+                            <p className="mt-2 text-sm md:text-base text-gray-600 max-w-md mx-auto md:mx-0">{description}</p>
+                            <Button asChild className={cn("mt-4 text-white px-6 py-2 rounded-lg font-semibold transition-colors", buttonColor)}>
+                                <Link href="#product-grid">
+                                    {linkText}
+                                </Link>
+                            </Button>
                         </div>
-                        <div className="relative h-56 md:h-64">
+                        <div className="relative h-48 md:h-56">
                             <AnimatePresence initial={false}>
                                 <motion.div
                                     key={currentImageIndex}
@@ -184,7 +186,7 @@ function SearchContent() {
                   <div className="mt-8">
                       <h2 className="text-2xl font-bold mb-4 text-center">Top Categories</h2>
                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
-                        {topCategories.map((category) => (
+                        {techCategories.map((category) => (
                           <Link key={category.name} href={category.href} className="group block text-center">
                             <div className="relative aspect-square w-full mx-auto max-w-[150px]">
                               <div className="flex items-center justify-center p-2">
@@ -316,7 +318,7 @@ function SearchContent() {
           <>
             <ChevronRight size={16} className="mx-1" />
             <Link href={`/search?category=${opts.category}`} className="hover:text-brand">
-              {opts.category}
+              {opts.category.replace(/%20/g, ' ')}
             </Link>
           </>
         )}
