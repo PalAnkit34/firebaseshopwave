@@ -165,20 +165,24 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+        <div className="flex flex-wrap -mx-1.5 md:-mx-2">
            {visibleProducts.map(p => (
-            <ProductCard key={p.id} p={p} />
+            <div key={p.id} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 p-1.5 md:p-2">
+              <ProductCard p={p} />
+            </div>
           ))}
         </div>
         
         {visibleCount < filteredProducts.length && (
           <div className="text-center mt-8">
-            <button
+            <motion.button
               onClick={handleViewMore}
               className="rounded-xl bg-brand/90 px-8 py-3 font-semibold text-white transition-colors hover:bg-brand"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             >
               View More
-            </button>
+            </motion.button>
           </div>
         )}
       </section>
