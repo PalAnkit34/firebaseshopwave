@@ -125,12 +125,13 @@ ${order.address.landmark ? `Landmark: ${order.address.landmark}` : ''}
         body: JSON.stringify({ amount: total }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || 'Failed to create order');
+        throw new Error(data.error || 'Failed to create Razorpay order.');
       }
       
-      const { order } = await res.json();
+      const { order } = data;
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
