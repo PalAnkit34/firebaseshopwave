@@ -158,9 +158,9 @@ function SearchContent() {
                 description="Get authentic Ashram products delivered right to your doorstep, anywhere in India!"
                 linkText="Shop Now"
                 bannerImages={[
-                    "https://storage.googleapis.com/stabl-media/pro-101/476e93e2-8958-4796-913a-f110a3070659.png",
-                    "https://images.unsplash.com/photo-1591185854599-0734914c814b?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1558642144-3c82255d6b38?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1544131750-2985d621da30?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1605952671385-a04ea67ade59?q=80&w=1200&auto=format&fit=crop"
                 ]}
                 categories={ayurvedicSubCategories}
                 bannerColor="bg-green-50"
