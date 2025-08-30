@@ -60,8 +60,8 @@ const techCategories = [
 
 const homeCategories = [
     { name: 'Bathroom Accessories', href: '/search?category=Home&subcategory=Bathroom-Accessories', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/02_fa708df0-d2c7-454a-b15b-bb321a5a0efe.webp', dataAiHint: 'Bathroom Accessories' },
-    { name: 'Puja Essentials', href: '/search?category=Home&subcategory=Puja-Essentials', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/4_86ddff46-3968-4413-9b38-e66bcd792aae_10_11zon.webp', dataAiHint: 'Puja Essentials' },
-    { name: 'Cleaning Supplies', href: '/search?category=Home&subcategory=Cleaning-Supplies', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/4_86ddff46-3968-4413-9b38-e66bcd792aae_10_11zon.webp', dataAiHint: 'Cleaning Supplies' },
+    { name: 'Puja Essentials', href: '/search?category=Pooja', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/4_86ddff46-3968-4413-9b38-e66bcd792aae_10_11zon.webp', dataAiHint: 'Puja Essentials' },
+    { name: 'Cleaning Supplies', href: '/search?category=Home&subcategory=Cleaning-Supplies', image: 'https://images.unsplash.com/photo-1582735773152-7935fbb1b41f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'Cleaning Supplies' },
     { name: 'Household Appliances', href: '/search?category=Home&subcategory=Household-Appliances', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/1_37b9809b-d67b-40bb-aa14-f9e109013c88.webp', dataAiHint: 'Household Appliances' },
     { name: 'Home Decor', href: '/search?category=Home&subcategory=HomeDecor', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/01_be46bb9f-00b8-4373-80f2-47d1de4ccf06.webp', dataAiHint: 'Home Decor' },
     { name: 'Home storage', href: '/search?category=Home&subcategory=Home-storage', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/hangers_wordrobe_storage%20(1).webp', dataAiHint: 'Home storage' },
@@ -88,7 +88,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
     return (
         <div className="space-y-8 mb-8">
             <section>
-                <div className={cn("relative overflow-hidden rounded-2xl p-4 md:py-4 md:px-6", bannerColor)}>
+                <div className={cn("relative overflow-hidden rounded-2xl p-4 md:py-2 md:px-6", bannerColor)}>
                     <div className="grid md:grid-cols-2 gap-6 items-center">
                         <div className="text-center md:text-left z-10">
                             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">{title}</h1>
@@ -99,7 +99,7 @@ function CategoryHeader({ title, description, linkText, bannerImages, categories
                                 </Link>
                             </Button>
                         </div>
-                        <div className="relative h-40 md:h-48">
+                        <div className="relative h-32 md:h-40">
                             <AnimatePresence initial={false}>
                                 <motion.div
                                     key={currentImageIndex}
@@ -135,6 +135,7 @@ function SearchContent() {
   const { products, isLoading } = useProductStore();
   const [isFilterOpen, setFilterOpen] = useState(false)
   const [isFilterVisible, setIsFilterVisible] = useState(true)
+  const [showAllCategories, setShowAllCategories] = useState(false);
 
   const opts = {
     q: sp.get('query') || undefined,
@@ -149,9 +150,24 @@ function SearchContent() {
   }
   
   const list = useMemo(() => filterProducts(products, opts), [products, sp])
+
+  const bestSellers = useMemo(() => {
+    return [...products]
+        .sort((a, b) => (b.ratings?.count ?? 0) - (a.ratings?.count ?? 0))
+        .slice(0, 12);
+  }, [products]);
+
+  const allCategoryLinks = [
+      { name: 'Tech', href: '/search?category=Tech', image: techCategories[0].image, dataAiHint: 'latest gadgets' },
+      { name: 'Home', href: '/search?category=Home', image: homeCategories[0].image, dataAiHint: 'stylish apparel' },
+      { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[1].image, dataAiHint: 'natural remedies' },
+      { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
+      { name: 'Pooja', href: '/search?category=Pooja', image: poojaSubCategories[0].image, dataAiHint: 'pooja items' },
+      { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'fresh groceries' },
+  ];
   
   const renderCategoryHeader = () => {
-    if (opts.q || opts.subcategory || opts.tertiaryCategory) return null;
+    if (opts.q || opts.subcategory || opts.tertiaryCategory || showAllCategories) return null;
 
     switch (opts.category) {
         case 'Ayurvedic':
@@ -250,23 +266,7 @@ function SearchContent() {
             />
         default:
              if (!opts.category) {
-                 return <CategoryHeader 
-                    title="Explore Our Products"
-                    description="Find everything you need from tech gadgets to ayurvedic essentials."
-                    linkText="Shop All"
-                    bannerImages={[
-                         "https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1200&auto=format&fit=crop",
-                         "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop",
-                    ]}
-                    categories={[
-                        { name: 'Tech', href: '/search?category=Tech', image: techCategories[0].image, dataAiHint: 'latest gadgets' },
-                        { name: 'Home', href: '/search?category=Home', image: homeCategories[0].image, dataAiHint: 'stylish apparel' },
-                        { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[1].image, dataAiHint: 'natural remedies' },
-                        { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
-                        { name: 'Pooja', href: '/search?category=Pooja', image: poojaSubCategories[0].image, dataAiHint: 'pooja items' },
-                        { name: 'Groceries', href: '/search?category=Groceries', image: ayurvedicSubCategories.find(c => c.name === 'Daily Needs')?.image || 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'fresh groceries' },
-                    ]}
-                />
+                return null;
             }
             return null;
     }
@@ -307,8 +307,22 @@ function SearchContent() {
       return <h1 className="text-2xl font-bold mb-4">Search results for &quot;{opts.q}&quot;</h1>
     }
     
-    if (!opts.category) {
-        return null;
+    if (!opts.category && !showAllCategories) {
+        return (
+            <div className="text-center mb-6">
+                <h1 className="text-3xl font-bold">Our Best Sellers</h1>
+                <p className="text-gray-600 mt-1">Handpicked for you from our most popular items.</p>
+            </div>
+        )
+    }
+
+    if (!opts.category && showAllCategories) {
+         return (
+            <div className="text-center mb-6">
+                <h1 className="text-3xl font-bold">Shop by Category</h1>
+                <p className="text-gray-600 mt-1">Find what you're looking for from our wide selection of categories.</p>
+            </div>
+        )
     }
 
     const Breadcrumb = () => (
@@ -352,7 +366,7 @@ function SearchContent() {
   }
 
 
-  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.subcategory || opts.tertiaryCategory || (opts.category && !['Ayurvedic', 'Tech', 'Home', 'Food & Drinks', 'Pooja'].includes(opts.category)));
+  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.category || opts.subcategory || opts.tertiaryCategory);
   
   if (isLoading) {
     return (
@@ -362,11 +376,41 @@ function SearchContent() {
     )
   }
 
-  return (
-    <>
-      {renderCategoryHeader()}
-      {renderTertiaryCategoryHeader()}
-      
+  const renderContent = () => {
+    if (!opts.q && !opts.category && !opts.subcategory && !opts.tertiaryCategory && !showAllCategories) {
+      // Best Seller View
+      return (
+        <>
+          <PageTitle />
+          <div className="text-center mb-8">
+            <Button onClick={() => setShowAllCategories(true)} variant="outline">
+              Or, Shop All Categories &rarr;
+            </Button>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+            {bestSellers.map(p => <ProductCard key={p.id} p={p} />)}
+          </div>
+        </>
+      );
+    }
+
+    if (showAllCategories) {
+      // All Categories View
+       return (
+        <>
+            <PageTitle />
+             <div className="text-center mb-8">
+                <Button onClick={() => setShowAllCategories(false)} variant="outline">
+                  &larr; Back to Best Sellers
+                </Button>
+            </div>
+            <CategoryGrid categories={allCategoryLinks} />
+        </>
+       )
+    }
+
+    // Default Filtered View
+    return (
       <div id="product-grid" className="scroll-mt-20">
         <div className="md:hidden">
           <CategoryPills />
@@ -437,11 +481,14 @@ function SearchContent() {
           </section>
         </div>
       </div>
-      {opts.category === 'Tech' && !opts.subcategory && !opts.tertiaryCategory && (
-        <div className="mt-12">
-            <CategoryGrid categories={techCategories} buttonColor="bg-blue-600 hover:bg-blue-700" />
-        </div>
-      )}
+    )
+  }
+  
+  return (
+    <>
+      {renderCategoryHeader()}
+      {renderTertiaryCategoryHeader()}
+      {renderContent()}
     </>
   )
 }
@@ -453,5 +500,3 @@ export default function SearchPage() {
     </Suspense>
   )
 }
-
-    
