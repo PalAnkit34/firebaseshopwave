@@ -1,12 +1,12 @@
+
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import TopBar from '@/components/TopBar';
 import BottomNav from '@/components/BottomNav';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toast';
 import OfferPopup from '@/components/OfferPopup';
-import AdminNav from '@/components/AdminNav';
 
 export default function RootContent({
   children,
@@ -14,16 +14,10 @@ export default function RootContent({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const isAdminPage = pathname.startsWith('/admin');
+  const isAdminRoute = pathname.startsWith('/admin');
 
-  if (isAdminPage) {
-    return (
-      <>
-        <AdminNav />
-        <main className="container py-6 flex-grow">{children}</main>
-      </>
-    );
+  if (isAdminRoute) {
+    return <>{children}</>;
   }
 
   return (

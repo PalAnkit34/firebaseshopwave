@@ -1,4 +1,6 @@
 
+import { AdminAuthProvider } from '@/context/AdminAuthContext';
+import AdminNav from '@/components/AdminNav';
 
 export default function AdminLayout({
   children,
@@ -6,8 +8,13 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <main className="container py-6 flex-grow">{children}</main>
-    </div>
+    <AdminAuthProvider>
+        <div className="flex min-h-screen bg-gray-50">
+            <AdminNav />
+            <main className="flex-grow p-6">
+                {children}
+            </main>
+        </div>
+    </AdminAuthProvider>
   );
 }

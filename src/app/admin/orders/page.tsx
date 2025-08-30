@@ -2,17 +2,33 @@
 'use client'
 import { useOrders } from '@/lib/ordersStore'
 import { useEffect, useState } from 'react'
-import { Copy, Eye, X } from 'lucide-react'
+import { Copy, Eye, X, Edit } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import type { Address, Order } from '@/lib/types'
 import Link from 'next/link'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+
+const orderStatuses: Order['status'][] = ['Pending', 'Processing', 'Shipped', 'Delivered'];
 
 export default function AdminOrdersPage() {
-    const { orders } = useOrders()
+    const { orders, updateOrderStatus, isLoading } = useOrders()
     const [isClient, setIsClient] = useState(false)
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+    const [isStatusModalOpen, setStatusModalOpen] = useState(false)
+    const [orderToUpdate, setOrderToUpdate] = useState<Order | null>(null)
+    const [newStatus, setNewStatus] = useState<Order['status']>('Pending')
     const { toast } = useToast()
 
     useEffect(() => {
@@ -33,7 +49,22 @@ export default function AdminOrdersPage() {
         toast({ title: "Copied!", description: "Customer address copied to clipboard." });
     }
 
-    if (!isClient) {
+    const openStatusModal = (order: Order) => {
+        setOrderToUpdate(order);
+        setNewStatus(order.status);
+        setStatusModalOpen(true);
+    };
+
+    const handleUpdateStatus = async () => {
+        if (orderToUpdate) {
+            await updateOrderStatus(orderToUpdate.address.phone, orderToUpdate.id, newStatus);
+            toast({ title: "Status Updated", description: `Order #${orderToUpdate.id} is now ${newStatus}.` });
+            setStatusModalOpen(false);
+            setOrderToUpdate(null);
+        }
+    };
+
+    if (isLoading || !isClient) {
         return (
             <div className="text-center py-10">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto"></div>
@@ -41,6 +72,8 @@ export default function AdminOrdersPage() {
             </div>
         )
     }
+
+    const sortedOrders = [...orders].sort((a, b) => b.createdAt - a.createdAt);
 
     return (
         <div className="space-y-6">
@@ -64,7 +97,7 @@ export default function AdminOrdersPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map(order => (
+                            {sortedOrders.map(order => (
                                 <tr key={order.id} className="border-b hover:bg-gray-50">
                                     <td className="p-3 font-medium text-brand">#{order.id}</td>
                                     <td className="p-3">
@@ -77,7 +110,13 @@ export default function AdminOrdersPage() {
                                     <td className="p-3 font-medium">₹{order.total.toLocaleString('en-IN')}</td>
                                     <td className="p-3">{order.payment}</td>
                                     <td className="p-3">
-                                        <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-800">{order.status}</span>
+                                        <button 
+                                            onClick={() => openStatusModal(order)}
+                                            className="flex items-center gap-1.5 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-800 hover:bg-yellow-200"
+                                        >
+                                            {order.status}
+                                            <Edit size={10} />
+                                        </button>
                                     </td>
                                     <td className="p-3">{order.items.length}</td>
                                     <td className="p-3">
@@ -86,7 +125,7 @@ export default function AdminOrdersPage() {
                                             className="flex items-center gap-1.5 rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200 transition-colors"
                                         >
                                             <Eye size={12} />
-                                            Open
+                                            View
                                         </button>
                                     </td>
                                 </tr>
@@ -116,7 +155,13 @@ export default function AdminOrdersPage() {
                                             {new Date(selectedOrder.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}
                                         </div>
                                     </div>
-                                    <span className="rounded-full bg-yellow-100 px-2.5 py-1 text-sm font-semibold text-yellow-800">{selectedOrder.status}</span>
+                                     <button 
+                                        onClick={() => { setSelectedOrder(null); openStatusModal(selectedOrder); }}
+                                        className="flex items-center gap-1.5 rounded-full bg-yellow-100 px-2.5 py-1 text-sm font-semibold text-yellow-800 hover:bg-yellow-200"
+                                    >
+                                        {selectedOrder.status}
+                                        <Edit size={12} />
+                                    </button>
                                 </div>
                                 <div className="space-y-2 rounded-lg border p-3">
                                     <h3 className="font-semibold mb-1">Items Ordered ({selectedOrder.items.length})</h3>
@@ -158,6 +203,34 @@ export default function AdminOrdersPage() {
                     )}
                 </DialogContent>
             </Dialog>
+
+            <AlertDialog open={isStatusModalOpen} onOpenChange={setStatusModalOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>Update Order Status</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Select the new status for order #{orderToUpdate?.id}. The customer will be notified.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <div className="my-4">
+                        <label htmlFor="status-select" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select
+                            id="status-select"
+                            value={newStatus}
+                            onChange={(e) => setNewStatus(e.target.value as Order['status'])}
+                            className="w-full rounded-lg border border-gray-300 p-2"
+                        >
+                            {orderStatuses.map(status => (
+                                <option key={status} value={status}>{status}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setOrderToUpdate(null)}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleUpdateStatus}>Update</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

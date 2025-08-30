@@ -32,7 +32,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased bg-background" suppressHydrationWarning>
         <AuthProvider>
-            <RootContent>{children}</RootContent>
+          <RootContent>{children}</RootContent>
         </AuthProvider>
       </body>
     </html>

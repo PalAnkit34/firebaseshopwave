@@ -3,8 +3,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Home, ShoppingCart, Package, Users } from 'lucide-react';
+import { LayoutDashboard, Home, ShoppingCart, Package, Users, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAdminAuth } from '@/context/AdminAuthContext';
+import { Button } from './ui/button';
 
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -15,38 +17,45 @@ const navItems = [
 
 export default function AdminNav() {
   const pathname = usePathname();
+  const { adminUser, logout } = useAdminAuth();
+
+  if (!adminUser) return null; // Don't render nav if not logged in
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
-      <div className="container flex items-center gap-6 py-3">
-        <Link href="/admin" className="text-lg font-bold text-brand flex items-center gap-2">
-          <LayoutDashboard className="h-5 w-5" />
-          <span>ShopWave Admin</span>
+    <aside className="flex flex-col w-64 bg-gray-800 text-white">
+      <div className="p-6 text-center border-b border-gray-700">
+        <Link href="/admin" className="text-xl font-bold flex items-center justify-center gap-2">
+          <LayoutDashboard />
+          <span>ShopWave</span>
         </Link>
-        <nav className="flex items-center gap-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={cn(
-                'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                pathname === item.href
-                  ? 'bg-gray-100 text-brand'
-                  : 'text-gray-600 hover:bg-gray-100/50 hover:text-brand'
-              )}
-            >
-              <item.icon className="h-4 w-4" />
-              <span>{item.label}</span>
-            </Link>
-          ))}
-        </nav>
-        <div className="ml-auto flex items-center gap-4">
-          <Link href="/" className="text-sm font-medium text-gray-600 hover:text-brand transition-colors flex items-center gap-1.5">
-            <Home className="h-4 w-4" />
+      </div>
+      <nav className="flex-grow p-4 space-y-2">
+        {navItems.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className={cn(
+              'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              pathname === item.href
+                ? 'bg-brand text-white'
+                : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+            )}
+          >
+            <item.icon className="h-5 w-5" />
+            <span>{item.label}</span>
+          </Link>
+        ))}
+      </nav>
+      <div className="p-4 border-t border-gray-700 space-y-2">
+         <Link href="/" className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+            <Home className="h-5 w-5" />
             <span>Storefront</span>
           </Link>
-        </div>
+        <Button onClick={logout} variant="ghost" className="w-full justify-start text-left text-gray-300 hover:bg-red-500/20 hover:text-white">
+          <LogOut className="h-5 w-5 mr-3" />
+          Logout
+        </Button>
       </div>
-    </header>
+    </aside>
   );
 }

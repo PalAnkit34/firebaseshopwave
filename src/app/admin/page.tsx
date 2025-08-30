@@ -5,6 +5,7 @@ import { useProductStore } from '@/lib/productStore'
 import Link from 'next/link'
 import { useEffect, useState, useMemo } from 'react'
 import { IndianRupee, ShoppingCart, Users, Package } from 'lucide-react'
+import { useAdminAuth } from '@/context/AdminAuthContext'
 
 const StatCard = ({ icon: Icon, title, value, color, href }: { icon: React.ElementType, title: string, value: string | number, color: string, href?: string }) => {
     const cardContent = (
@@ -30,6 +31,7 @@ export default function AdminPage() {
     const { orders } = useOrders()
     const { products } = useProductStore()
     const [isClient, setIsClient] = useState(false)
+    const { adminUser } = useAdminAuth();
 
     useEffect(() => {
         setIsClient(true)
@@ -58,6 +60,7 @@ export default function AdminPage() {
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+            <p className="text-gray-600">Welcome back, {adminUser?.email}!</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <StatCard href="/admin/orders" icon={IndianRupee} title="Total Revenue" value={`₹${stats.totalRevenue.toLocaleString('en-IN')}`} color="bg-green-500" />
@@ -69,7 +72,7 @@ export default function AdminPage() {
             <div className="card p-4">
                 <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
                 <div className="flex gap-4">
-                     <Link href="/admin/products#add" className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90">
+                     <Link href="/admin/products" className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand/90">
                         Add New Product
                     </Link>
                     <Link href="/admin/orders" className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition-colors hover:bg-gray-50">
