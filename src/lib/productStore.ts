@@ -4,6 +4,7 @@ import { create } from 'zustand'
 import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from './firebase'
 import type { Product } from './types'
+import { PRODUCTS as localProducts } from './sampleData'
 
 type ProductState = {
   products: Product[]
@@ -21,14 +22,28 @@ export const useProductStore = create<ProductState>()((set) => ({
   isLoading: true,
   init: () => {
     const unsubscribe = onSnapshot(productCollectionRef, (snapshot) => {
-      const products = snapshot.docs.map(doc => ({
+      const backendProducts = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       } as Product));
-      set({ products, isLoading: false });
+
+      // Merge local and backend products
+      // Use a Map to handle potential duplicates, giving priority to backend products
+      const productMap = new Map<string, Product>();
+      
+      // First, add all local products
+      localProducts.forEach(p => productMap.set(p.id, p));
+
+      // Then, overwrite with backend products if IDs match, or add if new
+      backendProducts.forEach(p => productMap.set(p.id, p));
+      
+      const combinedProducts = Array.from(productMap.values());
+
+      set({ products: combinedProducts, isLoading: false });
     }, (error) => {
       console.error("Error fetching products:", error);
-      set({ isLoading: false });
+      // Fallback to local products if firestore fails
+      set({ products: localProducts, isLoading: false });
     });
     return unsubscribe;
   },
