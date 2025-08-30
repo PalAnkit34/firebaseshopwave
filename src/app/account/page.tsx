@@ -1,7 +1,7 @@
 
 'use client'
-import { useState } from 'react'
-import { User, Package, Heart, MapPin, LifeBuoy, LogOut, ChevronRight } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { User, Package, Heart, MapPin, LifeBuoy, LogOut, ChevronRight, Edit } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import AddressManager from '@/components/AddressManager'
@@ -15,11 +15,13 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 const accountSections = {
   DASHBOARD: 'DASHBOARD',
   ADDRESSES: 'ADDRESSES',
+  EDIT_PROFILE: 'EDIT_PROFILE',
 }
 
 const AuthForm = () => {
-    const { login } = useAuth();
+    const { login, isNewUser, completeRegistration } = useAuth();
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [fullName, setFullName] = useState('');
     const { toast } = useToast();
 
     const handleLogin = () => {
@@ -33,8 +35,37 @@ const AuthForm = () => {
             return;
         }
         login(phoneNumber);
-        toast({ title: "Login Successful!", description: "Welcome back." });
     };
+
+    const handleRegistration = async () => {
+        if (!fullName.trim()) {
+             toast({ title: "Name Required", description: "Please enter your full name.", variant: "destructive" });
+             return;
+        }
+        await completeRegistration(fullName);
+        toast({ title: "Welcome!", description: "Your account has been created." });
+    };
+
+    if (isNewUser) {
+        return (
+            <div className="mx-auto max-w-sm card p-6 text-center">
+                <h1 className="text-2xl font-bold mb-4">Welcome! What's your name?</h1>
+                <p className="text-sm text-gray-500 mb-4">Please enter your full name to complete registration.</p>
+                <div className="space-y-4">
+                    <input
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="e.g. Priya Sharma"
+                        className="w-full rounded-lg border px-3 py-2 text-sm"
+                    />
+                    <Button onClick={handleRegistration} className="w-full">
+                        Complete Registration
+                    </Button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="mx-auto max-w-sm card p-6 text-center">
@@ -50,6 +81,44 @@ const AuthForm = () => {
                 />
                 <Button onClick={handleLogin} className="w-full">
                     Login / Sign Up
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+const EditProfileSection = ({ onBack }: { onBack: () => void }) => {
+    const { user, updateUserProfile } = useAuth();
+    const [fullName, setFullName] = useState(user?.fullName || '');
+    const { toast } = useToast();
+
+    const handleSave = async () => {
+        if (!fullName.trim()) {
+            toast({ title: "Name Required", description: "Please enter your full name.", variant: "destructive" });
+            return;
+        }
+        await updateUserProfile({ fullName });
+        toast({ title: "Profile Updated!", description: "Your name has been updated successfully." });
+        onBack();
+    };
+
+    return (
+        <div className="card p-6">
+             <button onClick={onBack} className="text-sm text-brand font-semibold mb-4">&larr; Back to Account</button>
+            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+            <div className="space-y-4">
+                 <div>
+                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input
+                        id="fullName"
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="w-full rounded-lg border px-3 py-2 text-sm mt-1"
+                    />
+                </div>
+                <Button onClick={handleSave} className="w-full">
+                    Save Changes
                 </Button>
             </div>
         </div>
@@ -75,6 +144,8 @@ export default function AccountPage() {
     switch (activeSection) {
       case accountSections.ADDRESSES:
         return <AddressManager onBack={() => setActiveSection(accountSections.DASHBOARD)} />
+       case accountSections.EDIT_PROFILE:
+        return <EditProfileSection onBack={() => setActiveSection(accountSections.DASHBOARD)} />
       case accountSections.DASHBOARD:
       default:
         return (
@@ -85,7 +156,7 @@ export default function AccountPage() {
                         <User className="w-8 h-8 text-gray-500" />
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold">Welcome!</h2>
+                        <h2 className="text-xl font-bold">{user.fullName || 'Welcome!'}</h2>
                         <p className="text-sm text-gray-500">{user.id}</p>
                     </div>
                 </div>
@@ -95,7 +166,7 @@ export default function AccountPage() {
                 <DashboardCard icon={Package} title="My Orders" href="/orders" hasNotification={hasNewOrder} />
                 <DashboardCard icon={Heart} title="Wishlist" href="/wishlist" hasNotification={hasNewItem} />
                 <DashboardCard icon={MapPin} title="My Addresses" onClick={() => setActiveSection(accountSections.ADDRESSES)} />
-                <DashboardCard icon={LifeBuoy} title="Help Center" href="#" />
+                <DashboardCard icon={Edit} title="Edit Profile" onClick={() => setActiveSection(accountSections.EDIT_PROFILE)} />
             </div>
 
             <div className="card p-4">

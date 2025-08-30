@@ -38,7 +38,7 @@ export default function TopBar() {
           <Link href="/wishlist" className="relative rounded-full p-2 hover:bg-gray-100 transition-colors" aria-label="Wishlist">
             <Heart className="h-5 w-5" />
             {user && hasNewWishlistItem && (
-              <span className="absolute right-0 top-0 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white" />
+              <span className="absolute right-0 top-0 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white blinking-dot" />
             )}
             {user && wishlistIds.length > 0 && (
               <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand text-xs text-white">

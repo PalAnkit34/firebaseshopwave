@@ -1,81 +1,124 @@
 
 'use client'
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
+import { db } from '@/lib/firebase'
 import { safeGet, safeSet } from '@/lib/storage'
 import { useWishlist } from '@/lib/wishlistStore'
 import { useCart } from '@/lib/cartStore'
 import { useAddressBook } from '@/lib/addressStore'
 import { useOrders } from '@/lib/ordersStore'
 
-interface CustomUser {
+export interface CustomUser {
   id: string; // Phone number will be the ID
+  fullName?: string;
+  createdAt?: number;
 }
 
 interface AuthContextType {
   user: CustomUser | null;
   loading: boolean;
-  login: (phone: string) => void;
+  isNewUser: boolean;
+  login: (phone: string) => Promise<void>;
+  completeRegistration: (fullName: string) => Promise<void>;
+  updateUserProfile: (profileData: Partial<CustomUser>) => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  login: () => {},
+  isNewUser: false,
+  login: async () => {},
+  completeRegistration: async () => {},
+  updateUserProfile: async () => {},
   logout: () => {},
 });
+
+const getUserDocRef = (userId: string) => doc(db, 'users', userId);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<CustomUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [tempPhone, setTempPhone] = useState<string | null>(null);
 
-  // Get the init and clear functions from the stores
   const { init: initWishlist, clear: clearWishlist } = useWishlist();
   const { init: initCart, clear: clearCart } = useCart();
   const { init: initAddresses, clear: clearAddresses } = useAddressBook();
   const { init: initOrders, clear: clearOrders } = useOrders();
 
+  const initializeStoresForUser = (userId: string) => {
+    const unsubWishlist = initWishlist(userId);
+    const unsubCart = initCart(userId);
+    const unsubAddresses = initAddresses(userId);
+    const unsubOrders = initOrders(userId);
+    return [unsubWishlist, unsubCart, unsubAddresses, unsubOrders];
+  };
 
   useEffect(() => {
     let unsubs: (() => void)[] = [];
-
-    const initializeUser = (storedUser: CustomUser) => {
-      setUser(storedUser);
-      // Initialize stores for the logged-in user
-      const unsubWishlist = initWishlist(storedUser.id);
-      const unsubCart = initCart(storedUser.id);
-      const unsubAddresses = initAddresses(storedUser.id);
-      const unsubOrders = initOrders(storedUser.id);
-      unsubs = [unsubWishlist, unsubCart, unsubAddresses, unsubOrders];
-    };
-    
     const storedUser = safeGet<CustomUser | null>('custom-user', null);
+    
     if (storedUser) {
-      initializeUser(storedUser);
+      setUser(storedUser);
+      unsubs = initializeStoresForUser(storedUser.id);
     }
+    
     setLoading(false);
 
-    // Return cleanup function to unsubscribe on component unmount
     return () => {
       unsubs.forEach(unsub => unsub());
     };
-  }, [initWishlist, initCart, initAddresses, initOrders]);
+  }, []);
 
-  const login = (phone: string) => {
-    const newUser: CustomUser = { id: phone };
-    safeSet('custom-user', newUser);
-    setUser(newUser);
-    // Initialize stores on new login
-    initWishlist(newUser.id);
-    initCart(newUser.id);
-    initAddresses(newUser.id);
-    initOrders(newUser.id);
+  const login = async (phone: string) => {
+    setLoading(true);
+    const userDocRef = getUserDocRef(phone);
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      const userData = { id: docSnap.id, ...docSnap.data() } as CustomUser;
+      safeSet('custom-user', userData);
+      setUser(userData);
+      initializeStoresForUser(userData.id);
+      setIsNewUser(false);
+    } else {
+      setIsNewUser(true);
+      setTempPhone(phone);
+    }
+    setLoading(false);
   }
 
+  const completeRegistration = async (fullName: string) => {
+    if (!tempPhone) return;
+    setLoading(true);
+    const newUser: CustomUser = {
+      id: tempPhone,
+      fullName: fullName,
+      createdAt: Date.now(),
+    };
+    await setDoc(getUserDocRef(tempPhone), newUser);
+    safeSet('custom-user', newUser);
+    setUser(newUser);
+    initializeStoresForUser(newUser.id);
+    setIsNewUser(false);
+    setTempPhone(null);
+    setLoading(false);
+  };
+  
+  const updateUserProfile = async (profileData: Partial<CustomUser>) => {
+    if (!user) return;
+    const userDocRef = getUserDocRef(user.id);
+    await updateDoc(userDocRef, profileData);
+    const updatedUser = { ...user, ...profileData };
+    setUser(updatedUser);
+    safeSet('custom-user', updatedUser);
+  };
+
   const logout = () => {
-    safeSet('custom-user', null); // Clear from storage
+    safeSet('custom-user', null);
     setUser(null);
-    // Clear data from all stores on logout
     clearWishlist();
     clearCart();
     clearAddresses();
@@ -83,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, isNewUser, login, completeRegistration, updateUserProfile, logout }}>
       {children}
     </AuthContext.Provider>
   )
