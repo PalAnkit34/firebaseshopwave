@@ -383,3 +383,5 @@ export const HOME_PRODUCTS: Product[] = [
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '37cm x 27cm x 8cm' }
   }
 ];
+
+    

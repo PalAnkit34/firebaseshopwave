@@ -152,14 +152,16 @@ function SearchContent() {
   const list = useMemo(() => filterProducts(products, opts), [products, sp])
 
   const bestSellers = useMemo(() => {
-    return [...products]
-        .sort((a, b) => (b.ratings?.count ?? 0) - (a.ratings?.count ?? 0))
-        .slice(0, 12);
+    // Manually curated list of best-seller product IDs as requested
+    const bestSellerIds = ['P_HOME_BA_01', 'P_HOME_KW_01', 'P_HOME_KW_02', 'P_HOME_KW_03'];
+    return bestSellerIds
+        .map(id => products.find(p => p.id === id))
+        .filter((p): p is NonNullable<typeof p> => !!p);
   }, [products]);
 
   const allCategoryLinks = [
-      { name: 'Tech', href: '/search?category=Tech', image: techCategories[0].image, dataAiHint: 'latest gadgets' },
-      { name: 'Home', href: '/search?category=Home', image: homeCategories[0].image, dataAiHint: 'stylish apparel' },
+      { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=400&auto=format&fit=crop', dataAiHint: 'latest gadgets' },
+      { name: 'Home', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1200&auto=format&fit=crop', dataAiHint: 'stylish apparel' },
       { name: 'Ayurvedic', href: '/search?category=Ayurvedic', image: ayurvedicSubCategories[1].image, dataAiHint: 'natural remedies' },
       { name: 'Food & Drinks', href: '/search?category=Food%20%26%20Drinks', image: foodAndDrinksCategories[0].image, dataAiHint: 'delicious food' },
       { name: 'Pooja', href: '/search?category=Pooja', image: poojaSubCategories[0].image, dataAiHint: 'pooja items' },
@@ -500,3 +502,5 @@ export default function SearchPage() {
     </Suspense>
   )
 }
+
+    
