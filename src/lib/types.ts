@@ -64,3 +64,8 @@ export type User = {
   email: string;
   role: 'user' | 'admin';
 }
+
+export type NotificationItem = {
+    productId: string;
+    notifiedAt: number;
+}

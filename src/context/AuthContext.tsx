@@ -6,6 +6,7 @@ import { useWishlist } from '@/lib/wishlistStore'
 import { useCart } from '@/lib/cartStore'
 import { useAddressBook } from '@/lib/addressStore'
 import { useOrders } from '@/lib/ordersStore'
+import { useNotificationStore } from '@/lib/notificationStore'
 
 export interface CustomUser {
   id: string; // Phone number will be the ID
@@ -51,12 +52,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { init: initCart, clear: clearCart } = useCart();
   const { init: initAddresses, clear: clearAddresses } = useAddressBook();
   const { init: initOrders, clear: clearOrders } = useOrders();
+  const { init: initNotifications, clear: clearNotifications } = useNotificationStore();
+
 
   const initializeStoresForUser = (userId: string) => {
     initWishlist(userId);
     initCart(userId);
     initAddresses(userId);
     initOrders(userId);
+    initNotifications(userId);
   };
 
   const clearAllStores = () => {
@@ -64,6 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       clearCart();
       clearAddresses();
       clearOrders();
+      clearNotifications();
   }
 
   useEffect(() => {

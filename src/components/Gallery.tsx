@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export default function Gallery({ images }: { images: string[] }) {
+export default function Gallery({ images, isOutOfStock }: { images: string[]; isOutOfStock: boolean; }) {
   const [active, setActive] = useState(0)
   if (!images || images.length === 0) {
     return <div className="aspect-square w-full rounded-xl bg-gray-200" />
@@ -29,6 +29,11 @@ export default function Gallery({ images }: { images: string[] }) {
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover" 
             />
+             {isOutOfStock && (
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <span className="text-white text-lg font-bold bg-black/50 px-4 py-2 rounded-full">OUT OF STOCK</span>
+                </div>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

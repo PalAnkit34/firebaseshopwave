@@ -12,11 +12,14 @@ import type { Product } from '@/lib/types'
 import { Button } from './ui/button'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/hooks/use-toast'
+import { useNotificationStore } from '@/lib/notificationStore'
+import { BellRing, Check } from 'lucide-react'
 
 export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[] }) {
   const { add } = useCart()
   const { user } = useAuth()
   const { toast } = useToast()
+  const { addNotification, hasNotification } = useNotificationStore()
   const price = p.price.discounted ?? p.price.original
   
   const handleAddToCart = () => {
@@ -26,6 +29,17 @@ export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[
     }
     add(user.id, { id: p.id, qty: 1, price, name: p.name, image: p.image });
     toast({ title: "Added to Cart", description: `${p.name} has been added to your cart.` });
+  };
+
+  const handleNotifyMe = () => {
+    if (!user) {
+      toast({ title: "Please Login", description: "You need to be logged in for notifications.", variant: "destructive" });
+      return;
+    }
+    if (!hasNotification(p.id)) {
+      addNotification(user.id, p.id);
+      toast({ title: "You're on the list!", description: `We'll notify you when ${p.name} is back in stock.` });
+    }
   };
 
   return (
@@ -45,6 +59,11 @@ export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 20vw, 15vw"
               className="rounded-lg object-cover transform transition-transform duration-300 group-hover:scale-105"
             />
+             {p.quantity === 0 && (
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <span className="text-white text-xs font-bold bg-black/50 px-2 py-1 rounded-full">OUT OF STOCK</span>
+                </div>
+            )}
           </div>
         </Link>
         <div className="absolute right-1 top-1">
@@ -65,9 +84,17 @@ export default function ProductCard({ p, suggest }: { p: Product; suggest?: any[
                     Add to Cart
                 </Button>
             ) : (
-                <Button size="sm" className="w-full h-9" disabled>
-                    Out of Stock
-                </Button>
+                hasNotification(p.id) ? (
+                    <Button size="sm" className="w-full h-9" disabled>
+                        <Check className="h-4 w-4 mr-2" />
+                        We'll Notify You
+                    </Button>
+                ) : (
+                    <Button onClick={handleNotifyMe} size="sm" variant="secondary" className="w-full h-9">
+                        <BellRing className="h-4 w-4 mr-2" />
+                        Notify Me
+                    </Button>
+                )
             )}
         </div>
       </div>

@@ -7,6 +7,7 @@ import BottomNav from '@/components/BottomNav';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toast';
 import OfferPopup from '@/components/OfferPopup';
+import BackInStockPopup from '@/components/BackInStockPopup';
 import { useProductStore } from '@/lib/productStore';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
@@ -42,6 +43,7 @@ export default function RootContent({
       </div>
       <BottomNav />
       <OfferPopup />
+      <BackInStockPopup />
       <Toaster />
     </>
   );

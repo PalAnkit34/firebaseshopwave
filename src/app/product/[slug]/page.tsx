@@ -8,7 +8,7 @@ import RatingStars from '@/components/RatingStars'
 import QtyCounter from '@/components/QtyCounter'
 import { useCart } from '@/lib/cartStore'
 import WishlistButton from '@/components/WishlistButton'
-import { ChevronLeft, Share2, ShieldCheck, RotateCw } from 'lucide-react'
+import { ChevronLeft, Share2, ShieldCheck, RotateCw, BellRing, Check } from 'lucide-react'
 import CustomerReviews from '@/components/CustomerReviews'
 import ProductGrid from '@/components/ProductGrid'
 import { useToast } from '@/hooks/use-toast'
@@ -17,6 +17,7 @@ import { useAuth } from '@/context/AuthContext'
 import { useProductStore } from '@/lib/productStore'
 import type { Product } from '@/lib/types'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import { useNotificationStore } from '@/lib/notificationStore'
 
 function ProductDetailContent() {
   const router = useRouter()
@@ -24,6 +25,7 @@ function ProductDetailContent() {
   const { slug } = useParams()
   const { toast } = useToast()
   const { products } = useProductStore()
+  const { addNotification, hasNotification } = useNotificationStore()
   
   const [p, setP] = useState<Product | null | undefined>(undefined);
   const [qty, setQty] = useState(1)
@@ -73,6 +75,17 @@ function ProductDetailContent() {
     router.push('/checkout');
   }
 
+  const handleNotifyMe = () => {
+    if (!user) {
+      toast({ title: "Please Login", description: "You need to be logged in for notifications.", variant: "destructive" });
+      return;
+    }
+    if (!hasNotification(p.id)) {
+      addNotification(user.id, p.id);
+      toast({ title: "You're on the list!", description: `We'll notify you when ${p.name} is back in stock.` });
+    }
+  };
+
   const handleShare = async () => {
     const shareData = {
       title: p.name,
@@ -103,6 +116,64 @@ function ProductDetailContent() {
     </div>
   )
 
+  const ActionButtons = () => {
+    if (p.quantity > 0) {
+      return (
+        <>
+          <div className="mt-4">
+            <div className="text-sm font-medium mb-1">Quantity</div>
+            <QtyCounter value={qty} onChange={n => setQty(Math.max(1, Math.min(10, n)))} />
+          </div>
+          <div className="hidden md:flex gap-3 mt-4">
+            <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
+            <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
+          </div>
+        </>
+      )
+    }
+
+    return (
+      <div className="mt-6">
+        {hasNotification(p.id) ? (
+          <Button variant="outline" className="w-full" disabled>
+            <Check className="h-4 w-4 mr-2" /> We'll Notify You
+          </Button>
+        ) : (
+          <Button onClick={handleNotifyMe} variant="outline" className="w-full">
+            <BellRing className="h-4 w-4 mr-2" /> Notify Me When Available
+          </Button>
+        )}
+      </div>
+    );
+  };
+  
+  const StickyActionButtons = () => {
+    if (p.quantity > 0) {
+      return (
+         <div className="sticky-cta p-3 md:hidden">
+            <div className="flex gap-3">
+              <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
+              <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
+            </div>
+          </div>
+      )
+    }
+
+    return (
+       <div className="sticky-cta p-3 md:hidden">
+          {hasNotification(p.id) ? (
+            <Button variant="outline" className="w-full" disabled>
+              <Check className="h-4 w-4 mr-2" /> Notifying
+            </Button>
+          ) : (
+            <Button onClick={handleNotifyMe} variant="outline" className="w-full">
+               <BellRing className="h-4 w-4 mr-2" /> Notify Me
+            </Button>
+          )}
+        </div>
+    )
+  }
+
   return (
     <div>
       <button onClick={() => router.back()} className="md:hidden flex items-center gap-1 text-sm text-gray-600 mb-2">
@@ -110,7 +181,7 @@ function ProductDetailContent() {
       </button>
       <div className="grid gap-6 md:grid-cols-2 md:gap-10 md:items-start">
         <div className="md:sticky md:top-24">
-          <Gallery images={images} />
+          <Gallery images={images} isOutOfStock={p.quantity === 0} />
         </div>
         <div className="min-w-0">
           <div className="flex items-start justify-between gap-3">
@@ -146,23 +217,7 @@ function ProductDetailContent() {
             )}
           </div>
 
-          {p.quantity > 0 ? (
-            <>
-              <div className="mt-4">
-                <div className="text-sm font-medium mb-1">Quantity</div>
-                <QtyCounter value={qty} onChange={n => setQty(Math.max(1, Math.min(10, n)))} />
-              </div>
-              
-              <div className="hidden md:flex gap-3 mt-4">
-                <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
-                <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
-              </div>
-            </>
-          ) : (
-            <div className="mt-6">
-                <Button variant="outline" className="w-full" disabled>Out of Stock</Button>
-            </div>
-          )}
+          <ActionButtons />
           
           <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border p-3">
              {p.returnPolicy?.eligible && <ProductInfo icon={RotateCw} title={`${p.returnPolicy.duration} Day Return`} subtitle="If defective or wrong item" />}
@@ -203,19 +258,7 @@ function ProductDetailContent() {
         </div>
       )}
 
-      {/* Sticky Action Bar for Mobile */}
-      {p.quantity > 0 ? (
-        <div className="sticky-cta p-3 md:hidden">
-          <div className="flex gap-3">
-            <button onClick={handleAddToCart} className="flex-1 rounded-xl bg-brand/90 py-3 text-white font-semibold transition-colors hover:bg-brand">Add to Cart</button>
-            <button onClick={handleBuyNow} className="flex-1 rounded-xl bg-brand py-3 text-white font-semibold transition-colors hover:bg-brand/90">Buy Now</button>
-          </div>
-        </div>
-      ) : (
-        <div className="sticky-cta p-3 md:hidden">
-            <Button variant="outline" className="w-full" disabled>Out of Stock</Button>
-        </div>
-      )}
+      <StickyActionButtons />
     </div>
   )
 }
