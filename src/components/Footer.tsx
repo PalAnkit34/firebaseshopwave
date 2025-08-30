@@ -23,10 +23,10 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-white">Help</h3>
             <ul className="mt-2 space-y-2 text-sm">
-              <li><Link href="#" className="text-gray-400 hover:text-white">FAQ</Link></li>
-              <li><Link href="#" className="text-gray-400 hover:text-white">Contact Us</Link></li>
-              <li><Link href="#" className="text-gray-400 hover:text-white">Shipping Policy</Link></li>
-              <li><Link href="#" className="text-gray-400 hover:text-white">Return Policy</Link></li>
+              <li><Link href="/faq" className="text-gray-400 hover:text-white">FAQ</Link></li>
+              <li><Link href="/contact" className="text-gray-400 hover:text-white">Contact Us</Link></li>
+              <li><Link href="/shipping-policy" className="text-gray-400 hover:text-white">Shipping Policy</Link></li>
+              <li><Link href="/return-policy" className="text-gray-400 hover:text-white">Return Policy</Link></li>
             </ul>
           </div>
           <div>
