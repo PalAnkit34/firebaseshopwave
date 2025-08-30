@@ -179,11 +179,11 @@ function ProductDetailContent() {
       <button onClick={() => router.back()} className="md:hidden flex items-center gap-1 text-sm text-gray-600 mb-2">
         <ChevronLeft size={16} /> Back
       </button>
-      <div className="grid gap-6 md:grid-cols-2 md:gap-10 md:items-start">
-        <div className="md:sticky md:top-24">
+      <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-2 gap-8 md:gap-12">
+        <div className="md:col-span-3 lg:col-span-1 md:sticky md:top-24">
           <Gallery images={images} isOutOfStock={p.quantity === 0} />
         </div>
-        <div className="min-w-0">
+        <div className="md:col-span-2 lg:col-span-1 min-w-0">
           <div className="flex items-start justify-between gap-3">
             <h1 className="text-xl font-semibold md:text-2xl">{p.name}</h1>
             <div className="flex items-center gap-2">
