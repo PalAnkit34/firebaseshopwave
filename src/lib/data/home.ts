@@ -82,4 +82,42 @@ export const HOME_PRODUCTS: Product[] = [
     warranty: 'No Warranty',
     tags: ['art', 'wall art', 'canvas', 'decor', 'abstract']
   },
+  {
+    id: 'P_HOME_05',
+    slug: 'memory-foam-cushion-set',
+    name: 'Orthopedic Memory Foam Seat & Back Cushion Set',
+    brand: 'ComfyLife',
+    category: 'Home',
+    subcategory: 'Decor',
+    image: 'https://images.unsplash.com/photo-1596701878278-2de47143b4eb?q=80&w=800&auto=format&fit=crop',
+    quantity: 80,
+    price: { original: 2999, discounted: 1999, currency: '₹' },
+    description: 'Improve your posture and comfort with this orthopedic memory foam cushion set. Perfect for office chairs, car seats, or any chair that needs extra support. The ergonomic design helps relieve back pain and sciatica.',
+    shortDescription: 'Orthopedic memory foam cushions for ultimate comfort.',
+    features: ['100% pure memory foam', 'Ergonomic U-shaped design', 'Non-slip rubber bottom', 'Breathable, washable cover'],
+    specifications: { Material: 'Memory Foam, Velvet Cover', 'Includes': '1 Seat Cushion, 1 Lumbar Support Pillow' },
+    ratings: { average: 4.6, count: 1200 },
+    returnPolicy: { eligible: true, duration: 15 },
+    warranty: '1 Year Warranty',
+    tags: ['cushion', 'memory foam', 'office chair', 'comfort']
+  },
+  {
+    id: 'P_HOME_06',
+    slug: 'smart-wifi-led-bulb',
+    name: 'Smart WiFi LED Bulb (Works with Alexa & Google Home)',
+    brand: 'Wipro',
+    category: 'Home',
+    subcategory: 'Smart-Home',
+    image: 'https://images.unsplash.com/photo-1620421680280-91f6f756d707?q=80&w=800&auto=format&fit=crop',
+    quantity: 200,
+    price: { original: 999, discounted: 699, currency: '₹' },
+    description: 'Transform your room with 16 million colors. Control your lighting from anywhere using your smartphone or voice commands with Alexa and Google Assistant. Set schedules, create scenes, and dim the lights to create the perfect ambiance.',
+    shortDescription: 'Smart bulb with 16 million colors, voice control.',
+    features: ['16 million colors & tunable white', 'Control from anywhere via app', 'Voice control with Alexa & Google Assistant', 'Set schedules and timers'],
+    specifications: { 'Wattage': '9 Watts', 'Base': 'B22', 'Connectivity': '2.4 GHz WiFi' },
+    ratings: { average: 4.4, count: 25000 },
+    returnPolicy: { eligible: true, duration: 7 },
+    warranty: '1 Year Warranty',
+    tags: ['smart bulb', 'led', 'smart home', 'lighting', 'wipro']
+  }
 ];
