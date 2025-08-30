@@ -30,7 +30,7 @@ const topCategories = [
   { name: 'Electronics', href: '/search?category=Tech', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Electronics_W.avif', dataAiHint: 'electronic gadgets' },
   { name: 'Home Improvement', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Improvement_W.avif', dataAiHint: 'home improvement' },
   { name: 'Cleaning Supplies', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Cleaning_Supplies_W_e5bf1666-0811-4c5d-90c3-48f714abf103.avif', dataAiHint: 'cleaning supplies' },
-  { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'corporate gifts' },
+  { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Corporate_Gifting_250x250px_2.avif', dataAiHint: 'corporate gifts' },
   { name: 'Mobile Cover', href: '/search?category=Tech&subcategory=Accessories', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Mobile_Cover_W_1__11zon.avif', dataAiHint: 'phone case' },
   { name: 'Custom Print Products', href: '/search', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Custom_Print_250x250px.avif', dataAiHint: 'custom printing' },
 ];
@@ -133,8 +133,7 @@ export default function Home() {
           {topCategories.map((category) => (
             <Link key={category.name} href={category.href} className="group block text-center">
               <div className="relative aspect-square w-full mx-auto max-w-[150px]">
-                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-white rounded-b-lg shadow-md"></div>
-                <div className="absolute inset-0 flex items-end justify-center pb-2">
+                <div className="absolute inset-0 flex items-center justify-center p-2">
                    <Image
                     src={category.image}
                     alt={category.name}
