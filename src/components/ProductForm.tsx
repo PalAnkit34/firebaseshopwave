@@ -52,7 +52,6 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         shippingCost: 0,
         taxPercent: 18,
         inventory: { inStock: true, lowStockThreshold: 5 },
-        codAvailable: false,
         returnPolicy: { eligible: true, duration: 7 },
         warranty: '1 Year Warranty',
         status: 'active'
@@ -202,7 +201,7 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
             <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
             <div className="flex items-center gap-2">
                 <input id={name} name={name} value={value} onChange={handleChange} {...props} className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand focus:ring-brand" />
-                <IKUpload
+                 <IKUpload
                     folder="/shopwave"
                     fileName={`product_${Date.now()}`}
                     onSuccess={(res: any) => handleUploadSuccess(res, name)}
@@ -334,7 +333,6 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
                         </Select>
                      </div>
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-                        <Checkbox name="codAvailable" label="Cash on Delivery Available" checked={formData.codAvailable || false} />
                         <Checkbox name="returnPolicy.eligible" label="Return Eligible" checked={formData.returnPolicy?.eligible || false} />
                      </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

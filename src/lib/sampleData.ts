@@ -23,7 +23,6 @@ export const PRODUCTS: Product[] = [
     features: ['Handcrafted ceramic', 'Unique textured patterns', 'Includes drainage hole and saucer'],
     specifications: { Material: 'Ceramic', 'Set Includes': '3 pots, 3 saucers', 'Dimensions': '4", 5", and 6" diameter' },
     ratings: { average: 4.8, count: 155 },
-    codAvailable: false,
     returnPolicy: { eligible: true, duration: 10 },
     warranty: 'No Warranty',
     tags: ['planter', 'pot', 'ceramic', 'home decor', 'bohemian']
@@ -43,7 +42,6 @@ export const PRODUCTS: Product[] = [
     features: ['Adjustable brightness (5 levels)', '3 color temperatures (Warm, Neutral, Cool)', 'Built-in 10W wireless charger', 'Flicker-free LED light'],
     specifications: { Material: 'Aluminum Alloy, ABS', 'Power': '12W', 'Luminous Flux': '400 lm' },
     ratings: { average: 4.7, count: 210 },
-    codAvailable: false,
     returnPolicy: { eligible: true, duration: 15 },
     warranty: '1 Year Warranty',
     tags: ['lamp', 'led', 'lighting', 'home office', 'decor']
@@ -63,7 +61,6 @@ export const PRODUCTS: Product[] = [
     features: ['Displays time, date, temp, humidity', '3 alarm settings', 'Sound control display', 'USB or battery powered'],
     specifications: { Material: 'MDF + Wood Veneer', 'Power': 'USB (cable included) or 4xAAA batteries' },
     ratings: { average: 4.4, count: 88 },
-    codAvailable: false,
     returnPolicy: { eligible: true, duration: 7 },
     warranty: '6 Month Warranty',
     tags: ['clock', 'digital', 'wood', 'home decor', 'alarm']
@@ -83,7 +80,6 @@ export const PRODUCTS: Product[] = [
     features: ['High-quality canvas print', 'Vivid, fade-resistant ink', 'Comes framed and ready to hang'],
     specifications: { 'Size': '24x36 inches each', 'Frame': 'Wood', 'Medium': 'Giclée Print' },
     ratings: { average: 4.9, count: 45 },
-    codAvailable: false,
     returnPolicy: { eligible: true, duration: 7 },
     warranty: 'No Warranty',
     tags: ['art', 'wall art', 'canvas', 'decor', 'abstract']
@@ -2065,7 +2061,7 @@ export const PRODUCTS: Product[] = [
     quantity: 100,
     price: { original: 15, currency: '₹' },
     shortDescription: 'शीतल चंदन अगरबत्ती की सुंगध हवा को शुद्ध कर देता है और वातावरण को खुशनुमा बनाता है ।',
-    description: 'यह अगरबत्ती वातावरण के हानिकारक कीटाणुओं को नष्ट करके आध्यात्मिक वातावरण का निर्माण करती है । शीतल चंदन अगरबत्ती की विशेष प्रकार की सुंगध से मस्तिष्क का दर्द और उससे संबंधित रोगों का नाश हो जाता है ।',
+    description: 'यह अगरबत्ती वातावरण के हानिकारक कीटाणुओं को नष्ट करके अध्यात्मिक वातावरण का निर्माण करती है । शीतल चंदन अगरबत्ती की विशेष प्रकार की सुंगध से मस्तिष्क का दर्द और उससे संबंधित रोगों का नाश हो जाता है ।',
     features: ['Cooling sandalwood scent', 'Relieves stress', 'Improves focus'],
     inventory: { inStock: true },
     codAvailable: true,
@@ -2331,11 +2327,8 @@ export const PRODUCTS: Product[] = [
     features: ['6.1-inch Super Retina XDR display', 'Dynamic Island', 'A16 Bionic chip', 'USB-C connector'],
     specifications: { 'Display Size': '6.1 inches', 'Chip': 'A16 Bionic', 'Camera': '48MP Main' },
     ratings: { average: 4.7, count: 12000 },
-    codAvailable: false,
     returnPolicy: { eligible: true, duration: 7 },
     warranty: '1 Year Apple Warranty',
     tags: ['apple', 'iphone', 'ios', 'smartphone']
-  },
+  }
 ];
-
-    
