@@ -179,34 +179,43 @@ function ProductDetailContent() {
       <button onClick={() => router.back()} className="md:hidden flex items-center gap-1 text-sm text-gray-600 mb-2">
         <ChevronLeft size={16} /> Back
       </button>
-      <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-2 gap-8 md:gap-12">
-        <div className="md:col-span-3 lg:col-span-1 md:sticky md:top-24">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <div className="md:sticky md:top-24 h-max">
           <Gallery images={images} isOutOfStock={p.quantity === 0} />
         </div>
-        <div className="md:col-span-2 lg:col-span-1 min-w-0">
-          <div className="flex items-start justify-between gap-3">
-            <h1 className="text-xl font-semibold md:text-2xl">{p.name}</h1>
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={handleShare}
-                className="rounded-full p-2 bg-gray-100/80 text-gray-600 hover:bg-gray-200 transition-colors"
-                aria-label="Share"
-              >
-                <Share2 className="h-5 w-5" />
-              </button>
-              <WishlistButton id={p.id} />
+        <div className="min-w-0">
+          <div className="md:sticky md:top-24 h-max">
+            <div className="flex items-start justify-between gap-3">
+              <h1 className="text-xl font-semibold md:text-2xl">{p.name}</h1>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={handleShare}
+                  className="rounded-full p-2 bg-gray-100/80 text-gray-600 hover:bg-gray-200 transition-colors"
+                  aria-label="Share"
+                >
+                  <Share2 className="h-5 w-5" />
+                </button>
+                <WishlistButton id={p.id} />
+              </div>
             </div>
+            {p.brand && <div className="mt-1 text-sm text-gray-500">by {p.brand}</div>}
+            {p.ratings && <div className="mt-2"><RatingStars value={p.ratings?.average ?? 0} /></div>}
+            <div className="mt-3"><PriceTag original={p.price.original} discounted={p.price.discounted} /></div>
+            
+            {p.shortDescription && <div className="mt-4 text-sm text-gray-700">
+              <p>{p.shortDescription}</p>
+            </div>}
+            <ActionButtons />
           </div>
-          {p.brand && <div className="mt-1 text-sm text-gray-500">by {p.brand}</div>}
-          {p.ratings && <div className="mt-2"><RatingStars value={p.ratings?.average ?? 0} /></div>}
-          <div className="mt-3"><PriceTag original={p.price.original} discounted={p.price.discounted} /></div>
-          
-          {p.shortDescription && <div className="mt-4 text-sm text-gray-700">
-            <p>{p.shortDescription}</p>
-          </div>}
 
-          <div className="mt-4 text-sm text-gray-700 space-y-4">
-            {p.description && <p>{p.description}</p>}
+          <div className="mt-8 space-y-6">
+            {p.description && 
+              <div>
+                <h3 className="text-sm font-semibold mb-1">Description</h3>
+                <p className="text-sm text-gray-700">{p.description}</p>
+              </div>
+            }
+
             {p.features && p.features.length > 0 && (
               <div>
                 <h3 className="text-sm font-semibold mb-1">Highlights</h3>
@@ -215,18 +224,14 @@ function ProductDetailContent() {
                 </ul>
               </div>
             )}
-          </div>
+            
+            <div className="grid grid-cols-2 gap-4 rounded-lg border p-3">
+              {p.returnPolicy?.eligible && <ProductInfo icon={RotateCw} title={`${p.returnPolicy.duration} Day Return`} subtitle="If defective or wrong item" />}
+              {p.warranty && <ProductInfo icon={ShieldCheck} title={p.warranty} subtitle="Brand warranty included" />}
+            </div>
 
-          <ActionButtons />
-          
-          <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg border p-3">
-             {p.returnPolicy?.eligible && <ProductInfo icon={RotateCw} title={`${p.returnPolicy.duration} Day Return`} subtitle="If defective or wrong item" />}
-             {p.warranty && <ProductInfo icon={ShieldCheck} title={p.warranty} subtitle="Brand warranty included" />}
-          </div>
-
-          {p.specifications && Object.keys(p.specifications).length > 0 && (
-            <div className="mt-6 space-y-6">
-                <div>
+            {p.specifications && Object.keys(p.specifications).length > 0 && (
+              <div>
                 <h3 className="text-sm font-semibold">Specifications</h3>
                 <table className="mt-2 w-full text-sm">
                     <tbody>
@@ -238,10 +243,9 @@ function ProductDetailContent() {
                     ))}
                     </tbody>
                 </table>
-                </div>
-            </div>
-           )}
-
+              </div>
+            )}
+          </div>
         </div>
       </div>
       
