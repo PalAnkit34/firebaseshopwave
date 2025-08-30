@@ -262,5 +262,124 @@ export const HOME_PRODUCTS: Product[] = [
     taxPercent: 5,
     sku: 'DSIN 48549',
     specifications: { 'Country of Origin': 'India', 'Weight': '80 Grams' }
+  },
+  {
+    id: 'P_HOME_BA_01',
+    slug: 'dental-floss-toothpick',
+    name: 'Oral Care Dental Floss Toothpick Sticks',
+    brand: 'MintGuard',
+    category: 'Home',
+    subcategory: 'Bathroom-Accessories',
+    price: { original: 49, discounted: 15, currency: '₹' },
+    quantity: 100,
+    image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6/e7f464c4-3c4f-4b07-82f4-e4d1eee94930_1.b3569a78f0f854174520dbe2b1ef52d8.webp?updatedAt=1756553055215',
+    extraImages: [
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6/Ha6a249f3b8be49a79890d48c84a42ce09.webp?updatedAt=1756553055208',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6/380819_9.webp?updatedAt=1756553055324',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6/H051864cad31d42b3b3f3510b458b48f8w.webp?updatedAt=1756553055309',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6/Hf6f8c217df6842959b00a2655f724689z.webp?updatedAt=1756553055363',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6/1096.webp?updatedAt=1756553055384',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6/9612e27a-97e3-4a85-8a83-7f57c69859b4.webp?updatedAt=1756553055369'
+    ],
+    description: 'Dental Flosser toothpicks are designed to help remove plaque from areas between your teeth that are not cleaned by a toothbrush. Daily use helps fight unpleasant breath and gingivitis. Helps reduce plaque build up, slides easily between teeth, stimulates gums.',
+    shortDescription: 'Helps remove plaque and fight bad breath.',
+    features: [
+      'Removes residues between teeth',
+      'Prevents Periodontitis and dental caries',
+      'Environment-Friendly material'
+    ],
+    ratings: { average: 4.6, count: 31 },
+    taxPercent: 18,
+    sku: '1096_dental_floss',
+    specifications: { 'Country of Origin': 'China' }
+  },
+  {
+    id: 'P_HOME_KW_01',
+    slug: 'glass-water-bottle-400ml',
+    name: 'Water bottle 400ml leak proof, glass water bottle',
+    brand: 'hydrozilla',
+    category: 'Home',
+    subcategory: 'Kitchenware',
+    price: { original: 199, discounted: 48, currency: '₹' },
+    quantity: 100,
+    image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/5_d1720387-45fc-43af-bcd8-ba7c37986e76.webp?updatedAt=1756553382584',
+    extraImages: [
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/ce06ff9a-9c41-4f61-b660-56e4abb934a0.webp?updatedAt=1756553382708',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/2_49581de9-be61-4292-8a8d-4f6ed1468242.webp?updatedAt=1756553382753',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6955_glass_water_bottle_400ml%20(1).webp?updatedAt=1756553382792',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/130ca20d-e7b3-46e3-9931-ac77227aea07.jpg?updatedAt=1756553382719',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/4_7765589e-7010-4e85-b4f1-e18c4e6510ef.webp?updatedAt=1756553382835'
+    ],
+    description: 'This glass bottle is ideal for hot or cold drinks, still or carbonated, leftover storage. High temperature resistant bottle is made of pure borosilicate glass. Dishwasher safe.',
+    shortDescription: 'Leak proof 400ml glass bottle for hot and cold drinks.',
+    features: [
+      'Ideal for hot or cold drinks',
+      'High temperature resistant borosilicate glass',
+      'Dishwasher safe',
+      'Leak proof and cute gift for children'
+    ],
+    ratings: { average: 4.7, count: 50 },
+    taxPercent: 18,
+    sku: '6955_glass_water_bottle_400ml',
+    specifications: { 'Country of Origin': 'China', 'Dimensions': '19cm x 7cm x 7cm' }
+  },
+  {
+    id: 'P_HOME_KW_02',
+    slug: 'motivational-water-bottle',
+    name: 'Motivational Water Bottle with Straw & Time Marker',
+    brand: 'hydrozilla',
+    category: 'Home',
+    subcategory: 'Kitchenware',
+    price: { original: 299, discounted: 110, currency: '₹' },
+    quantity: 100,
+    image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/1_31242c97-2033-47e7-94cf-fd24e03fd330.webp?updatedAt=1756553608008',
+    extraImages: [
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/05_5b3ece59-aa08-478f-8b27-fe24ee842ecb.webp?updatedAt=1756553608011',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/3_e1e4fcb8-bf12-4456-a565-e07d944180ee%20(1).webp?updatedAt=1756553607994',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/6_7f6b0e59-e9bb-4195-be3b-199eaa19ddb3.webp?updatedAt=1756553607961',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/4_12ff871b-3e3c-4af5-9bdb-00650c68a223.webp?updatedAt=1756553608021'
+    ],
+    description: 'Designed with a pop-up silicone straw, just open with one hand by clicking the button on cap, convenient for drinking. The bottle is equipped with a carry strap. The water bottle cap equipped with a safety lock for leak-proof.',
+    shortDescription: 'BPA-Free Tritan portable gym water bottle with straw and time marker.',
+    features: [
+      'Motivational slogan and time markers',
+      'Convenient one-hand open design',
+      'Leak-Proof with safety lock',
+      'BPA-free Tritan material'
+    ],
+    ratings: { average: 4.5, count: 27 },
+    taxPercent: 18,
+    sku: '0325_motivational_water_bottle',
+    specifications: { 'Country of Origin': 'China', 'Dimensions': '21cm x 6cm x 6cm' }
+  },
+  {
+    id: 'P_HOME_KW_03',
+    slug: 'rose-glass-bowl-set',
+    name: 'Rose glass Multipurpose Pudding / Dessert / Ice Cream Bowl Set',
+    brand: 'Serve Stellar',
+    category: 'Home',
+    subcategory: 'Kitchenware',
+    price: { original: 499, discounted: 204, currency: '₹' },
+    quantity: 100,
+    image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/bd66b63f-f0f4-42a4-8f68-e30f27b88ab3.webp?updatedAt=1756554625992',
+    extraImages: [
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/01_a5e6a8dd-fdcb-42f7-a562-cd82e87fe406.webp?updatedAt=1756554626112',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/05_26ed496e-0a0e-473c-a12a-63d8ce9c0a8e.webp?updatedAt=1756554626140',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/43e5d590-7259-440f-a9f3-9f1607627485.webp?updatedAt=1756554626223',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/04_b79037f4-84a1-46d6-8884-121599d29006.webp?updatedAt=1756554626194',
+      'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/02_648d2c53-aaa7-46e9-a79c-b7cdaa4b494e.webp?updatedAt=1756554626342'
+    ],
+    description: 'Multipurpose High Quality Glass bowl set of 7 pc, 1 Pc Big & 6 Pc medium Bowl Set is a perfect choice for healthy lifestyle. This product comes with 7 set bowl that is perfect for having soup/ice cream/yogurt/any kind food.',
+    shortDescription: 'Set of 7 multipurpose glass bowls for serving desserts, snacks, etc.',
+    features: [
+      'High quality BPA-free glass',
+      'Dishwasher, Microwave, Oven, and Freezer safe',
+      'Stylish Design',
+      'Perfect for gifting'
+    ],
+    ratings: { average: 4.3, count: 3 },
+    taxPercent: 18,
+    sku: '8234_rose_glass_bowl_7pc_set',
+    specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '37cm x 27cm x 8cm' }
   }
 ];
