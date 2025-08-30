@@ -1,7 +1,7 @@
 
 'use client'
 import { create } from 'zustand'
-import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore'
+import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, serverTimestamp, getDocs } from 'firebase/firestore'
 import { db } from './firebase'
 import type { Product } from './types'
 import { PRODUCTS as localProducts } from './sampleData'
@@ -9,7 +9,8 @@ import { PRODUCTS as localProducts } from './sampleData'
 type ProductState = {
   products: Product[]
   isLoading: boolean
-  init: () => () => void
+  init: () => Promise<void>
+  revalidate: () => Promise<void>
   addProduct: (productData: Omit<Product, 'id' | 'ratings'>) => Promise<void>
   updateProduct: (productId: string, productData: Partial<Omit<Product, 'id' | 'ratings'>>) => Promise<void>
   deleteProduct: (productId: string) => Promise<void>
@@ -17,42 +18,44 @@ type ProductState = {
 
 const productCollectionRef = collection(db, 'products');
 
-export const useProductStore = create<ProductState>()((set) => ({
+export const useProductStore = create<ProductState>()((set, get) => ({
   products: [],
   isLoading: true,
-  init: () => {
-    const unsubscribe = onSnapshot(productCollectionRef, (snapshot) => {
+  init: async () => {
+    // Initial fetch, don't re-fetch if products are already loaded
+    if (get().products.length > 0) {
+      set({ isLoading: false });
+      return;
+    }
+    await get().revalidate();
+  },
+  revalidate: async () => {
+    set({ isLoading: true });
+    try {
+      const snapshot = await getDocs(productCollectionRef);
       const backendProducts = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       } as Product));
 
-      // Merge local and backend products
-      // Use a Map to handle potential duplicates, giving priority to backend products
       const productMap = new Map<string, Product>();
-      
-      // First, add all local products
       localProducts.forEach(p => productMap.set(p.id, p));
-
-      // Then, overwrite with backend products if IDs match, or add if new
       backendProducts.forEach(p => productMap.set(p.id, p));
       
       const combinedProducts = Array.from(productMap.values());
-
       set({ products: combinedProducts, isLoading: false });
-    }, (error) => {
+    } catch (error) {
       console.error("Error fetching products:", error);
-      // Fallback to local products if firestore fails
-      set({ products: localProducts, isLoading: false });
-    });
-    return unsubscribe;
+      set({ products: localProducts, isLoading: false }); // Fallback
+    }
   },
   addProduct: async (productData) => {
     await addDoc(productCollectionRef, {
       ...productData,
-      ratings: { average: 0, count: 0 }, // Initial ratings
+      ratings: { average: 0, count: 0 },
       createdAt: serverTimestamp(),
     });
+    await get().revalidate(); // Re-fetch products after adding
   },
   updateProduct: async (productId, productData) => {
     const productDocRef = doc(db, 'products', productId);
@@ -60,10 +63,12 @@ export const useProductStore = create<ProductState>()((set) => ({
       ...productData,
       updatedAt: serverTimestamp(),
     });
+    await get().revalidate(); // Re-fetch products after updating
   },
   deleteProduct: async (productId) => {
     const productDocRef = doc(db, 'products', productId);
     await deleteDoc(productDocRef);
+    await get().revalidate(); // Re-fetch products after deleting
   },
 }));
 
