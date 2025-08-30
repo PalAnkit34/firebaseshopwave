@@ -38,7 +38,9 @@ export async function POST(request: NextRequest) {
             updatedAt: serverTimestamp(),
         });
 
-        const newProduct = { ...productData, id: docRef.id, ratings: { average: 4.5, count: 1 } };
+        const newProductSnapshot = await getDoc(docRef);
+        const newProduct = { ...newProductSnapshot.data(), id: docRef.id };
+
         return NextResponse.json(newProduct, { status: 201 });
 
     } catch (error) {

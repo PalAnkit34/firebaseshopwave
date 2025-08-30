@@ -36,12 +36,21 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         const productData = await request.json();
         const productDocRef = doc(db, 'products', id);
 
+        // Ensure the document exists before trying to update
+        const docSnap = await getDoc(productDocRef);
+        if (!docSnap.exists()) {
+            return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+        }
+
         await updateDoc(productDocRef, {
             ...productData,
             updatedAt: serverTimestamp(),
         });
+        
+        const updatedDocSnap = await getDoc(productDocRef);
+        const updatedProduct = { id: updatedDocSnap.id, ...updatedDocSnap.data() };
 
-        return NextResponse.json({ message: 'Product updated successfully', id });
+        return NextResponse.json(updatedProduct);
 
     } catch (error) {
         console.error(`Error updating product ${params.id}:`, error);
@@ -56,7 +65,15 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
         if (!id) {
             return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
         }
+
         const productDocRef = doc(db, 'products', id);
+        
+        // Ensure the document exists before trying to delete
+        const docSnap = await getDoc(productDocRef);
+        if (!docSnap.exists()) {
+            return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+        }
+
         await deleteDoc(productDocRef);
 
         return NextResponse.json({ message: 'Product deleted successfully' });
