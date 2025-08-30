@@ -46,23 +46,30 @@ export const useOrders = create<OrdersState>()((set, get) => ({
         });
         return unsubscribe;
     } 
-    // If no userId (for admin), fetch all order documents.
+    // If no userId (for admin), fetch all order documents ONCE.
     else {
-        const unsubscribe = onSnapshot(allOrdersCollRef, (querySnapshot) => {
-            const allOrders: Order[] = [];
-            querySnapshot.forEach(doc => {
-                 const data = doc.data();
-                 if (data.list) {
-                    allOrders.push(...data.list);
-                 }
-            });
-            const sortedOrders = allOrders.sort((a, b) => b.createdAt - a.createdAt);
-            set({ orders: sortedOrders, isLoading: false });
-        }, (error) => {
-            console.error("Error fetching all orders for admin:", error);
-            set({ isLoading: false });
-        });
-        return unsubscribe;
+        const fetchAllOrders = async () => {
+            try {
+                const querySnapshot = await getDocs(allOrdersCollRef);
+                const allOrders: Order[] = [];
+                querySnapshot.forEach(doc => {
+                     const data = doc.data();
+                     if (data.list) {
+                        allOrders.push(...data.list);
+                     }
+                });
+                const sortedOrders = allOrders.sort((a, b) => b.createdAt - a.createdAt);
+                set({ orders: sortedOrders, isLoading: false });
+            } catch (error) {
+                console.error("Error fetching all orders for admin:", error);
+                set({ isLoading: false });
+            }
+        };
+
+        fetchAllOrders();
+        // For admin, we don't use a real-time listener as it's inefficient.
+        // Return an empty unsubscribe function.
+        return () => {};
     }
   },
   placeOrder: async (userId, items, address, total, payment) => {
@@ -90,23 +97,18 @@ export const useOrders = create<OrdersState>()((set, get) => ({
     return order;
   },
   updateOrderStatus: async (orderId: string, status: Order['status']) => {
-    // Find the user document that contains this orderId
-    const q = query(allOrdersCollRef, where("list", "array-contains-any", [{id: orderId}]));
-    
-    // This part is tricky because Firestore doesn't support querying array of objects fields directly.
-    // A better data model would be a top-level `orders` collection where each doc is an order.
-    // For now, we fetch all and update in client. This is inefficient but works with current model.
+    // This logic is inefficient and should be improved with a better data model,
+    // e.g., a top-level 'orders' collection where each doc is an order.
+    // For now, fetching all and updating in client.
     const allDocsSnapshot = await getDocs(allOrdersCollRef);
     let targetDocRef: any = null;
     let userOrders: Order[] = [];
-    let userId = null;
 
     for (const doc of allDocsSnapshot.docs) {
         const ordersList = doc.data().list as Order[];
-        if (ordersList.some(o => o.id === orderId)) {
+        if (ordersList && ordersList.some(o => o.id === orderId)) {
             targetDocRef = doc.ref;
             userOrders = ordersList;
-            userId = doc.id;
             break;
         }
     }
