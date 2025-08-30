@@ -8,7 +8,7 @@ import { useOrders } from '@/lib/ordersStore'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { Address, Order } from '@/lib/types'
-import { CreditCard, Banknote, QrCode } from 'lucide-react'
+import { CreditCard, Banknote, QrCode, ShieldCheck } from 'lucide-react'
 import Image from 'next/image'
 import Script from 'next/script'
 import { useToast } from '@/hooks/use-toast'
@@ -202,7 +202,7 @@ ${order.address.landmark ? `Landmark: ${order.address.landmark}` : ''}
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
       <div className="grid gap-6 md:grid-cols-[1fr_360px] md:items-start">
-        <div>
+        <div className="space-y-4">
           <h1 className="mb-4 text-2xl font-bold">Checkout</h1>
           <div className="card p-4">
             <div className="flex justify-between items-center mb-3">
@@ -226,10 +226,20 @@ ${order.address.landmark ? `Landmark: ${order.address.landmark}` : ''}
                 <AddressForm 
                   onSubmit={handleSaveAddress}
                   initial={editingAddress} 
-                  onCancel={() => { setShowForm(false); setEditingAddress(undefined); }} 
+                  onCancel={() => { if(addresses.length > 0) { setShowForm(false); setEditingAddress(undefined); } }} 
                 />
               </div>
             )}
+          </div>
+          
+          <div className="card flex items-center gap-4 bg-green-50 p-4 border-green-200">
+            <ShieldCheck className="h-10 w-10 text-green-600 flex-shrink-0" />
+            <div>
+              <h3 className="font-semibold text-green-800">100% Safe & Secure Payments</h3>
+              <p className="text-xs text-green-700 mt-1">
+                Your payment is fully protected. If you don't receive your product, we guarantee a refund. For any questions, feel free to call us.
+              </p>
+            </div>
           </div>
         </div>
         <div className="card sticky top-24 p-4">
@@ -301,4 +311,3 @@ ${order.address.landmark ? `Landmark: ${order.address.landmark}` : ''}
     </>
   )
 }
-
