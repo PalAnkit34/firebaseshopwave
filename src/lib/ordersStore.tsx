@@ -40,18 +40,21 @@ export const useOrders = create<OrdersState>()((set, get) => ({
         });
         return unsubscribe;
     } 
-    // If no userId (for admin), we fetch all order documents.
+    // If no userId (for admin), we fetch all order documents individually.
     else {
         const collRef = collection(db, 'orders');
-        const unsubscribe = onSnapshot(collRef, (querySnapshot) => {
+        const unsubscribe = onSnapshot(collRef, async (querySnapshot) => {
             const allOrders: Order[] = [];
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.list) {
+            for (const doc of querySnapshot.docs) {
+                 const data = doc.data();
+                 if (data.list) {
                     allOrders.push(...data.list);
-                }
-            });
+                 }
+            }
             set({ orders: allOrders, isLoading: false });
+        }, (error) => {
+            console.error("Error fetching all orders:", error);
+            set({ isLoading: false }); // Stop loading on error
         });
         return unsubscribe;
     }
@@ -76,11 +79,29 @@ export const useOrders = create<OrdersState>()((set, get) => ({
   updateOrderStatus: async (userId: string, orderId: string, status: Order['status']) => {
     const docRef = getDocRef(userId);
     const state = get();
-    const customerOrders = state.orders.filter(o => o.address.phone === userId);
-    const newOrders = customerOrders.map(o => 
+    // In admin view, state.orders contains all orders. Find the specific user's orders.
+    const allDocsSnapshot = await getDocs(collection(db, 'orders'));
+    let targetDocRef: any = null;
+    let userOrders: Order[] = [];
+
+    for (const doc of allDocsSnapshot.docs) {
+        const ordersList = doc.data().list as Order[];
+        if (ordersList.some(o => o.address.phone === userId)) {
+            targetDocRef = doc.ref;
+            userOrders = ordersList;
+            break;
+        }
+    }
+
+    if (!targetDocRef) {
+        console.error("Could not find document for user:", userId);
+        return;
+    }
+
+    const newOrders = userOrders.map(o => 
       o.id === orderId ? { ...o, status: status } : o
     );
-    await updateDoc(docRef, { list: newOrders });
+    await updateDoc(targetDocRef, { list: newOrders });
   },
   clearNewOrderStatus: async () => {
      set({ hasNewOrder: false });
