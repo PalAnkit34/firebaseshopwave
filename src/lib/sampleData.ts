@@ -2,89 +2,7 @@
 import type { Product } from './types'
 
 // A tiny catalog to start. Replace with API later.
-export const PRODUCTS: Product[] = [
-  // Home Products
-  {
-    id: 'P_HOME_01',
-    slug: 'ceramic-planter-pot-set',
-    name: 'Bohemian Ceramic Planter Pot Set (Set of 3)',
-    brand: 'CasaDecor',
-    category: 'Home',
-    subcategory: 'Decor',
-    image: 'https://images.unsplash.com/photo-1592205830484-75d3513a53c9?q=80&w=800&auto=format&fit=crop',
-    extraImages: [
-        'https://images.unsplash.com/photo-1587843400783-745a7a72d73f?q=80&w=800&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1614036125435-5b4a0a1a45b3?q=80&w=800&auto=format&fit=crop'
-    ],
-    quantity: 60,
-    price: { original: 1999, discounted: 1299, currency: '₹' },
-    description: 'Add a touch of bohemian chic to your space with this set of three ceramic planters. Each pot features a unique, handcrafted design, perfect for succulents, herbs, or small plants. Includes drainage holes and matching saucers.',
-    shortDescription: 'Set of 3 handcrafted ceramic pots for a bohemian vibe.',
-    features: ['Handcrafted ceramic', 'Unique textured patterns', 'Includes drainage hole and saucer'],
-    specifications: { Material: 'Ceramic', 'Set Includes': '3 pots, 3 saucers', 'Dimensions': '4", 5", and 6" diameter' },
-    ratings: { average: 4.8, count: 155 },
-    returnPolicy: { eligible: true, duration: 10 },
-    warranty: 'No Warranty',
-    tags: ['planter', 'pot', 'ceramic', 'home decor', 'bohemian']
-  },
-  {
-    id: 'P_HOME_02',
-    slug: 'modern-led-table-lamp',
-    name: 'Minimalist LED Table Lamp with Wireless Charger',
-    brand: 'Lumina',
-    category: 'Home',
-    subcategory: 'Lighting',
-    image: 'https://images.unsplash.com/photo-1543198126-a83e953684a3?q=80&w=800&auto=format&fit=crop',
-    quantity: 45,
-    price: { original: 3499, discounted: 2499, currency: '₹' },
-    description: 'Illuminate your workspace with this sleek, minimalist LED table lamp. It features adjustable brightness, three color temperatures, and a built-in wireless charging pad for your phone. The flexible arm allows for perfect positioning.',
-    shortDescription: 'Sleek LED lamp with 3 light modes & wireless charging.',
-    features: ['Adjustable brightness (5 levels)', '3 color temperatures (Warm, Neutral, Cool)', 'Built-in 10W wireless charger', 'Flicker-free LED light'],
-    specifications: { Material: 'Aluminum Alloy, ABS', 'Power': '12W', 'Luminous Flux': '400 lm' },
-    ratings: { average: 4.7, count: 210 },
-    returnPolicy: { eligible: true, duration: 15 },
-    warranty: '1 Year Warranty',
-    tags: ['lamp', 'led', 'lighting', 'home office', 'decor']
-  },
-  {
-    id: 'P_HOME_03',
-    slug: 'digital-alarm-clock-wood',
-    name: 'Wooden Digital Alarm Clock with Temp & Humidity',
-    brand: 'TimeWood',
-    category: 'Home',
-    subcategory: 'Decor',
-    image: 'https://images.unsplash.com/photo-1542848148-c4d36d675765?q=80&w=800&auto=format&fit=crop',
-    quantity: 110,
-    price: { original: 1599, discounted: 899, currency: '₹' },
-    description: 'Wake up in style with this modern wooden digital alarm clock. It displays time, date, temperature, and humidity on a clean LED screen. Features sound control mode to save power.',
-    shortDescription: 'Modern wood clock shows time, temp & humidity.',
-    features: ['Displays time, date, temp, humidity', '3 alarm settings', 'Sound control display', 'USB or battery powered'],
-    specifications: { Material: 'MDF + Wood Veneer', 'Power': 'USB (cable included) or 4xAAA batteries' },
-    ratings: { average: 4.4, count: 88 },
-    returnPolicy: { eligible: true, duration: 7 },
-    warranty: '6 Month Warranty',
-    tags: ['clock', 'digital', 'wood', 'home decor', 'alarm']
-  },
-  {
-    id: 'P_HOME_04',
-    slug: 'abstract-canvas-wall-art',
-    name: 'Abstract Canvas Wall Art Print (Set of 2)',
-    brand: 'Artisan Walls',
-    category: 'Home',
-    subcategory: 'Wall Decor',
-    image: 'https://images.unsplash.com/photo-1579541620958-c6996119565e?q=80&w=800&auto=format&fit=crop',
-    quantity: 30,
-    price: { original: 4999, discounted: 2999, currency: '₹' },
-    description: 'Elevate your living room with this stunning set of two abstract canvas prints. Featuring a modern blend of colors and textures, these pieces add a sophisticated and artistic touch to any wall.',
-    shortDescription: 'Set of 2 modern abstract canvas prints for living room.',
-    features: ['High-quality canvas print', 'Vivid, fade-resistant ink', 'Comes framed and ready to hang'],
-    specifications: { 'Size': '24x36 inches each', 'Frame': 'Wood', 'Medium': 'Giclée Print' },
-    ratings: { average: 4.9, count: 45 },
-    returnPolicy: { eligible: true, duration: 7 },
-    warranty: 'No Warranty',
-    tags: ['art', 'wall art', 'canvas', 'decor', 'abstract']
-  },
-
+export const AYURVEDIC_PRODUCTS: Product[] = [
   // Ayurvedic Products - Tablets
   {
     id: 'P_AYUR_T_01',
@@ -811,7 +729,7 @@ export const PRODUCTS: Product[] = [
     features: ['100% Natural and Pure Products', '100% Secure Payments', 'Efficient Price'],
     inventory: { inStock: true },
     ratings: { average: 4.8, count: 250 },
-    returnPolicy: { eligible: false },
+    returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
   },
   
@@ -2286,49 +2204,5 @@ export const PRODUCTS: Product[] = [
     features: ['Gold Plated Plastic Frame', 'Size: 10x8 inches', 'Perfect for home altar'],
     inventory: { inStock: true, lowStockThreshold: 10 },
     codAvailable: true,
-  },
-  // Tech Products
-  {
-    id: 'P_TECH_M_01',
-    slug: 'galaxy-a54-5g',
-    name: 'Samsung Galaxy A54 5G (Awesome Violet, 8GB, 128GB Storage)',
-    brand: 'Samsung',
-    category: 'Tech',
-    subcategory: 'Mobiles',
-    image: 'https://images.unsplash.com/photo-1678830440338-467537a6a422?q=80&w=800&auto=format&fit=crop',
-    extraImages: [
-        'https://images.unsplash.com/photo-1678830440375-816783f289b4?q=80&w=800&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1678830440330-801262d9894f?q=80&w=800&auto=format&fit=crop'
-    ],
-    quantity: 100,
-    price: { original: 41999, discounted: 35499, currency: '₹' },
-    description: 'A well-balanced 5G smartphone with a vibrant AMOLED display, capable OIS camera, and a long-lasting battery. Features IP67 water resistance for added durability.',
-    shortDescription: 'Bright AMOLED, OIS camera, all-day battery.',
-    features: ['6.4" FHD+ Super AMOLED Display', '50MP OIS Main Camera', '5000mAh Battery', 'IP67 Water Resistant'],
-    specifications: { RAM: '8 GB', ROM: '128 GB', 'Processor': 'Exynos 1380' },
-    ratings: { average: 4.3, count: 4500 },
-    codAvailable: true,
-    returnPolicy: { eligible: true, duration: 7 },
-    warranty: '1 Year Manufacturer Warranty',
-    tags: ['samsung', 'galaxy', '5g', 'smartphone', 'android']
-  },
-  {
-    id: 'P_TECH_M_02',
-    slug: 'apple-iphone-15',
-    name: 'Apple iPhone 15 (128 GB) - Blue',
-    brand: 'Apple',
-    category: 'Tech',
-    subcategory: 'Mobiles',
-    image: 'https://images.unsplash.com/photo-1700216223237-859c9a239af4?q=80&w=800&auto=format&fit=crop',
-    quantity: 75,
-    price: { original: 79900, currency: '₹' },
-    description: 'The iPhone 15 brings you the Dynamic Island, a 48MP Main camera, and USB-C — all in a durable color-infused glass and aluminum design.',
-    shortDescription: 'Dynamic Island, 48MP camera, USB-C.',
-    features: ['6.1-inch Super Retina XDR display', 'Dynamic Island', 'A16 Bionic chip', 'USB-C connector'],
-    specifications: { 'Display Size': '6.1 inches', 'Chip': 'A16 Bionic', 'Camera': '48MP Main' },
-    ratings: { average: 4.7, count: 12000 },
-    returnPolicy: { eligible: true, duration: 7 },
-    warranty: '1 Year Apple Warranty',
-    tags: ['apple', 'iphone', 'ios', 'smartphone']
   }
 ];

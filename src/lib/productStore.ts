@@ -2,6 +2,11 @@
 'use client'
 import { create } from 'zustand'
 import type { Product } from './types'
+import { AYURVEDIC_PRODUCTS } from './sampleData'
+import { HOME_PRODUCTS } from './data/home'
+import { TECH_PRODUCTS } from './data/tech'
+
+const ALL_SAMPLE_PRODUCTS = [...AYURVEDIC_PRODUCTS, ...HOME_PRODUCTS, ...TECH_PRODUCTS];
 
 type ProductState = {
   products: Product[]
@@ -21,7 +26,19 @@ export const useProductStore = create<ProductState>()((set, get) => ({
     if (get().products.length > 0 && !get().isLoading) {
       return;
     }
-    await get().revalidate();
+    set({ isLoading: true });
+    try {
+      const response = await fetch('/api/products');
+      if (!response.ok) {
+        throw new Error('Failed to fetch products from API, using local fallback.');
+      }
+      const products: Product[] = await response.json();
+      set({ products, isLoading: false });
+    } catch (error) {
+      console.warn("API Error:", error instanceof Error ? error.message : String(error));
+      // Use the combined sample data as a fallback
+      set({ products: ALL_SAMPLE_PRODUCTS, isLoading: false });
+    }
   },
   revalidate: async () => {
     set({ isLoading: true });
@@ -33,8 +50,9 @@ export const useProductStore = create<ProductState>()((set, get) => ({
       const products: Product[] = await response.json();
       set({ products, isLoading: false });
     } catch (error) {
-      console.error("Error fetching products from API:", error);
-      set({ isLoading: false }); // Stop loading even if there's an error
+      console.error("Error revalidating products:", error);
+      // Don't fall back here, to avoid overwriting potentially good stale data
+      set({ isLoading: false });
     }
   },
   addProduct: async (productData) => {
