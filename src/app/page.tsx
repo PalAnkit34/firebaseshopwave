@@ -84,21 +84,21 @@ export default function Home() {
 
       <section>
         <div className="grid grid-cols-3 gap-3">
-            <Link href="/search?category=Tech" className="relative block h-24 overflow-hidden rounded-xl group">
+            <Link href="/search?category=Tech" className="relative block h-24 md:h-48 overflow-hidden rounded-xl group">
                 <Image src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?q=80&w=1000&auto=format&fit=crop" alt="Tech" fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint="tech gadgets" />
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="absolute inset-0 flex items-center justify-center p-2">
                     <h3 className="text-md font-bold text-white text-center">Tech Accessories</h3>
                 </div>
             </Link>
-            <Link href="/search?category=Home" className="relative block h-24 overflow-hidden rounded-xl group">
+            <Link href="/search?category=Home" className="relative block h-24 md:h-48 overflow-hidden rounded-xl group">
                 <Image src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1000&auto=format&fit=crop" alt="Home" fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint="modern living room" />
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="absolute inset-0 flex items-center justify-center p-2">
                     <h3 className="text-md font-bold text-white text-center">Home Accessories</h3>
                 </div>
             </Link>
-            <Link href="/search?category=Ayurvedic" className="relative block h-24 overflow-hidden rounded-xl group">
+            <Link href="/search?category=Ayurvedic" className="relative block h-24 md:h-48 overflow-hidden rounded-xl group">
                 <Image src="https://images.unsplash.com/photo-1591185854599-0734914c814b?q=80&w=1000&auto=format&fit=crop" alt="Ayurvedic" fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint="ayurvedic herbs" />
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="absolute inset-0 flex items-center justify-center p-2">
