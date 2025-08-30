@@ -291,7 +291,9 @@ function SearchContent() {
             title={sub.replace(/-/g, ' ')}
             description="Traditional and effective remedies for your health and well-being."
             linkText="Explore Now"
-            bannerImages={[]}
+            bannerImages={[
+                'https://picsum.photos/1200/400?random=1'
+            ]}
             categories={subcategoryTertiary}
             bannerColor="bg-emerald-50"
             buttonColor="bg-emerald-700 hover:bg-emerald-800"
