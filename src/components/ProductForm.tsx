@@ -5,13 +5,12 @@ import { useState, useEffect } from 'react'
 import type { Product } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { PlusCircle, Trash2, Upload } from 'lucide-react'
-import { IKContext, IKUpload } from 'imagekitio-react';
 import { useToast } from '@/hooks/use-toast'
 
 const categories = ['Tech', 'Home', 'Ayurvedic', 'Beauty', 'Groceries', 'Pooja', 'Food & Drinks']
 const subcategories: Record<string, string[]> = {
     Tech: ['Mobiles', 'Laptops', 'Audio', 'Cameras', 'Wearables', 'Accessories', 'Tablets'],
-    Home: ['Decor', 'Lighting', 'Kitchenware', 'Wall Decor', 'Appliances', 'Smart-Home'],
+    Home: ['Decor', 'Lighting', 'Kitchenware', 'Wall Decor', 'Appliances', 'Smart-Home', 'Puja-Essentials', 'Bathroom-Accessories', 'Cleaning-Supplies', 'Household-Appliances', 'HomeDecor', 'Home-storage'],
     Ayurvedic: ['Ayurvedic Medicine', 'Homeopathic Medicines', 'Personal-Care'],
     Beauty: ['Makeup', 'Skincare', 'Hair-Care'],
     Groceries: ['Staples', 'Snacks', 'Oils'],
@@ -24,9 +23,6 @@ interface ProductFormProps {
     onSave: (product: Omit<Product, 'id' | 'ratings'>) => void
     onCancel: () => void
 }
-
-const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
-const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
 
 type FormData = Omit<Product, 'id' | 'ratings' | 'price'> & {
     price: { original: number | string, discounted: number | string, currency: string }
@@ -125,24 +121,6 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
             toast({ title: "Missing Information", description: "Please fill in at least Name and Original Price.", variant: "destructive" });
         }
     }
-
-    const handleUploadSuccess = (res: any, fieldName: string) => {
-        const url = res.url;
-        const keys = fieldName.split('.');
-        
-        if (keys[0] === 'extraImages') {
-            const index = Number(keys[1]);
-            handleExtraImageChange(index, url);
-        } else {
-            setFormData(prev => ({ ...prev, [fieldName]: url }));
-        }
-
-        toast({ title: "Upload Successful", description: "Your file has been uploaded." });
-    };
-
-    const handleUploadError = (err: any) => {
-        toast({ title: "Upload Failed", description: err.message || "Could not upload file.", variant: "destructive" });
-    };
     
     const handleExtraImageChange = (index: number, value: string) => {
         setFormData(prev => {
@@ -188,17 +166,9 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
             <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
             <div className="flex items-center gap-2">
                 <input id={name} name={name} value={value} onChange={handleChange} {...props} className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand focus:ring-brand" />
-                 <IKUpload
-                    folder="/shopwave"
-                    fileName={`product_${Date.now()}`}
-                    onSuccess={(res: any) => handleUploadSuccess(res, name)}
-                    onError={handleUploadError}
-                    useUniqueFileName={true}
-                >
-                    <Button type="button" variant="outline" size="icon" aria-label="Upload" className="flex-shrink-0">
-                        <Upload className="h-4 w-4" />
-                    </Button>
-                </IKUpload>
+                 <Button type="button" variant="outline" size="icon" aria-label="Upload" className="flex-shrink-0" onClick={() => toast({ title: "Upload Info", description: "Pasting image URLs is supported."})}>
+                    <Upload className="h-4 w-4" />
+                </Button>
             </div>
         </div>
     );
@@ -230,109 +200,99 @@ export default function ProductForm({ product, onSave, onCancel }: ProductFormPr
         if (!specs) return '';
         return Object.entries(specs).map(([key, value]) => `${key}: ${value}`).join('\n');
     }
-    
-    if (!urlEndpoint || !publicKey) {
-        return <div className="text-red-600 p-4 rounded-md bg-red-50 border border-red-200">ImageKit configuration is missing. Please check your environment variables.</div>;
-    }
 
     return (
-        <IKContext
-            urlEndpoint={urlEndpoint}
-            publicKey={publicKey}
-            authenticationEndpoint="/api/imagekit/auth"
-        >
-            <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto p-1 pr-4">
-                <Input name="name" label="Product Name" value={formData.name || ''} required />
-                <Input name="slug" label="Product Slug (URL)" value={formData.slug || ''} placeholder="e.g., galaxy-a54-5g-128" required />
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input name="brand" label="Brand" value={formData.brand || ''} required />
-                    <Input name="sku" label="SKU (Stock Keeping Unit)" value={formData.sku || ''} />
-                </div>
+        <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto p-1 pr-4">
+            <Input name="name" label="Product Name" value={formData.name || ''} required />
+            <Input name="slug" label="Product Slug (URL)" value={formData.slug || ''} placeholder="e.g., galaxy-a54-5g-128" required />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input name="brand" label="Brand" value={formData.brand || ''} required />
+                <Input name="sku" label="SKU (Stock Keeping Unit)" value={formData.sku || ''} />
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <UploadInput name="image" label="Main Image URL" value={formData.image || ''} placeholder="Upload or paste URL" />
-                    <UploadInput name="video" label="Video URL (optional)" value={formData.video || ''} placeholder="Upload or paste URL" />
-                </div>
-                
-                 <div className="rounded-md border p-3 space-y-3">
-                    <h3 className="text-md font-medium">Extra Images</h3>
-                    {formData.extraImages?.map((imgUrl, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                            <UploadInput 
-                                name={`extraImages.${index}`}
-                                label={`Image ${index + 1}`}
-                                value={imgUrl}
-                                placeholder="Upload or paste URL"
-                            />
-                            <Button type="button" variant="ghost" size="icon" onClick={() => removeExtraImage(index)} aria-label="Remove image" className="self-end">
-                                <Trash2 className="h-4 w-4 text-red-500" />
-                            </Button>
-                        </div>
-                    ))}
-                    <Button type="button" variant="outline" size="sm" onClick={addExtraImage} className="flex items-center gap-2">
-                        <PlusCircle className="h-4 w-4" />
-                        Add Image
-                    </Button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Select name="category" label="Category" value={formData.category} onChange={handleCategoryChange}>
-                        {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                    </Select>
-                    <Select name="subcategory" label="Subcategory" value={formData.subcategory}>
-                        {(subcategories[formData.category || 'Tech'] || []).map(sc => <option key={sc} value={sc}>{sc.replace(/-/g, ' ')}</option>)}
-                    </Select>
-                </div>
-                
-                <div className="rounded-md border p-3 space-y-3">
-                    <h3 className="text-md font-medium">Pricing & Stock</h3>
-                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <Input name="price.original" label="Original Price" type="number" value={formData.price?.original || ''} required />
-                        <Input name="price.discounted" label="Discounted Price" type="number" value={formData.price?.discounted || ''} />
-                        <Input name="quantity" label="Stock Quantity" type="number" value={formData.quantity || 0} required />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <UploadInput name="image" label="Main Image URL" value={formData.image || ''} placeholder="Upload or paste URL" />
+                <UploadInput name="video" label="Video URL (optional)" value={formData.video || ''} placeholder="Upload or paste URL" />
+            </div>
+            
+             <div className="rounded-md border p-3 space-y-3">
+                <h3 className="text-md font-medium">Extra Images</h3>
+                {formData.extraImages?.map((imgUrl, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                        <UploadInput 
+                            name={`extraImages.${index}`}
+                            label={`Image ${index + 1}`}
+                            value={imgUrl}
+                            placeholder="Upload or paste URL"
+                        />
+                        <Button type="button" variant="ghost" size="icon" onClick={() => removeExtraImage(index)} aria-label="Remove image" className="self-end">
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                        </Button>
                     </div>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input name="shippingCost" label="Shipping Cost" type="number" value={formData.shippingCost || 0} />
-                        <Input name="taxPercent" label="Tax Percent" type="number" value={formData.taxPercent || 0} />
-                     </div>
-                </div>
+                ))}
+                <Button type="button" variant="outline" size="sm" onClick={addExtraImage} className="flex items-center gap-2">
+                    <PlusCircle className="h-4 w-4" />
+                    Add Image
+                </Button>
+            </div>
 
-                <TextArea name="shortDescription" label="Short Description (for product card)" value={formData.shortDescription || ''} rows={2} />
-                <TextArea name="description" label="Full Description (for product page)" value={formData.description || ''} rows={4} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Select name="category" label="Category" value={formData.category} onChange={handleCategoryChange}>
+                    {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                </Select>
+                <Select name="subcategory" label="Subcategory" value={formData.subcategory}>
+                    {(subcategories[formData.category || 'Tech'] || []).map(sc => <option key={sc} value={sc}>{sc.replace(/-/g, ' ')}</option>)}
+                </Select>
+            </div>
+            
+            <div className="rounded-md border p-3 space-y-3">
+                <h3 className="text-md font-medium">Pricing & Stock</h3>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Input name="price.original" label="Original Price" type="number" value={formData.price?.original || ''} required />
+                    <Input name="price.discounted" label="Discounted Price" type="number" value={formData.price?.discounted || ''} />
+                    <Input name="quantity" label="Stock Quantity" type="number" value={formData.quantity || 0} required />
+                </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Input name="shippingCost" label="Shipping Cost" type="number" value={formData.shippingCost || 0} />
+                    <Input name="taxPercent" label="Tax Percent" type="number" value={formData.taxPercent || 0} />
+                 </div>
+            </div>
 
-                <div className="rounded-md border p-3 space-y-3">
-                    <h3 className="text-md font-medium">Details & SEO</h3>
-                    <TextArea name="features" label="Features (comma-separated)" value={(formData.features || []).join(', ')} onChange={(e: any) => setFormData(prev => ({ ...prev, features: e.target.value.split(',').map((s: string) => s.trim()) }))} rows={2} />
-                    <TextArea name="specifications" label="Specifications (one per line, e.g., RAM: 8 GB)" value={specificationsToString(formData.specifications)} onChange={handleSpecsChange} rows={3} />
-                    <TextArea name="tags" label="Tags for SEO (comma-separated)" value={(formData.tags || []).join(', ')} onChange={(e: any) => setFormData(prev => ({ ...prev, tags: e.target.value.split(',').map((s: string) => s.trim()) }))} rows={2} />
-                </div>
+            <TextArea name="shortDescription" label="Short Description (for product card)" value={formData.shortDescription || ''} rows={2} />
+            <TextArea name="description" label="Full Description (for product page)" value={formData.description || ''} rows={4} />
 
-                <div className="rounded-md border p-3 space-y-3">
-                    <h3 className="text-md font-medium">Policies & Inventory</h3>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input name="warranty" label="Warranty" value={formData.warranty || ''} />
-                         <Select name="status" label="Product Status" value={formData.status || 'active'}>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="out_of_stock">Out of Stock</option>
-                            <option value="discontinued">Discontinued</option>
-                        </Select>
-                     </div>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-                        <Checkbox name="returnPolicy.eligible" label="Return Eligible" checked={formData.returnPolicy?.eligible || false} />
-                     </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                         <Input name="returnPolicy.duration" label="Return Duration (Days)" type="number" value={formData.returnPolicy?.duration || 7} disabled={!formData.returnPolicy?.eligible}/>
-                        <Input name="inventory.lowStockThreshold" label="Low Stock Threshold" type="number" value={formData.inventory?.lowStockThreshold || 5} />
-                     </div>
-                </div>
-                
-                <div className="flex justify-end gap-2 pt-4 border-t sticky bottom-0 bg-white py-3">
-                    <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
-                    <Button type="submit">Save Product</Button>
-                </div>
-            </form>
-        </IKContext>
+            <div className="rounded-md border p-3 space-y-3">
+                <h3 className="text-md font-medium">Details & SEO</h3>
+                <TextArea name="features" label="Features (comma-separated)" value={(formData.features || []).join(', ')} onChange={(e: any) => setFormData(prev => ({ ...prev, features: e.target.value.split(',').map((s: string) => s.trim()) }))} rows={2} />
+                <TextArea name="specifications" label="Specifications (one per line, e.g., RAM: 8 GB)" value={specificationsToString(formData.specifications)} onChange={handleSpecsChange} rows={3} />
+                <TextArea name="tags" label="Tags for SEO (comma-separated)" value={(formData.tags || []).join(', ')} onChange={(e: any) => setFormData(prev => ({ ...prev, tags: e.target.value.split(',').map((s: string) => s.trim()) }))} rows={2} />
+            </div>
+
+            <div className="rounded-md border p-3 space-y-3">
+                <h3 className="text-md font-medium">Policies & Inventory</h3>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Input name="warranty" label="Warranty" value={formData.warranty || ''} />
+                     <Select name="status" label="Product Status" value={formData.status || 'active'}>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="out_of_stock">Out of Stock</option>
+                        <option value="discontinued">Discontinued</option>
+                    </Select>
+                 </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <Checkbox name="returnPolicy.eligible" label="Return Eligible" checked={formData.returnPolicy?.eligible || false} />
+                 </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <Input name="returnPolicy.duration" label="Return Duration (Days)" type="number" value={formData.returnPolicy?.duration || 7} disabled={!formData.returnPolicy?.eligible}/>
+                    <Input name="inventory.lowStockThreshold" label="Low Stock Threshold" type="number" value={formData.inventory?.lowStockThreshold || 5} />
+                 </div>
+            </div>
+            
+            <div className="flex justify-end gap-2 pt-4 border-t sticky bottom-0 bg-white py-3">
+                <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
+                <Button type="submit">Save Product</Button>
+            </div>
+        </form>
     )
 }
