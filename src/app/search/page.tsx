@@ -178,29 +178,27 @@ function SearchContent() {
                       description="Explore the newest gadgets and accessories to elevate your lifestyle."
                       linkText="Shop Tech"
                       bannerImages={[
-                          "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/01_be46bb9f-00b8-4373-80f2-47d1de4ccf06.webp",
                           "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1200&auto=format&fit=crop",
                           "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1200&auto=format&fit=crop",
+                          "https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/01_be46bb9f-00b8-4373-80f2-47d1de4ccf06.webp",
                       ]}
                       bannerColor="bg-blue-50"
                       buttonColor="bg-blue-600 hover:bg-blue-700"
                   />
                   <div className="mt-8">
-                      <h2 className="text-2xl font-bold mb-4 text-center">Top Categories</h2>
+                      <h2 className="text-2xl font-bold mb-4 text-center">Top Tech Categories</h2>
                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
                         {techCategories.map((category) => (
                           <Link key={category.name} href={category.href} className="group block text-center">
-                            <div className="relative aspect-square w-full mx-auto max-w-[150px]">
-                              <div className="flex items-center justify-center p-2">
-                                 <Image
+                            <div className="relative w-24 h-24 mx-auto rounded-full bg-gray-100 border-2 border-gray-200 overflow-hidden transition-all duration-300 group-hover:border-brand group-hover:shadow-lg">
+                                <Image
                                   src={category.image}
                                   alt={category.name}
-                                  width={120}
-                                  height={120}
-                                  className="w-full h-auto object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-105"
+                                  fill
+                                  sizes="33vw"
+                                  className="object-cover transition-transform duration-300 group-hover:scale-110"
                                   data-ai-hint={category.dataAiHint}
                                 />
-                              </div>
                             </div>
                             <h3 className="mt-2 text-sm font-semibold text-gray-700 group-hover:text-brand">{category.name}</h3>
                           </Link>
