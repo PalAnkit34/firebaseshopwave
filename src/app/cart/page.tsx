@@ -10,7 +10,7 @@ import { useAuth } from '@/context/AuthContext'
 
 export default function CartPage(){
   const { user } = useAuth()
-  const { items, setQty, remove, subtotal, totalShipping, totalTax, total } = useCart()
+  const { items, setQty, remove, subtotal, totalDiscount, totalShipping, totalTax, total } = useCart()
   
   const handleRemove = (itemId: string) => {
     if (user) {
@@ -62,6 +62,10 @@ export default function CartPage(){
               <div className="flex justify-between">
                 <span>Subtotal</span>
                 <span>₹{subtotal.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="flex justify-between text-green-600">
+                <span>Discount</span>
+                <span>- ₹{totalDiscount.toLocaleString('en-IN')}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>

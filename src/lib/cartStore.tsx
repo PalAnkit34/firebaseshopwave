@@ -7,7 +7,7 @@ import { useProductStore } from './productStore'
 
 export type CartItem = Pick<Product, 'id' | 'name' | 'image'> & {
   qty: number
-  price: number
+  price: number // This is the discounted price
 }
 
 type AllCartsData = {
@@ -17,6 +17,7 @@ type AllCartsData = {
 type CartState = {
   items: CartItem[]
   subtotal: number
+  totalDiscount: number
   totalShipping: number
   totalTax: number
   total: number
@@ -30,7 +31,19 @@ type CartState = {
 
 const calculateTotals = (items: CartItem[]) => {
   const products = useProductStore.getState().products;
-  const subtotal = items.reduce((s, i) => s + i.qty * i.price, 0)
+
+  const totalDiscount = items.reduce((acc, cartItem) => {
+    const product = products.find(p => p.id === cartItem.id)
+    const originalPrice = product?.price.original || cartItem.price;
+    const itemDiscount = (originalPrice - cartItem.price) * cartItem.qty;
+    return acc + itemDiscount;
+  }, 0)
+
+  const subtotal = items.reduce((s, i) => {
+     const product = products.find(p => p.id === i.id)
+     const originalPrice = product?.price.original || i.price;
+     return s + (i.qty * originalPrice)
+  }, 0)
   
   const totalItems = items.reduce((acc, item) => acc + item.qty, 0);
   let totalShipping = 0;
@@ -46,16 +59,14 @@ const calculateTotals = (items: CartItem[]) => {
     }
   }
 
-  const calculatedTax = items.reduce((acc, cartItem) => {
+  const totalTax = items.reduce((acc, cartItem) => {
     const product = products.find(p => p.id === cartItem.id)
     const taxRate = product?.taxPercent || 0
     return acc + (cartItem.price * cartItem.qty * (taxRate / 100));
   }, 0)
 
-  const totalTax = Math.min(calculatedTax, 500); // Cap the tax at 500
-
-  const total = subtotal + totalShipping + totalTax
-  return { subtotal, totalShipping, totalTax, total }
+  const total = (subtotal - totalDiscount) + totalShipping + totalTax
+  return { subtotal, totalDiscount, totalShipping, totalTax, total }
 }
 
 const getAllCarts = (): AllCartsData => {
@@ -69,6 +80,7 @@ const saveAllCarts = (data: AllCartsData) => {
 export const useCart = create<CartState>()((set, get) => ({
   items: [],
   subtotal: 0,
+  totalDiscount: 0,
   totalShipping: 0,
   totalTax: 0,
   total: 0,
@@ -115,7 +127,7 @@ export const useCart = create<CartState>()((set, get) => ({
     set({ items: newItems, ...calculateTotals(newItems) });
   },
   clear: () => {
-    set({ items: [], subtotal: 0, totalShipping: 0, totalTax: 0, total: 0 })
+    set({ items: [], subtotal: 0, totalDiscount: 0, totalShipping: 0, totalTax: 0, total: 0 })
   },
   clearCartFromDB: (userId: string) => {
     const allCarts = getAllCarts();
