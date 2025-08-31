@@ -9,7 +9,7 @@ export const TECH_PRODUCTS: Product[] = [
     brand: 'PHOBIA',
     category: 'Tech',
     subcategory: 'Accessories',
-    price: { original: 19, discounted: 3, currency: '₹' },
+    price: { original: 19, discounted: 6, currency: '₹' },
     quantity: 100,
     image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/0294.webp?updatedAt=1756627296166',
     extraImages: [
@@ -57,7 +57,7 @@ export const TECH_PRODUCTS: Product[] = [
     brand: 'PHOBIA',
     category: 'Tech',
     subcategory: 'Accessories',
-    price: { original: 15, discounted: 3, currency: '₹' },
+    price: { original: 15, discounted: 6, currency: '₹' },
     quantity: 100,
     image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/electronics%20aaitams/0260_otg_1.webp?updatedAt=1756627844923',
     extraImages: [
