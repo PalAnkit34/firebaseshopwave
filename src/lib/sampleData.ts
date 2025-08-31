@@ -23,6 +23,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 15 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_02',
@@ -43,6 +44,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 45 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_03',
@@ -63,6 +65,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 30 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_04',
@@ -83,6 +86,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 80 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_05',
@@ -103,6 +107,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 55 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_06',
@@ -123,6 +128,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_07',
@@ -143,6 +149,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_08',
@@ -163,6 +170,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 22 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_09',
@@ -183,6 +191,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 40 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_10',
@@ -203,6 +212,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 18 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_T_11',
@@ -223,6 +233,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 95 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Ayurvedic Products - Ark
@@ -245,6 +256,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 12 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_A_02',
@@ -265,6 +277,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 25 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_A_03',
@@ -286,6 +299,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 40 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_A_04',
@@ -306,6 +320,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 150 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_A_05',
@@ -326,6 +341,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 88 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_A_06',
@@ -346,6 +362,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 95 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_A_07',
@@ -366,6 +383,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 300 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_A_08',
@@ -387,6 +405,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 210 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_A_09',
@@ -407,6 +426,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 55 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Ayurvedic Products - Churna
@@ -429,6 +449,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 65 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_02',
@@ -449,6 +470,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 110 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_03',
@@ -469,6 +491,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_04',
@@ -489,6 +512,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 45 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_05',
@@ -509,6 +533,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 80 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_06',
@@ -529,6 +554,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 150 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_07',
@@ -549,6 +575,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 200 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_08',
@@ -569,6 +596,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 30 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_09',
@@ -589,6 +617,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 90 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_C_10',
@@ -609,6 +638,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 50 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Ayurvedic Products - Syrup
@@ -631,6 +661,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 10 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_S_02',
@@ -651,6 +682,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 120 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_S_03',
@@ -671,6 +703,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 200 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_S_04',
@@ -691,6 +724,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 90 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_S_05',
@@ -711,6 +745,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 150 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_S_06',
@@ -731,6 +766,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 250 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    taxPercent: 1,
   },
   
   // Ayurvedic Products - Oil
@@ -753,6 +789,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 78 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_O_02',
@@ -773,6 +810,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 95 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_O_03',
@@ -794,6 +832,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 350 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_O_04',
@@ -814,6 +853,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 180 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_O_05',
@@ -834,6 +874,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 210 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_O_06',
@@ -854,6 +895,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 150 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_O_07',
@@ -874,6 +916,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 190 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_O_08',
@@ -894,6 +937,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 250 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_O_09',
@@ -914,6 +958,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 200 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Ayurvedic Products - Skin Care
@@ -936,6 +981,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 50 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_SC_02',
@@ -956,6 +1002,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 120 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Ayurvedic Products - Homeopathic Medicines
@@ -977,6 +1024,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 50 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_02',
@@ -996,6 +1044,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 80 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_03',
@@ -1015,6 +1064,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 120 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_04',
@@ -1034,6 +1084,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 150 },
     returnPolicy: { eligible: true, duration: 7 },
     codAvailable: true,
+    taxPercent: 1,
   },
    {
     id: 'P_AYUR_H_05',
@@ -1053,6 +1104,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 40 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_06',
@@ -1072,6 +1124,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 90 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
     {
     id: 'P_AYUR_H_07',
@@ -1091,6 +1144,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 110 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_08',
@@ -1110,6 +1164,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.5, count: 60 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_09',
@@ -1129,6 +1184,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 130 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_10',
@@ -1148,6 +1204,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 100 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_11',
@@ -1167,6 +1224,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 200 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_12',
@@ -1186,6 +1244,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 140 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_13',
@@ -1205,6 +1264,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.6, count: 180 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_14',
@@ -1224,6 +1284,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 95 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_15',
@@ -1243,6 +1304,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 210 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_16',
@@ -1262,6 +1324,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 150 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_17',
@@ -1281,6 +1344,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 85 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_18',
@@ -1300,6 +1364,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 190 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_19',
@@ -1319,6 +1384,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 250 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_20',
@@ -1338,6 +1404,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 180 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_21',
@@ -1357,6 +1424,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 160 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_AYUR_H_22',
@@ -1376,6 +1444,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 300 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   
   // Food & Drinks - Beverages
@@ -1397,6 +1466,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 80 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_02',
@@ -1416,6 +1486,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_03',
@@ -1435,6 +1506,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_04',
@@ -1454,6 +1526,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 90 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_05',
@@ -1473,6 +1546,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 120 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_06',
@@ -1492,6 +1566,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_07',
@@ -1511,6 +1586,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_08',
@@ -1530,6 +1606,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_09',
@@ -1549,6 +1626,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_10',
@@ -1568,6 +1646,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_11',
@@ -1587,6 +1666,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_B_12',
@@ -1606,6 +1686,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 2 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Food & Drinks - Dry Fruits
@@ -1627,6 +1708,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 2 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_DF_02',
@@ -1646,6 +1728,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 2 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_DF_03',
@@ -1665,6 +1748,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 50 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_DF_04',
@@ -1684,6 +1768,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.9, count: 70 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_DF_05',
@@ -1703,6 +1788,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 2 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_DF_06',
@@ -1722,6 +1808,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_DF_07',
@@ -1741,6 +1828,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Food & Drinks - Healthy Juice
@@ -1762,6 +1850,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 200 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_FOOD_HJ_02',
@@ -1781,6 +1870,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.7, count: 150 },
     returnPolicy: { eligible: false },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Pooja Items - Dhoop
@@ -1800,6 +1890,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_D_02',
@@ -1816,6 +1907,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Made from sacred herbs', 'Brings positive energy', 'Promotes health and wealth'],
     inventory: { inStock: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_D_03',
@@ -1833,6 +1925,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 4.8, count: 40 },
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_D_04',
@@ -1849,6 +1942,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Made from natural gugal', 'Works as aroma therapy', 'Removes planetary defects'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_D_05',
@@ -1866,6 +1960,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     inventory: { inStock: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_D_06',
@@ -1883,6 +1978,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Pooja Items - Agarbatti
@@ -1902,6 +1998,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_02',
@@ -1918,6 +2015,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Natural ingredients', 'Spiritual benefits', 'Calming fragrance'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_03',
@@ -1934,6 +2032,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Natural Gugal fragrance', 'Purifies air', 'Enhances spiritual feel'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_04',
@@ -1951,6 +2050,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_05',
@@ -1967,6 +2067,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Pleasant aroma', 'Purifies mind and body', 'Creates a divine atmosphere'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_06',
@@ -1983,6 +2084,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Cooling sandalwood scent', 'Relieves stress', 'Improves focus'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_07',
@@ -2000,6 +2102,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_08',
@@ -2016,6 +2119,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Unique Kashi fragrance', 'Pacifies planetary influences', 'Promotes peace'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_09',
@@ -2032,6 +2136,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Ideal for sadhana', 'Creates a pleasant atmosphere', 'Improves focus'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_A_10',
@@ -2048,6 +2153,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Floral fragrance', 'Purifies air', 'Creates peaceful vibes'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Pooja Items - Aasan and Mala
@@ -2067,6 +2173,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     inventory: { inStock: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_AM_02',
@@ -2083,6 +2190,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Original Sphatik crystal', 'Enhances concentration', 'Brings peace and prosperity'],
     inventory: { inStock: false },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_AM_03',
@@ -2099,6 +2207,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Relieves leg pain', 'Reduces swelling', 'Improves blood circulation'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_AM_04',
@@ -2115,6 +2224,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Relieves neck pain and stiffness', 'Useful in respiratory issues', 'Improves energy flow'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_AM_05',
@@ -2131,6 +2241,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Authentic Tulsi wood', 'Useful for counting chants', 'Provides health benefits'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_AM_06',
@@ -2154,6 +2265,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     ratings: { average: 5.0, count: 1 },
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_AM_07',
@@ -2170,6 +2282,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Premium quality wool', 'Retains spiritual energy', 'Durable and comfortable'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
   {
     id: 'P_POOJA_AM_08',
@@ -2186,6 +2299,7 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Natural mind coolant', 'Relieves headaches and tension', 'Regulates body temperature'],
     inventory: { inStock: true },
     codAvailable: true,
+    taxPercent: 1,
   },
 
   // Pooja Items - Photo Frame
@@ -2204,5 +2318,6 @@ export const AYURVEDIC_PRODUCTS: Product[] = [
     features: ['Gold Plated Plastic Frame', 'Size: 10x8 inches', 'Perfect for home altar'],
     inventory: { inStock: true, lowStockThreshold: 10 },
     codAvailable: true,
+    taxPercent: 1,
   }
 ];

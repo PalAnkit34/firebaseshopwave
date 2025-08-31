@@ -28,7 +28,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Concentrated Formula'
     ],
     ratings: { average: 4.8, count: 47 },
-    taxPercent: 5,
+    taxPercent: 1,
     sku: 'DSIN 48535',
     specifications: { 'Country of Origin': 'India' }
   },
@@ -57,7 +57,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Ideal for puja rituals, meditation, yoga, and aromatherapy'
     ],
     ratings: { average: 4.9, count: 5 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: 'DSIN 485597',
     specifications: { 'Country of Origin': 'India' }
   },
@@ -88,7 +88,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Sandal – Warm woody fragrance for spiritual and serene vibes.'
     ],
     ratings: { average: 4.9, count: 5 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: 'DSIN 48592',
     specifications: { 'Country of Origin': 'India' }
   },
@@ -118,7 +118,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Musk Emoj – Exotic musk fragrance with a youthful touch.'
     ],
     ratings: { average: 4.8, count: 4 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: 'DSIN 48594',
     specifications: { 'Country of Origin': 'India' }
   },
@@ -145,7 +145,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Easy to clean metal construction'
     ],
     ratings: { average: 4.7, count: 44 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '9899_ss_agarbatti_stand_1pc',
     specifications: { 
       'Country of Origin': 'China',
@@ -177,7 +177,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Stored in a sealed transparent jar for freshness'
     ],
     ratings: { average: 4.9, count: 60 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: 'whl167_48583_poison_dhoop_stick_100g',
     specifications: { 'Country of Origin': 'India' }
   },
@@ -205,7 +205,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Molded onto a bamboo stick'
     ],
     ratings: { average: 4.7, count: 17 },
-    taxPercent: 5,
+    taxPercent: 1,
     sku: 'DSIN 48558',
     specifications: { 'Country of Origin': 'India', 'Weight': '250 Gram' }
   },
@@ -233,7 +233,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Molded onto a bamboo stick or cone shape'
     ],
     ratings: { average: 4.8, count: 27 },
-    taxPercent: 5,
+    taxPercent: 1,
     sku: 'DSIN 48530',
     specifications: { 'Country of Origin': 'India', 'Weight': '50 Grams' }
   },
@@ -259,7 +259,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Convenient cone shape for easy use'
     ],
     ratings: { average: 4.7, count: 17 },
-    taxPercent: 5,
+    taxPercent: 1,
     sku: 'DSIN 48549',
     specifications: { 'Country of Origin': 'India', 'Weight': '80 Grams' }
   },
@@ -289,7 +289,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Environment-Friendly material'
     ],
     ratings: { average: 4.6, count: 31 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '1096_dental_floss',
     specifications: { 'Country of Origin': 'China' }
   },
@@ -319,7 +319,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Leak proof and cute gift for children'
     ],
     ratings: { average: 4.7, count: 50 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '6955_glass_water_bottle_400ml',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '19cm x 7cm x 7cm' }
   },
@@ -348,7 +348,7 @@ export const HOME_PRODUCTS: Product[] = [
       'BPA-free Tritan material'
     ],
     ratings: { average: 4.5, count: 27 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '0325_motivational_water_bottle',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '21cm x 6cm x 6cm' }
   },
@@ -369,7 +369,7 @@ export const HOME_PRODUCTS: Product[] = [
       'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/04_b79037f4-84a1-46d6-8884-121599d29006.webp?updatedAt=1756554626194',
       'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/02_648d2c53-aaa7-46e9-a79c-b7cdaa4b494e.webp?updatedAt=1756554626342'
     ],
-    description: 'Multipurpose High Quality Glass bowl set of 7 pc, 1 Pc Big &amp; 6 Pc medium Bowl Set is a perfect choice for healthy lifestyle. This product comes with 7 set bowl that is perfect for having soup/ice cream/yogurt/any kind food.',
+    description: 'Multipurpose High Quality Glass bowl set of 7 pc, 1 Pc Big & 6 Pc medium Bowl Set is a perfect choice for healthy lifestyle. This product comes with 7 set bowl that is perfect for having soup/ice cream/yogurt/any kind food.',
     shortDescription: 'Set of 7 multipurpose glass bowls for serving desserts, snacks, etc.',
     features: [
       'High quality BPA-free glass',
@@ -378,7 +378,7 @@ export const HOME_PRODUCTS: Product[] = [
       'Perfect for gifting'
     ],
     ratings: { average: 4.3, count: 3 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '8234_rose_glass_bowl_7pc_set',
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '37cm x 27cm x 8cm' }
   },
@@ -403,7 +403,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: '6-blade vegetable slicer for salads, fries, and more.',
     features: ['6 interchangeable blades', 'Durable stainless steel', 'Easy to clean', 'Perfect gift for cooking lovers'],
     ratings: { average: 4.6, count: 21 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '10104_6blade_vegetable_slicer_cutter',
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '30cm x 15cm x 10cm' }
   },
@@ -428,7 +428,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Durable kitchen utensil for beating, mixing, and blending.',
     features: ['High-quality food-grade stainless steel', 'Balloon wire structure for optimal aeration', 'Ergonomic handle', 'Dishwasher safe'],
     ratings: { average: 4.8, count: 15 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: '12085_ss_small_manual_whisk_1pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '20cm x 5cm x 2cm' }
   },
@@ -452,7 +452,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Heavy-duty tool for mashing potatoes, vegetables &amp; fruits.',
     features: ['Premium food-grade stainless steel', 'Wide mashing plate', 'Ergonomic handle', 'Dishwasher safe'],
     ratings: { average: 4.7, count: 20 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: '10298_ss_potato_smasher_with_handle',
     specifications: { 'Country of Origin': 'India', 'Dimensions': '17cm x 10cm x 2cm' }
   },
@@ -476,7 +476,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: '3-stage sharpening tool for ceramic and steel knives.',
     features: ['3-step sharpening system', 'Easy to clean detachable section', 'High quality and durable', 'Anti-skid design'],
     ratings: { average: 4.8, count: 32 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '2051_3stage_knife_sharpner_1pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '22cm x 7cm x 6cm' }
   },
@@ -500,7 +500,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Safe chopping and slicing kitchen tool.',
     features: ['Premium quality stainless steel', 'Easy to use', 'Protective shield', 'Dishwasher safe'],
     ratings: { average: 4.7, count: 22 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: '2265_finger_guard',
     specifications: { 'Country of Origin': 'China', 'Size': '2.6" x 1.8"' }
   },
@@ -524,7 +524,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Sharp stainless steel blade for precision slicing of dry fruits, ginger &amp; spices.',
     features: ['Ultra-sharp stainless steel blade', 'Ergonomic design', 'Multipurpose use', 'Compact and lightweight'],
     ratings: { average: 4.6, count: 20 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '12353_liger_dry_fruit_n_ginger_slicer_1pc',
     specifications: { 'Country of Origin': 'India', 'Dimensions': '12cm x 5cm x 3cm' }
   },
@@ -548,7 +548,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Heat resistant non-stick scraper for mixing, stirring &amp; spreading.',
     features: ['Food-grade silicone', 'Heat resistant', 'Flexible &amp; durable', 'Ergonomic handle'],
     ratings: { average: 4.9, count: 49 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '5688_silicone_cooking_spatula_1pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '21cm x 6cm x 1cm' }
   },
@@ -572,7 +572,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Vegetable thumb cutter with sharp cutting blade system.',
     features: ['Safe to use and handle', 'Light weighted and easy to carry', 'Smooth functional blade', 'Easy using mechanism'],
     ratings: { average: 4.8, count: 41 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '2662_1pair_vege_thumb_cutter',
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '6cm x 3cm x 3cm' }
   },
@@ -596,7 +596,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Stainless steel cutting board with scale.',
     features: ['Food grade stainless steel', 'Durable and easy to clean', 'Marked with a scale', 'Smooth surface'],
     ratings: { average: 4.7, count: 20 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: '12249_ss_chopping_board_31x20cm_1pc',
     specifications: { 'Country of Origin': 'India', 'Dimensions': '32cm x 21cm x 2cm' }
   },
@@ -618,7 +618,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Battery operated hand blender for mixing and blending.',
     features: ['Convenient variable speed', 'Quality food-graded stainless steel', 'Shock proof, non-slip design', 'Comfortable grip'],
     ratings: { average: 4.6, count: 24 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '2773_hand_blender',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '22cm x 5cm x 4cm' }
   },
@@ -642,7 +642,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Sharp stainless steel multi-layer cutter for vegetables and herbs.',
     features: ['High-quality 5-blade design', 'Ergonomic non-slip handle', 'Saves time', 'Durable and rust-resistant'],
     ratings: { average: 4.5, count: 4 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: '8244_5_blade_multipurpose_scissors_1pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '13cm x 6cm x 2cm' }
   },
@@ -666,7 +666,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Hand blender for your kitchen, stainless steel rust-free blade.',
     features: ['100% Stainless Steel Blade', 'Easy to Operate', 'Quick to Clean', 'Easy to Store'],
     ratings: { average: 4.8, count: 39 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '0060_power_free_blender',
     specifications: { 'Country of Origin': 'INDIA' }
   },
@@ -690,7 +690,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Manual food processor with anti-slip base and fast cutting mechanism.',
     features: ['500ML Capacity', 'Triple Stainless Steel Blades', 'Patented Pull-Cord Mechanism', 'Unbreakable Transparent Container'],
     ratings: { average: 4.9, count: 50 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '11452_apex_power_x_chopper_500ml_pxc',
     specifications: { 'Country of Origin': 'India', 'Dimensions': '14cm x 13cm x 10cm' }
   },
@@ -714,7 +714,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'DeoDap Apple Cutter/Slicer with 8 Blades.',
     features: ['Sharp blades', 'Light weight, easy to carry', 'Simple and compact design', 'Easy to clean'],
     ratings: { average: 4.7, count: 25 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '0087_apple_cutter',
     specifications: { 'Country of Origin': 'INDIA' }
   },
@@ -738,7 +738,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'High quality stainless steel deep fry/jhara/puri strainer.',
     features: ['Perfect equipment for modern kitchen', 'Long handles protect your hands', 'Easy to wash &amp; clean'],
     ratings: { average: 4.9, count: 58 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '12264_ss_deep_fry_strainer_no18',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '38cm x 15cm x 5cm' }
   },
@@ -762,7 +762,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Extra sharp 5 stainless steel blades for fast slicing &amp; chopping.',
     features: ['2-in-1 Functionality', '5 Stainless Steel Blades', 'Spring-Loaded Handle', 'Compact &amp; Lightweight'],
     ratings: { average: 4.8, count: 44 },
-    taxPercent: 12,
+    taxPercent: 1,
     sku: '12314_2in1_veg_cutter_curly_blade',
     specifications: { 'Country of Origin': 'India', 'Dimensions': '20cm x 6cm x 6cm' }
   },
@@ -786,7 +786,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: '13 in 1 Vegetable and Fruit Chopper / Cutter / Greater / Slicer.',
     features: ['Unbreakable &amp; Durability', 'Saves You Time and Money', 'Easy CleanUp', 'Safe for kids tool'],
     ratings: { average: 4.7, count: 26 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '2489_13in1_nicer_dicer',
     specifications: { 'Country of Origin': 'INDIA' }
   },
@@ -810,7 +810,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Round chilly cutter with sharp chopping and cutting blade system.',
     features: ['Safe to use and handle', 'Light weighted and easy to carry', 'Smooth functional blades', 'Easy start and stop mechanism'],
     ratings: { average: 4.8, count: 38 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '2674_round_chilly_cutter',
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '13cm x 13cm x 15cm' }
   },
@@ -834,7 +834,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Mini handy &amp; compact chopper with 3 blades for effortlessly chopping.',
     features: ['Heavy-duty stainless steel blades', 'Unbreakable ABS plastic body', 'Multipurpose use', 'Easy to clean'],
     ratings: { average: 4.7, count: 29 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '5901_push_chopper_500ml',
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '18cm x 14cm x 9cm' }
   },
@@ -857,7 +857,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'Mincer, grater, dicer, slicer with 2 individual attachments.',
     features: ['Made of plastic with stainless steel blades', 'Easy and fun to use', 'Removable filter for easy cleaning', 'Versatile and compact kitchen tool'],
     ratings: { average: 4.6, count: 25 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '2108_garlic_cutter',
     specifications: { 'Country of Origin': 'INDIA' }
   },
@@ -881,7 +881,7 @@ export const HOME_PRODUCTS: Product[] = [
     shortDescription: 'All aluminum garlic press, easy to use and lightweight.',
     features: ['Essential Kitchen Tool', 'Multi Purpose', 'Easy to Use, Clean and Store'],
     ratings: { average: 4.9, count: 51 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '7030a_garlic_press_1pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '21cm x 8cm x 3.5cm' }
   }

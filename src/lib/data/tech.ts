@@ -22,7 +22,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'CUSTOM PRINTED FOR YOU: Enhance the capability of your phone with this Mobile Grip Holder.',
     features: ['Double design for secure handling', 'Hands-free video watching', 'Allows for secure earphone storage', 'Reusable adhesive'],
     ratings: { average: 4.7, count: 33 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '0294_mobile_holder_1pc',
     specifications: { 'Country of Origin': 'China' }
   },
@@ -46,7 +46,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Enlarged 5D HD Mobile Phone Screen Magnifier Amplifier Movie Video Enlarger.',
     features: ['HD optical technology', 'Comfortable and stylish', 'Foldable and portable', 'Simple and elegant design'],
     ratings: { average: 4.6, count: 22 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '13959_mobile_video_amplifier_8inch_no10',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '20cm x 14cm x 2cm' }
   },
@@ -70,7 +70,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Stylist Little Adapter Micro USB OTG pendrive.',
     features: ['Connect USB devices to your phone', 'Plug and play design', 'Durable Aluminum Body', 'Compact and lightweight'],
     ratings: { average: 4.8, count: 29 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '0260_otg_1',
     specifications: { 'Country of Origin': 'China' }
   },
@@ -94,7 +94,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Cute mini chair phone stand, compatible with all mobile phones.',
     features: ['Cute desk ornament', '3 adjustable grooves for comfortable angle', 'Premium beech wood', 'Place phone vertically or horizontally'],
     ratings: { average: 4.2, count: 4 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '8854_chair_phone_stand_1pc',
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '10cm x 10cm x 3cm' }
   },
@@ -118,7 +118,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Noise cancelling headphones jack converter splitter audio adapter.',
     features: ['Music and Phone Call support', 'Noise Reduction with built-in DAC chip', 'Keep your existing headphones', 'Plug and play'],
     ratings: { average: 4.7, count: 27 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '13248_usb_headphone_jack_adapter',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '7cm x 7cm x 2cm' }
   },
@@ -142,7 +142,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Cable Protector Saver for Any Data Cable Wire for USB Micro USB-C Type Cables.',
     features: ['Increases cable life', 'Cost saving', 'Complete protection with inner rubber layer', 'Compatible with all cable types'],
     ratings: { average: 4.5, count: 18 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '13815_cable_protector_cord_4pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '14cm x 9cm x 2cm' }
   },
@@ -166,7 +166,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Universal Adapter | Mini Slim Wireless Outlet Adapter | Multi Foldable Adapter Plug.',
     features: ['3 Way Outlet Splitter', 'Fireproof and Durable', 'Space Saving and Easy Access', 'Widely Used'],
     ratings: { average: 4.8, count: 27 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '7219_3in1_foldable_wall_plug_adapter',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '16cm x 10cm x 2cm' }
   },
@@ -190,7 +190,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Ideal for Domestic for Safe & Easy Operation, Electrical Accessories.',
     features: ['5-way multi-plug socket', 'Safe and easy operation', 'Domestic and commercial use', 'Compact and space-saving design'],
     ratings: { average: 4.7, count: 26 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '7259_5_way_2pin_multi_plug_socket_1pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '6cm x 5cm x 5cm' }
   },
@@ -214,7 +214,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Selfie Light for Smartphone Photography (Battery Not Included).',
     features: ['Supplemental or side lighting', '3 different levels of brightness', 'Take great selfies in dark areas', 'Designed for selfie lovers'],
     ratings: { average: 4.8, count: 36 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '12881_selfie_ring_light',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '13cm x 10cm x 4cm' }
   },
@@ -238,7 +238,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Multiple Height & Angle Adjustments, Stable Metallic Round Base.',
     features: ['Versatile and adjustable', 'Sturdy Construction', 'Compact and Portable', 'Multi-Purpose'],
     ratings: { average: 4.8, count: 34 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '13659_foldable_mobile_stand_1pc',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '10cm x 10cm x 3cm' }
   },
@@ -262,7 +262,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Slim Cordless Computer Mouse with Nano USB Receiver, 3 Adjustable DPI.',
     features: ['Ultra-Thin Mouse', '3 Adjustable DPI', 'Efficient Wireless Transmission', 'Longer lifespan', 'Maximum Hand-Feeling', 'Strong compatibility'],
     ratings: { average: 4.6, count: 23 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '6077_wireless_mouse',
     specifications: { 'Country of Origin': 'China' }
   },
@@ -286,7 +286,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Mobile supporting stand used in all kinds of places.',
     features: ['Safe to use and handle', 'Light weighted and easy to carry', 'Simple to use it anywhere', 'Easy start and stop mechanism'],
     ratings: { average: 4.1, count: 2 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '6132_4pc_hand_shape_m_stand',
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '18cm x 12cm x 8cm' }
   },
@@ -309,7 +309,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Just Fit in Socket and Hang (Mix Color / 1 pc).',
     features: ['Superior quality ABS material', 'Shining finish', 'Better ventilation effect', 'Foldable design'],
     ratings: { average: 4.6, count: 22 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '12872_mob_charging_stand_mix_color',
     specifications: { 'Country of Origin': 'INDIA', 'Dimensions': '19cm x 12cm x 5cm' }
   },
@@ -333,7 +333,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Full Protection Cover Compatible Charger New Edition Case Cover (for iPhone only).',
     features: ['Cute Appearance', 'Premium Material', 'Gift Ideas', 'Compatibility with iPhone 18-20W charger'],
     ratings: { average: 4.8, count: 34 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '13262_cartoon_charger_case',
     specifications: { 'Country of Origin': 'China', 'Dimensions': '10cm x 7cm x 4cm' }
   },
@@ -357,7 +357,7 @@ export const TECH_PRODUCTS: Product[] = [
     shortDescription: 'Multi-Cable Capacity, Travel Cable Organizer, Flexible Silicone Material.',
     features: ['Multi-Cable Capacity', 'Travel Organizer', 'Flexible Silicone Material'],
     ratings: { average: 4.7, count: 2000 },
-    taxPercent: 18,
+    taxPercent: 1,
     sku: '1334_cable_clips_set',
     specifications: { 'Country of Origin': 'China' }
   }
