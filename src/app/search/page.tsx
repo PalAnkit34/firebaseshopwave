@@ -18,37 +18,6 @@ import { cn } from '@/lib/utils';
 import { useProductStore } from '@/lib/productStore';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
-const topCategories = [
-  { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=400&auto=format&fit=crop', dataAiHint: 'pooja items' },
-  { name: 'Best Selling', href: '/search?sort=popular', image: 'https://images.unsplash.com/photo-1572584642822-6f8de0243c93?q=80&w=400&auto=format&fit=crop', dataAiHint: 'sale offer' },
-  { name: 'New Arrivals', href: '/search?sort=new', image: 'https://images.unsplash.com/photo-1524678606370-a47625cb810c?q=80&w=400&auto=format&fit=crop', dataAiHint: 'new products' },
-  { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'corporate gifts' },
-  { name: 'Home & Kitchen', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=400&auto=format&fit=crop', dataAiHint: 'modern kitchen' },
-  { name: 'Toys & Games', href: '/search?category=Toys', image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop', dataAiHint: 'children toys' },
-  { name: 'Cleaning Supplies', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1582735773152-7935fbb1b41f?q=80&w=400&auto=format&fit=crop', dataAiHint: 'cleaning supplies' },
-  { name: 'Personal Care', href: '/search?category=Ayurvedic&subcategory=Personal-Care', image: 'https://images.unsplash.com/photo-1631777053082-a7459143992a?q=80&w=400&auto=format&fit=crop', dataAiHint: 'personal care' },
-  { name: 'Electronics', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=400&auto=format&fit=crop', dataAiHint: 'electronic gadgets' },
-  { name: 'Home Improvement', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=400&auto=format&fit=crop', dataAiHint: 'modern home' },
-  { name: 'Mobile Cover', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=400&auto=format&fit=crop', dataAiHint: 'phone case' },
-  { name: 'Custom Print Products', href: '/search', image: 'https://images.unsplash.com/photo-1506784983877-45594efa4c85?q=80&w=400&auto=format&fit=crop', dataAiHint: 'custom printing' },
-];
-
-const ayurvedicSubCategories = [
-  { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1652122788538-9aba111c550e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
-  { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1705083649602-03c5fbae2e89?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
-  { name: 'Homeopathic Medicines', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1694035449621-8fe51b28f59f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
-  { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Churna', image: 'https://images.unsplash.com/photo-1704650312022-ed1a76dbed1b?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
-  { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1723937188995-beac88d36998?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
-  { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
-];
-
-const poojaSubCategories = [
-    { name: 'Dhoop', href: '/search?category=Pooja&subcategory=Dhoop', image: 'https://images.unsplash.com/photo-1604543213568-963e6e8a4947?q=80&w=800&auto=format&fit=crop', dataAiHint: 'incense dhoop' },
-    { name: 'Agarbatti', href: '/search?category=Pooja&subcategory=Agarbatti', image: 'https://images.unsplash.com/photo-1596701878278-2de47143b4eb?q=80&w=800&auto=format&fit=crop', dataAiHint: 'incense sticks' },
-    { name: 'Aasan and Mala', href: '/search?category=Pooja&subcategory=Aasan%20and%20Mala', image: 'https://images.unsplash.com/photo-1616836109961-c8a74e5b2e5e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'prayer beads' },
-    { name: 'Photo Frame', href: '/search?category=Pooja&subcategory=Photo%20Frame', image: 'https://images.unsplash.com/photo-1579541620958-c6996119565e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'photo frame' },
-];
-
 const techCategories = [
   { name: 'Mobiles', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartphones gadgets' },
   { name: 'Laptops', href: '/search?category=Tech&subcategory=Laptops', image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=800&auto=format&fit=crop', dataAiHint: 'modern laptop' },
@@ -65,6 +34,22 @@ const homeCategories = [
     { name: 'Household Appliances', href: '/search?category=Home&subcategory=Household-Appliances', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/1_37b9809b-d67b-40bb-aa14-f9e109013c88.webp', dataAiHint: 'Household Appliances' },
     { name: 'Home Decor', href: '/search?category=Home&subcategory=HomeDecor', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/01_be46bb9f-00b8-4373-80f2-47d1de4ccf06.webp', dataAiHint: 'Home Decor' },
     { name: 'Home storage', href: '/search?category=Home&subcategory=Home-storage', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/hangers_wordrobe_storage%20(1).webp', dataAiHint: 'Home storage' },
+];
+
+const ayurvedicSubCategories = [
+  { name: 'Healthy Juice', href: '/search?category=Food%20%26%20Drinks&subcategory=Healthy%20Juice', image: 'https://images.unsplash.com/photo-1652122788538-9aba111c550e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'juice bottles' },
+  { name: 'Ayurvedic Medicine', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine', image: 'https://images.unsplash.com/photo-1705083649602-03c5fbae2e89?q=80&w=800&auto=format&fit=crop', dataAiHint: 'ayurvedic herbs' },
+  { name: 'Homeopathic Medicines', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1694035449621-8fe51b28f59f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
+  { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Churna', image: 'https://images.unsplash.com/photo-1704650312022-ed1a76dbed1b?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
+  { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1723937188995-beac88d36998?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
+  { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
+];
+
+const poojaSubCategories = [
+    { name: 'Dhoop', href: '/search?category=Pooja&subcategory=Dhoop', image: 'https://images.unsplash.com/photo-1604543213568-963e6e8a4947?q=80&w=800&auto=format&fit=crop', dataAiHint: 'incense dhoop' },
+    { name: 'Agarbatti', href: '/search?category=Pooja&subcategory=Agarbatti', image: 'https://images.unsplash.com/photo-1596701878278-2de47143b4eb?q=80&w=800&auto=format&fit=crop', dataAiHint: 'incense sticks' },
+    { name: 'Aasan and Mala', href: '/search?category=Pooja&subcategory=Aasan%20and%20Mala', image: 'https://images.unsplash.com/photo-1616836109961-c8a74e5b2e5e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'prayer beads' },
+    { name: 'Photo Frame', href: '/search?category=Pooja&subcategory=Photo%20Frame', image: 'https://images.unsplash.com/photo-1579541620958-c6996119565e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'photo frame' },
 ];
 
 const foodAndDrinksCategories = [
@@ -152,13 +137,12 @@ function SearchContent() {
   const list = useMemo(() => filterProducts(products, opts), [products, sp])
 
   const bestSellers = useMemo(() => {
-    // Manually curated list of best-seller product IDs as requested
     const bestSellerIds = ['P_HOME_BA_01', 'P_HOME_KW_01', 'P_HOME_KW_02', 'P_HOME_KW_03'];
     return bestSellerIds
         .map(id => products.find(p => p.id === id))
         .filter((p): p is NonNullable<typeof p> => !!p);
   }, [products]);
-
+  
   const allCategoryLinks = [
       { name: 'Tech', href: '/search?category=Tech', image: 'https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=400&auto=format&fit=crop', dataAiHint: 'latest gadgets' },
       { name: 'Home', href: '/search?category=Home', image: 'https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1200&auto=format&fit=crop', dataAiHint: 'stylish apparel' },
@@ -260,7 +244,7 @@ function SearchContent() {
                 linkText="Explore Items"
                 bannerImages={[
                     "https://images.unsplash.com/photo-1629828325255-2cb25c165a63?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1594580236058-f4a4a7345596?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1594580236058-f4a47345596?q=80&w=1200&auto=format&fit=crop",
                 ]}
                 categories={poojaSubCategories}
                 bannerColor="bg-amber-50"
@@ -367,9 +351,6 @@ function SearchContent() {
     );
   }
 
-
-  const shouldRenderProductGrid = list.length > 0 && (opts.q || opts.category || opts.subcategory || opts.tertiaryCategory);
-  
   if (isLoading) {
     return (
       <div className="flex justify-center py-10">
@@ -502,5 +483,3 @@ export default function SearchPage() {
     </Suspense>
   )
 }
-
-    
