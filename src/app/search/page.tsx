@@ -1,4 +1,5 @@
 
+
 'use client'
 import { useMemo, Suspense, useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -24,7 +25,7 @@ const techCategories = [
   { name: 'Audio', href: '/search?category=Tech&subcategory=Audio', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop', dataAiHint: 'headphones audio' },
   { name: 'Cameras', href: '/search?category=Tech&subcategory=Cameras', image: 'https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?q=80&w=800&auto=format&fit=crop', dataAiHint: 'dslr camera' },
   { name: 'Wearables', href: '/search?category=Tech&subcategory=Wearables', image: 'https://images.unsplash.com/photo-1544117519-31a4b719223d?q=80&w=800&auto=format&fit=crop', dataAiHint: 'smartwatch technology' },
-  { name: 'Accessories', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1615663245642-9904791cd90f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'computer mouse' },
+  { name: 'Accessories', href: '/search?category=Tech&subcategory=Accessories', image: 'https://images.unsplash.com/photo-1620783770629-122b7f187703?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnYWRnZXRzfGVufDB8fHx8MTc1NjYzNDQ4NXww&ixlib=rb-4.1.0&q=80&w=1080', dataAiHint: 'gadgets accessories' },
 ];
 
 const homeCategories = [
