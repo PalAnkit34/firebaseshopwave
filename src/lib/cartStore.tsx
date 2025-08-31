@@ -46,11 +46,14 @@ const calculateTotals = (items: CartItem[]) => {
     }
   }
 
-  const totalTax = items.reduce((acc, cartItem) => {
+  const calculatedTax = items.reduce((acc, cartItem) => {
     const product = products.find(p => p.id === cartItem.id)
     const taxRate = product?.taxPercent || 0
     return acc + (cartItem.price * cartItem.qty * (taxRate / 100));
   }, 0)
+
+  const totalTax = Math.min(calculatedTax, 500); // Cap the tax at 500
+
   const total = subtotal + totalShipping + totalTax
   return { subtotal, totalShipping, totalTax, total }
 }
