@@ -30,7 +30,7 @@ const techCategories = [
 const homeCategories = [
     { name: 'Bathroom Accessories', href: '/search?category=Home&subcategory=Bathroom-Accessories', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/02_fa708df0-d2c7-454a-b15b-bb321a5a0efe.webp', dataAiHint: 'Bathroom Accessories' },
     { name: 'Puja Essentials', href: '/search?category=Pooja', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/4_86ddff46-3968-4413-9b38-e66bcd792aae_10_11zon.webp', dataAiHint: 'Puja Essentials' },
-    { name: 'Cleaning Supplies', href: '/search?category=Home&subcategory=Cleaning-Supplies', image: 'https://images.unsplash.com/photo-1582735773152-7935fbb1b41f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'Cleaning Supplies' },
+    { name: 'Kitchenware', href: '/search?category=Home&subcategory=Kitchenware', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'kitchenware tools' },
     { name: 'Household Appliances', href: '/search?category=Home&subcategory=Household-Appliances', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/1_37b9809b-d67b-40bb-aa14-f9e109013c88.webp', dataAiHint: 'Household Appliances' },
     { name: 'Home Decor', href: '/search?category=Home&subcategory=HomeDecor', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/01_be46bb9f-00b8-4373-80f2-47d1de4ccf06.webp', dataAiHint: 'Home Decor' },
     { name: 'Home storage', href: '/search?category=Home&subcategory=Home-storage', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/hangers_wordrobe_storage%20(1).webp', dataAiHint: 'Home storage' },
@@ -42,7 +42,7 @@ const ayurvedicSubCategories = [
   { name: 'Homeopathic Medicines', href: '/search?category=Ayurvedic&subcategory=Homeopathic Medicines', image: 'https://images.unsplash.com/photo-1694035449621-8fe51b28f59f?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal remedy' },
   { name: 'Churna', href: '/search?category=Ayurvedic&subcategory=Ayurvedic Medicine&tertiaryCategory=Churna', image: 'https://images.unsplash.com/photo-1704650312022-ed1a76dbed1b?q=80&w=800&auto=format&fit=crop', dataAiHint: 'herbal powder' },
   { name: 'Pooja Items', href: '/search?category=Pooja', image: 'https://images.unsplash.com/photo-1723937188995-beac88d36998?q=80&w=800&auto=format&fit=crop', dataAiHint: 'pooja items' },
-  { name: 'Daily Needs', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
+  { name: 'Groceries', href: '/search?category=Groceries', image: 'https://images.unsplash.com/photo-1607349913338-fca6f7fc42d0?q=80&w=800&auto=format&fit=crop', dataAiHint: 'grocery store' },
 ];
 
 const poojaSubCategories = [
@@ -137,7 +137,7 @@ function SearchContent() {
   const list = useMemo(() => filterProducts(products, opts), [products, sp])
 
   const bestSellers = useMemo(() => {
-    const bestSellerIds = ['P_HOME_BA_01', 'P_HOME_KW_01', 'P_HOME_KW_02', 'P_HOME_KW_03'];
+    const bestSellerIds = ['P_HOME_KW_01', 'P_HOME_KW_02', 'P_HOME_BA_01', 'P_HOME_KW_03'];
     return bestSellerIds
         .map(id => products.find(p => p.id === id))
         .filter((p): p is NonNullable<typeof p> => !!p);
@@ -211,12 +211,12 @@ function SearchContent() {
             );
         case 'Home':
              return <CategoryHeader 
-                title="Beautiful Home Decor"
-                description="Elevate your living space with our curated collection of home accessories."
-                linkText="Shop Home"
+                title="Beautiful Home & Kitchen"
+                description="Elevate your living space with our curated collection of home and kitchen accessories."
+                linkText="Shop Home & Kitchen"
                 bannerImages={[
                     "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1200&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1200&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=1200&auto=format&fit=crop",
                     "https://images.unsplash.com/photo-1532323544230-7191fd51bc1b?q=80&w=1200&auto=format&fit=crop",
                 ]}
                 categories={homeCategories}

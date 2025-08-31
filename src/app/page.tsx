@@ -21,17 +21,13 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 const topCategories = [
-  { name: 'Pooja Essentials', href: '/search?category=Home&subcategory=Puja-Essentials', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja_Essential_W_2_11zon.avif', dataAiHint: 'pooja items' },
+  { name: 'Pooja Essentials', href: '/search?category=Pooja', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja_Essential_W_2_11zon.avif', dataAiHint: 'pooja items' },
   { name: 'Best Selling', href: '/search?sort=popular', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Pooja%20Essential%20Pooja%20Essentials/5_d1720387-45fc-43af-bcd8-ba7c37986e76.webp?updatedAt=1756553382584', dataAiHint: 'best seller' },
   { name: 'New Arrivals', href: '/search?sort=new', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/New_Arrival_W_1.avif', dataAiHint: 'new arrivals' },
-  { name: 'Mobiles & Tablets', href: '/search?category=Tech&subcategory=Mobiles', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Improvement_W.avif', dataAiHint: 'mobiles tablets' },
   { name: 'Home & Kitchen', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Kitchen_W.avif', dataAiHint: 'modern kitchen' },
   { name: 'Personal Care', href: '/search?category=Ayurvedic&subcategory=Personal-Care', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/PersonalCare.avif', dataAiHint: 'personal care' },
   { name: 'Electronics', href: '/search?category=Tech', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Electronics_W.avif', dataAiHint: 'electronic gadgets' },
-  { name: 'Home Improvement', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Home_Improvement_W.avif', dataAiHint: 'home improvement' },
-  { name: 'Cleaning Supplies', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Cleaning_Supplies_W_e5bf1666-0811-4c5d-90c3-48f714abf103.avif', dataAiHint: 'cleaning supplies' },
   { name: 'Corporate Gifting', href: '/search?category=Home', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Corporate_Gifting_250x250px_2.avif', dataAiHint: 'corporate gifts' },
-  { name: 'Mobile Cover', href: '/search?category=Tech&subcategory=Accessories', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Mobile_Cover_W_1__11zon.avif', dataAiHint: 'phone case' },
   { name: 'Custom Print Products', href: '/search', image: 'https://ik.imagekit.io/b5qewhvhb/e%20commers/tach/Custom_Print_250x250px.avif', dataAiHint: 'custom printing' },
 ];
 
@@ -94,7 +90,7 @@ export default function Home() {
                 <Image src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1000&auto=format&fit=crop" alt="Home" fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint="modern living room" />
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="absolute inset-0 flex items-center justify-center p-2">
-                    <h3 className="text-md font-bold text-white text-center">Home Accessories</h3>
+                    <h3 className="text-md font-bold text-white text-center">Home & Kitchen</h3>
                 </div>
             </Link>
             <Link href="/search?category=Ayurvedic" className="relative block h-24 md:h-48 overflow-hidden rounded-xl group">
@@ -118,7 +114,7 @@ export default function Home() {
         >
           <CarouselContent>
             <CarouselItem className="basis-1/2 md:basis-1/3"><OfferCard title="Tech Accessories" products={techDeals} href="/search?category=Tech"/></CarouselItem>
-            <CarouselItem className="basis-1/2 md:basis-1/3"><OfferCard title="Home Accessories" products={homeDeals} href="/search?category=Home"/></CarouselItem>
+            <CarouselItem className="basis-1/2 md:basis-1/3"><OfferCard title="Home & Kitchen" products={homeDeals} href="/search?category=Home"/></CarouselItem>
             <CarouselItem className="basis-1/2 md:basis-1/3"><OfferCard title="Ayurvedic Essentials" products={ayurvedicDeals} href="/search?category=Ayurvedic"/></CarouselItem>
           </CarouselContent>
           <CarouselPrevious className="hidden md:flex" />
@@ -128,7 +124,7 @@ export default function Home() {
 
       <section>
         <h2 className="text-2xl font-bold mb-4 text-center">Top Categories</h2>
-         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
+         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-3 md:gap-4">
           {topCategories.map((category) => (
             <Link key={category.name} href={category.href} className="group block text-center">
               <div className="relative aspect-square w-full mx-auto max-w-[150px]">
