@@ -50,9 +50,14 @@ export type PaymentMethod = 'COD' | 'UPI' | 'Card' | 'NetBanking';
 
 export type Order = {
   id: string
+  userId: string
   createdAt: number
+  updatedAt: number
   items: { productId: string; qty: number; price: number, name: string, image: string }[]
   total: number
+  originalTotal?: number
+  discountAmount?: number
+  referralCode?: string | null
   address: Address
   payment: PaymentMethod
   status: 'Pending'|'Processing'|'Shipped'|'Delivered'
